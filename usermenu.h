@@ -21,5 +21,5 @@ private slots:
 
     
 private:
-    Ui::ui_user_menu ui;
+    Ui::User_menu ui;
 };

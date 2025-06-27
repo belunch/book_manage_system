@@ -27,6 +27,18 @@
     <Filter Include="Header Files\front">
       <UniqueIdentifier>{16264967-e209-4bee-9325-cc625d6eff95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\data_process">
+      <UniqueIdentifier>{60b5a1ab-1972-4c1a-a608-64550e3ac444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\backword">
+      <UniqueIdentifier>{c3d92b50-5c04-46f6-a99d-703def4d69f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data_process">
+      <UniqueIdentifier>{e9ffaba5-eae9-4720-b87a-68730c14dc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\backword">
+      <UniqueIdentifier>{609f3c5e-15c0-43fa-a530-d2226dbf5f0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="book_manage_system.qrc">
@@ -49,17 +61,20 @@
     <ClCompile Include="user_menu.cpp">
       <Filter>Source Files\front</Filter>
     </ClCompile>
-    <ClCompile Include="people.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="history.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="book.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\data_process</Filter>
+    </ClCompile>
+    <ClCompile Include="dataprocess.cpp">
+      <Filter>Source Files\data_process</Filter>
     </ClCompile>
     <ClCompile Include="date.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\data_process</Filter>
+    </ClCompile>
+    <ClCompile Include="history.cpp">
+      <Filter>Source Files\data_process</Filter>
+    </ClCompile>
+    <ClCompile Include="people.cpp">
+      <Filter>Source Files\data_process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,22 +95,25 @@
     <QtMoc Include="usermenu.h">
       <Filter>Header Files\front</Filter>
     </QtMoc>
+    <QtMoc Include="backword.h">
+      <Filter>Header Files\backword</Filter>
+    </QtMoc>
+    <QtMoc Include="Data Processing Layer.h">
+      <Filter>Header Files\data_process</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="background.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="people.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="book.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="history.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\data_process</Filter>
     </ClInclude>
     <ClInclude Include="date.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\data_process</Filter>
+    </ClInclude>
+    <ClInclude Include="history.h">
+      <Filter>Header Files\data_process</Filter>
+    </ClInclude>
+    <ClInclude Include="people.h">
+      <Filter>Header Files\data_process</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

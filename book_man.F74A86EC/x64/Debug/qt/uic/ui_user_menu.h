@@ -18,7 +18,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_user_menu
+class Ui_Usermenu
 {
 public:
     QLabel *welcom_line;
@@ -113,7 +113,7 @@ public:
 };
 
 namespace Ui {
-    class ui_user_menu: public Ui_user_menu {};
+    class User_menu: public Ui_Usermenu {};
 } // namespace Ui
 
 QT_END_NAMESPACE

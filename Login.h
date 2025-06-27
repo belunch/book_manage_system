@@ -1,7 +1,7 @@
 #pragma once
 #include"ui_Login.h"
 #include <QtWidgets/QWidget>
-#include"background.h"
+
 
 class Login : public QWidget
 {

@@ -1,25 +1,13 @@
 ﻿   Qt/MSBuild: 3.4.0.1
+  Reading Qt configuration (C:/Qt/6.9.1/msvc2022_64/bin/qmake)
    Qt: 6.9.1
-  moc Login.h
-  Login.cpp
+  moc book_manage_system.h
+  moc backword.h
+  moc Data Processing Layer.h
+  dataprocess.cpp
   book_manage_system.cpp
   main.cpp
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x14d 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x14f 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x150 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x154 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x155 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x156 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x157 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x158 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x159 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x15c 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x15d 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x15e 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x160 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x161 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x162 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-D:\univercity\data_struct\book_manage_system\Login.cpp(1,1): warning C4828: 文件包含在偏移 0x164 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。
-  moc_Login.cpp
+  moc_Data Processing Layer.cpp
+  moc_backword.cpp
   moc_book_manage_system.cpp
-  book_manage_system.vcxproj -> D:\univercity\data_struct\book_manage_system\x64\Debug\book_manage_system.exe
+  book_manage_system.vcxproj -> D:\univercity\data_struct\book_manage\book_manage_system\x64\Debug\book_manage_system.exe

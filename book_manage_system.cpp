@@ -1,8 +1,9 @@
 #include "book_manage_system.h"
 
-book_manage_system::book_manage_system(QWidget *parent)
+book_manage_system::book_manage_system(data_process* data,QWidget *parent)
     : QWidget(parent)
 {
+    Data = data;
     ui.setupUi(this);
     Login_window = new Login();
     Login_window->show();
