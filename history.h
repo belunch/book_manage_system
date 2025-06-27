@@ -2,3 +2,7 @@
 #include"book.h"
 #include"date.h"
 
+class history
+{
+
+};

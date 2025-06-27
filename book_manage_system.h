@@ -5,6 +5,8 @@
 #include<Login.h>
 #include"usermenu.h"
 #include"Data Processing Layer.h"
+#include<string>
+#include<vector>
 
 class book_manage_system : public QWidget
 {
