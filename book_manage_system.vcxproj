@@ -92,6 +92,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="book.cpp" />
+    <ClCompile Include="date.cpp" />
+    <ClCompile Include="history.cpp" />
+    <ClCompile Include="people.cpp" />
     <ClCompile Include="user_menu.cpp" />
     <QtRcc Include="book_manage_system.qrc" />
     <QtUic Include="book_manage_system.ui" />
@@ -107,6 +111,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="background.h" />
+    <ClInclude Include="book.h" />
+    <ClInclude Include="date.h" />
+    <ClInclude Include="history.h" />
+    <ClInclude Include="people.h" />
     <QtMoc Include="usermenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

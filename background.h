@@ -2,6 +2,7 @@
 #include<QString>
 #include <QtWidgets/QWidget>
 #include<string>
+#include"people.h"
 class background
 {
 signals:
