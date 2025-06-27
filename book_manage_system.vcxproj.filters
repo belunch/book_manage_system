@@ -76,6 +76,9 @@
     <ClCompile Include="people.cpp">
       <Filter>Source Files\data_process</Filter>
     </ClCompile>
+    <ClCompile Include="backword.cpp">
+      <Filter>Source Files\backword</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Login.ui">

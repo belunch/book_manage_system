@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="backword.cpp" />
     <ClCompile Include="book.cpp" />
     <ClCompile Include="dataprocess.cpp" />
     <ClCompile Include="date.cpp" />

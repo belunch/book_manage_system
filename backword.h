@@ -8,7 +8,7 @@
 class backword : public QObject {
     Q_OBJECT
 public:
-    backword();
+    backword() ;
     std::vector<user>usermessage();
     bool save_user_message();
     bool can_change_password();
