@@ -41,12 +41,15 @@ template <> constexpr inline auto book_manage_system::qt_create_metaobjectdata<q
     QtMocHelpers::StringRefStorage qt_stringData {
         "book_manage_system",
         "login_success",
-        ""
+        "",
+        "log_out"
     };
 
     QtMocHelpers::UintData qt_methods {
         // Slot 'login_success'
         QtMocHelpers::SlotData<void()>(1, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'log_out'
+        QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -71,6 +74,7 @@ void book_manage_system::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->login_success(); break;
+        case 1: _t->log_out(); break;
         default: ;
         }
     }
@@ -96,14 +100,14 @@ int book_manage_system::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 2;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 1)
+        if (_id < 2)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }

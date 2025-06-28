@@ -40,8 +40,9 @@ template <> constexpr inline auto user_menu::qt_create_metaobjectdata<qt_meta_ta
     namespace QMC = QtMocConstants;
     QtMocHelpers::StringRefStorage qt_stringData {
         "user_menu",
-        "push_borrow",
+        "Logout",
         "",
+        "push_borrow",
         "push_return",
         "push_serch",
         "push_history",
@@ -51,20 +52,22 @@ template <> constexpr inline auto user_menu::qt_create_metaobjectdata<qt_meta_ta
     };
 
     QtMocHelpers::UintData qt_methods {
+        // Signal 'Logout'
+        QtMocHelpers::SignalData<void()>(1, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'push_borrow'
-        QtMocHelpers::SlotData<void()>(1, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'push_return'
         QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'push_serch'
+        // Slot 'push_return'
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'push_history'
+        // Slot 'push_serch'
         QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'push_quit'
+        // Slot 'push_history'
         QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'push_reset'
+        // Slot 'push_quit'
         QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'push_feed_back'
+        // Slot 'push_reset'
         QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'push_feed_back'
+        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -88,17 +91,21 @@ void user_menu::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
     auto *_t = static_cast<user_menu *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: _t->push_borrow(); break;
-        case 1: _t->push_return(); break;
-        case 2: _t->push_serch(); break;
-        case 3: _t->push_history(); break;
-        case 4: _t->push_quit(); break;
-        case 5: _t->push_reset(); break;
-        case 6: _t->push_feed_back(); break;
+        case 0: _t->Logout(); break;
+        case 1: _t->push_borrow(); break;
+        case 2: _t->push_return(); break;
+        case 3: _t->push_serch(); break;
+        case 4: _t->push_history(); break;
+        case 5: _t->push_quit(); break;
+        case 6: _t->push_reset(); break;
+        case 7: _t->push_feed_back(); break;
         default: ;
         }
     }
-    (void)_a;
+    if (_c == QMetaObject::IndexOfMethod) {
+        if (QtMocHelpers::indexOfMethod<void (user_menu::*)()>(_a, &user_menu::Logout, 0))
+            return;
+    }
 }
 
 const QMetaObject *user_menu::metaObject() const
@@ -120,15 +127,21 @@ int user_menu::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 8;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 8)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
+}
+
+// SIGNAL 0
+void user_menu::Logout()
+{
+    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 QT_WARNING_POP

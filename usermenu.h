@@ -1,6 +1,8 @@
 #pragma once
 #include"ui_user_menu.h"
 #include <QtWidgets/QWidget>
+#include<QtUiTools/QUiLoader>
+#include<QFile>
 
 class user_menu :public QWidget
 {
@@ -9,6 +11,10 @@ class user_menu :public QWidget
 public:
     user_menu(QWidget* parent = nullptr);
     ~user_menu();
+
+signals:
+    void Logout();
+
 
 private slots:
     void push_borrow();
@@ -22,4 +28,5 @@ private slots:
     
 private:
     Ui::User_menu ui;
+
 };

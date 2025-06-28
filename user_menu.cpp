@@ -37,6 +37,7 @@ void user_menu::push_history()
 void user_menu::push_quit()
 {
 	ui.welcom_line->setText("quit");
+	emit Logout();
 }
 
 void user_menu::push_feed_back()
