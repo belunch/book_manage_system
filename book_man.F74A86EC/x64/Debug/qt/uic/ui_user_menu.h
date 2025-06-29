@@ -13,31 +13,44 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Usermenu
+class Ui_User_menu
 {
 public:
     QLabel *welcom_line;
     QPushButton *button_signout;
-    QPushButton *button_reset_password;
+    QStackedWidget *stackedWidget;
+    QWidget *page_main_menu;
     QPushButton *button_feedback;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QGridLayout *gridLayout;
     QPushButton *button_borrow;
     QPushButton *button_return;
     QPushButton *button_serch;
     QPushButton *button_history;
+    QPushButton *button_reset_password;
+    QWidget *page_borrow;
+    QLineEdit *lineEdit;
+    QLabel *label;
+    QLabel *label_2;
+    QWidget *widget;
+    QGridLayout *gridLayout_2;
+    QPushButton *pushButton;
+    QPushButton *pushButton_2;
+    QWidget *page;
 
-    void setupUi(QWidget *Form)
+    void setupUi(QWidget *User_menu)
     {
-        if (Form->objectName().isEmpty())
-            Form->setObjectName("Form");
-        Form->resize(667, 504);
-        welcom_line = new QLabel(Form);
+        if (User_menu->objectName().isEmpty())
+            User_menu->setObjectName("User_menu");
+        User_menu->resize(847, 830);
+        welcom_line = new QLabel(User_menu);
         welcom_line->setObjectName("welcom_line");
         welcom_line->setGeometry(QRect(150, 20, 240, 40));
         welcom_line->setMinimumSize(QSize(240, 40));
@@ -47,73 +60,117 @@ public:
         font.setPointSize(16);
         welcom_line->setFont(font);
         welcom_line->setAlignment(Qt::AlignmentFlag::AlignCenter);
-        button_signout = new QPushButton(Form);
+        button_signout = new QPushButton(User_menu);
         button_signout->setObjectName("button_signout");
         button_signout->setGeometry(QRect(420, 30, 81, 24));
-        button_reset_password = new QPushButton(Form);
-        button_reset_password->setObjectName("button_reset_password");
-        button_reset_password->setGeometry(QRect(430, 350, 81, 24));
-        button_feedback = new QPushButton(Form);
+        stackedWidget = new QStackedWidget(User_menu);
+        stackedWidget->setObjectName("stackedWidget");
+        stackedWidget->setGeometry(QRect(40, 60, 521, 381));
+        page_main_menu = new QWidget();
+        page_main_menu->setObjectName("page_main_menu");
+        button_feedback = new QPushButton(page_main_menu);
         button_feedback->setObjectName("button_feedback");
-        button_feedback->setGeometry(QRect(430, 390, 81, 24));
-        widget = new QWidget(Form);
-        widget->setObjectName("widget");
-        widget->setGeometry(QRect(70, 80, 345, 345));
-        gridLayout = new QGridLayout(widget);
+        button_feedback->setGeometry(QRect(360, 320, 81, 24));
+        layoutWidget = new QWidget(page_main_menu);
+        layoutWidget->setObjectName("layoutWidget");
+        layoutWidget->setGeometry(QRect(0, 10, 345, 345));
+        gridLayout = new QGridLayout(layoutWidget);
         gridLayout->setSpacing(75);
         gridLayout->setObjectName("gridLayout");
         gridLayout->setContentsMargins(10, 10, 10, 10);
-        button_borrow = new QPushButton(widget);
+        button_borrow = new QPushButton(layoutWidget);
         button_borrow->setObjectName("button_borrow");
         button_borrow->setMinimumSize(QSize(125, 125));
         button_borrow->setMaximumSize(QSize(125, 125));
 
         gridLayout->addWidget(button_borrow, 0, 0, 1, 1);
 
-        button_return = new QPushButton(widget);
+        button_return = new QPushButton(layoutWidget);
         button_return->setObjectName("button_return");
         button_return->setMinimumSize(QSize(125, 125));
         button_return->setMaximumSize(QSize(125, 125));
 
         gridLayout->addWidget(button_return, 0, 1, 1, 1);
 
-        button_serch = new QPushButton(widget);
+        button_serch = new QPushButton(layoutWidget);
         button_serch->setObjectName("button_serch");
         button_serch->setMinimumSize(QSize(125, 125));
         button_serch->setMaximumSize(QSize(125, 125));
 
         gridLayout->addWidget(button_serch, 1, 0, 1, 1);
 
-        button_history = new QPushButton(widget);
+        button_history = new QPushButton(layoutWidget);
         button_history->setObjectName("button_history");
         button_history->setMinimumSize(QSize(125, 125));
         button_history->setMaximumSize(QSize(125, 125));
 
         gridLayout->addWidget(button_history, 1, 1, 1, 1);
 
+        button_reset_password = new QPushButton(page_main_menu);
+        button_reset_password->setObjectName("button_reset_password");
+        button_reset_password->setGeometry(QRect(360, 280, 81, 24));
+        stackedWidget->addWidget(page_main_menu);
+        page_borrow = new QWidget();
+        page_borrow->setObjectName("page_borrow");
+        lineEdit = new QLineEdit(page_borrow);
+        lineEdit->setObjectName("lineEdit");
+        lineEdit->setGeometry(QRect(240, 200, 181, 21));
+        label = new QLabel(page_borrow);
+        label->setObjectName("label");
+        label->setGeometry(QRect(100, 200, 131, 31));
+        label_2 = new QLabel(page_borrow);
+        label_2->setObjectName("label_2");
+        label_2->setGeometry(QRect(190, 50, 121, 131));
+        QFont font1;
+        font1.setPointSize(24);
+        label_2->setFont(font1);
+        label_2->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        widget = new QWidget(page_borrow);
+        widget->setObjectName("widget");
+        widget->setGeometry(QRect(90, 250, 341, 72));
+        gridLayout_2 = new QGridLayout(widget);
+        gridLayout_2->setObjectName("gridLayout_2");
+        pushButton = new QPushButton(widget);
+        pushButton->setObjectName("pushButton");
 
-        retranslateUi(Form);
+        gridLayout_2->addWidget(pushButton, 0, 0, 1, 1);
 
-        QMetaObject::connectSlotsByName(Form);
+        pushButton_2 = new QPushButton(widget);
+        pushButton_2->setObjectName("pushButton_2");
+
+        gridLayout_2->addWidget(pushButton_2, 1, 0, 1, 1);
+
+        stackedWidget->addWidget(page_borrow);
+        page = new QWidget();
+        page->setObjectName("page");
+        stackedWidget->addWidget(page);
+
+        retranslateUi(User_menu);
+
+        QMetaObject::connectSlotsByName(User_menu);
     } // setupUi
 
-    void retranslateUi(QWidget *Form)
+    void retranslateUi(QWidget *User_menu)
     {
-        Form->setWindowTitle(QCoreApplication::translate("Form", "Form", nullptr));
-        welcom_line->setText(QCoreApplication::translate("Form", "\346\254\242\350\277\216\357\274\214XXX", nullptr));
-        button_signout->setText(QCoreApplication::translate("Form", "\351\200\200\345\207\272\347\231\273\345\275\225", nullptr));
-        button_reset_password->setText(QCoreApplication::translate("Form", "\351\207\215\347\275\256\345\257\206\347\240\201", nullptr));
-        button_feedback->setText(QCoreApplication::translate("Form", "\346\210\221\350\246\201\345\217\215\351\246\210", nullptr));
-        button_borrow->setText(QCoreApplication::translate("Form", "\345\200\237\344\271\246", nullptr));
-        button_return->setText(QCoreApplication::translate("Form", "\350\277\230\344\271\246", nullptr));
-        button_serch->setText(QCoreApplication::translate("Form", "\346\237\245\350\257\242", nullptr));
-        button_history->setText(QCoreApplication::translate("Form", "\345\200\237\351\230\205\345\216\206\345\217\262", nullptr));
+        User_menu->setWindowTitle(QCoreApplication::translate("User_menu", "Form", nullptr));
+        welcom_line->setText(QCoreApplication::translate("User_menu", "\346\254\242\350\277\216\357\274\214XXX", nullptr));
+        button_signout->setText(QCoreApplication::translate("User_menu", "\351\200\200\345\207\272\347\231\273\345\275\225", nullptr));
+        button_feedback->setText(QCoreApplication::translate("User_menu", "\346\210\221\350\246\201\345\217\215\351\246\210", nullptr));
+        button_borrow->setText(QCoreApplication::translate("User_menu", "\345\200\237\344\271\246", nullptr));
+        button_return->setText(QCoreApplication::translate("User_menu", "\350\277\230\344\271\246", nullptr));
+        button_serch->setText(QCoreApplication::translate("User_menu", "\346\237\245\350\257\242", nullptr));
+        button_history->setText(QCoreApplication::translate("User_menu", "\345\200\237\351\230\205\345\216\206\345\217\262", nullptr));
+        button_reset_password->setText(QCoreApplication::translate("User_menu", "\351\207\215\347\275\256\345\257\206\347\240\201", nullptr));
+        label->setText(QCoreApplication::translate("User_menu", "\350\257\267\350\276\223\345\205\245\344\271\246\347\261\215\345\224\257\344\270\200\347\264\242\345\274\225\347\240\201", nullptr));
+        label_2->setText(QCoreApplication::translate("User_menu", "logo", nullptr));
+        pushButton->setText(QCoreApplication::translate("User_menu", "\345\200\237\344\271\246", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("User_menu", "\351\200\200\345\207\272", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class User_menu: public Ui_Usermenu {};
+    class User_menu: public Ui_User_menu {};
 } // namespace Ui
 
 QT_END_NAMESPACE

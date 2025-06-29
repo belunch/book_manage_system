@@ -22,7 +22,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Login
+class Ui_Log_in
 {
 public:
     QLabel *label_LOGO;
@@ -43,14 +43,14 @@ public:
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButton_quit;
 
-    void setupUi(QWidget *Form)
+    void setupUi(QWidget *Log_in)
     {
-        if (Form->objectName().isEmpty())
-            Form->setObjectName("Form");
-        Form->resize(649, 518);
+        if (Log_in->objectName().isEmpty())
+            Log_in->setObjectName("Log_in");
+        Log_in->resize(649, 518);
         QIcon icon(QIcon::fromTheme(QIcon::ThemeIcon::ContactNew));
-        Form->setWindowIcon(icon);
-        label_LOGO = new QLabel(Form);
+        Log_in->setWindowIcon(icon);
+        label_LOGO = new QLabel(Log_in);
         label_LOGO->setObjectName("label_LOGO");
         label_LOGO->setGeometry(QRect(20, 30, 200, 200));
         label_LOGO->setMinimumSize(QSize(200, 200));
@@ -60,7 +60,7 @@ public:
         font.setPointSize(16);
         label_LOGO->setFont(font);
         label_LOGO->setAlignment(Qt::AlignmentFlag::AlignCenter);
-        layoutWidget = new QWidget(Form);
+        layoutWidget = new QWidget(Log_in);
         layoutWidget->setObjectName("layoutWidget");
         layoutWidget->setGeometry(QRect(250, 30, 216, 184));
         verticalLayout = new QVBoxLayout(layoutWidget);
@@ -138,26 +138,26 @@ public:
         verticalLayout->addLayout(horizontalLayout);
 
 
-        retranslateUi(Form);
+        retranslateUi(Log_in);
 
-        QMetaObject::connectSlotsByName(Form);
+        QMetaObject::connectSlotsByName(Log_in);
     } // setupUi
 
-    void retranslateUi(QWidget *Form)
+    void retranslateUi(QWidget *Log_in)
     {
-        Form->setWindowTitle(QCoreApplication::translate("Form", "\347\231\273\345\275\225", nullptr));
-        label_LOGO->setText(QCoreApplication::translate("Form", "\350\277\231\345\272\224\350\257\245\346\230\257\344\270\252LOGO\347\232\204", nullptr));
-        label_icon->setText(QCoreApplication::translate("Form", "\344\272\272\345\244\264\345\233\276", nullptr));
-        label_user->setText(QCoreApplication::translate("Form", "\347\224\250\346\210\267\345\220\215\357\274\232", nullptr));
-        label_password->setText(QCoreApplication::translate("Form", "\345\257\206\347\240\201\357\274\232", nullptr));
-        pushButton_login->setText(QCoreApplication::translate("Form", "\347\231\273\345\275\225", nullptr));
-        pushButton_quit->setText(QCoreApplication::translate("Form", "\351\200\200\345\207\272", nullptr));
+        Log_in->setWindowTitle(QCoreApplication::translate("Log_in", "\347\231\273\345\275\225", nullptr));
+        label_LOGO->setText(QCoreApplication::translate("Log_in", "\350\277\231\345\272\224\350\257\245\346\230\257\344\270\252LOGO\347\232\204", nullptr));
+        label_icon->setText(QCoreApplication::translate("Log_in", "\344\272\272\345\244\264\345\233\276", nullptr));
+        label_user->setText(QCoreApplication::translate("Log_in", "\347\224\250\346\210\267\345\220\215\357\274\232", nullptr));
+        label_password->setText(QCoreApplication::translate("Log_in", "\345\257\206\347\240\201\357\274\232", nullptr));
+        pushButton_login->setText(QCoreApplication::translate("Log_in", "\347\231\273\345\275\225", nullptr));
+        pushButton_quit->setText(QCoreApplication::translate("Log_in", "\351\200\200\345\207\272", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class Log_in: public Ui_Login {};
+    class Log_in: public Ui_Log_in {};
 } // namespace Ui
 
 QT_END_NAMESPACE

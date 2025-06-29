@@ -11,6 +11,7 @@ user_menu::user_menu(QWidget* parent)
 	connect(ui.button_signout, &QPushButton::clicked, this, &user_menu::push_quit);
 	connect(ui.button_reset_password, &QPushButton::clicked, this, &user_menu::push_reset);
 	connect(ui.button_feedback, &QPushButton::clicked, this, &user_menu::push_feed_back);
+	ui.stackedWidget->setCurrentIndex(0);
 }
 
 user_menu::~user_menu()
