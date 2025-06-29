@@ -48,7 +48,8 @@ template <> constexpr inline auto user_menu::qt_create_metaobjectdata<qt_meta_ta
         "push_history",
         "push_quit",
         "push_reset",
-        "push_feed_back"
+        "push_feed_back",
+        "return_user_menu"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -68,6 +69,8 @@ template <> constexpr inline auto user_menu::qt_create_metaobjectdata<qt_meta_ta
         QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'push_feed_back'
         QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'return_user_menu'
+        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -99,6 +102,7 @@ void user_menu::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 5: _t->push_quit(); break;
         case 6: _t->push_reset(); break;
         case 7: _t->push_feed_back(); break;
+        case 8: _t->return_user_menu(); break;
         default: ;
         }
     }
@@ -127,14 +131,14 @@ int user_menu::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

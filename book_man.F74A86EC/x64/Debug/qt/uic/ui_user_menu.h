@@ -36,13 +36,13 @@ public:
     QPushButton *button_history;
     QPushButton *button_reset_password;
     QWidget *page_borrow;
-    QLineEdit *lineEdit;
-    QLabel *label;
-    QLabel *label_2;
+    QLineEdit *borrow_line_edit;
+    QLabel *borrow_hint;
+    QLabel *borrow_main_LOGO;
     QWidget *widget;
     QGridLayout *gridLayout_2;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
+    QPushButton *borrow_borrow_button;
+    QPushButton *borrow_quit_button;
     QWidget *page;
 
     void setupUi(QWidget *User_menu)
@@ -112,33 +112,33 @@ public:
         stackedWidget->addWidget(page_main_menu);
         page_borrow = new QWidget();
         page_borrow->setObjectName("page_borrow");
-        lineEdit = new QLineEdit(page_borrow);
-        lineEdit->setObjectName("lineEdit");
-        lineEdit->setGeometry(QRect(240, 200, 181, 21));
-        label = new QLabel(page_borrow);
-        label->setObjectName("label");
-        label->setGeometry(QRect(100, 200, 131, 31));
-        label_2 = new QLabel(page_borrow);
-        label_2->setObjectName("label_2");
-        label_2->setGeometry(QRect(190, 50, 121, 131));
+        borrow_line_edit = new QLineEdit(page_borrow);
+        borrow_line_edit->setObjectName("borrow_line_edit");
+        borrow_line_edit->setGeometry(QRect(240, 200, 181, 21));
+        borrow_hint = new QLabel(page_borrow);
+        borrow_hint->setObjectName("borrow_hint");
+        borrow_hint->setGeometry(QRect(100, 200, 131, 31));
+        borrow_main_LOGO = new QLabel(page_borrow);
+        borrow_main_LOGO->setObjectName("borrow_main_LOGO");
+        borrow_main_LOGO->setGeometry(QRect(190, 50, 121, 131));
         QFont font1;
         font1.setPointSize(24);
-        label_2->setFont(font1);
-        label_2->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        borrow_main_LOGO->setFont(font1);
+        borrow_main_LOGO->setAlignment(Qt::AlignmentFlag::AlignCenter);
         widget = new QWidget(page_borrow);
         widget->setObjectName("widget");
         widget->setGeometry(QRect(90, 250, 341, 72));
         gridLayout_2 = new QGridLayout(widget);
         gridLayout_2->setObjectName("gridLayout_2");
-        pushButton = new QPushButton(widget);
-        pushButton->setObjectName("pushButton");
+        borrow_borrow_button = new QPushButton(widget);
+        borrow_borrow_button->setObjectName("borrow_borrow_button");
 
-        gridLayout_2->addWidget(pushButton, 0, 0, 1, 1);
+        gridLayout_2->addWidget(borrow_borrow_button, 0, 0, 1, 1);
 
-        pushButton_2 = new QPushButton(widget);
-        pushButton_2->setObjectName("pushButton_2");
+        borrow_quit_button = new QPushButton(widget);
+        borrow_quit_button->setObjectName("borrow_quit_button");
 
-        gridLayout_2->addWidget(pushButton_2, 1, 0, 1, 1);
+        gridLayout_2->addWidget(borrow_quit_button, 1, 0, 1, 1);
 
         stackedWidget->addWidget(page_borrow);
         page = new QWidget();
@@ -161,10 +161,10 @@ public:
         button_serch->setText(QCoreApplication::translate("User_menu", "\346\237\245\350\257\242", nullptr));
         button_history->setText(QCoreApplication::translate("User_menu", "\345\200\237\351\230\205\345\216\206\345\217\262", nullptr));
         button_reset_password->setText(QCoreApplication::translate("User_menu", "\351\207\215\347\275\256\345\257\206\347\240\201", nullptr));
-        label->setText(QCoreApplication::translate("User_menu", "\350\257\267\350\276\223\345\205\245\344\271\246\347\261\215\345\224\257\344\270\200\347\264\242\345\274\225\347\240\201", nullptr));
-        label_2->setText(QCoreApplication::translate("User_menu", "logo", nullptr));
-        pushButton->setText(QCoreApplication::translate("User_menu", "\345\200\237\344\271\246", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("User_menu", "\351\200\200\345\207\272", nullptr));
+        borrow_hint->setText(QCoreApplication::translate("User_menu", "\350\257\267\350\276\223\345\205\245\344\271\246\347\261\215\345\224\257\344\270\200\347\264\242\345\274\225\347\240\201", nullptr));
+        borrow_main_LOGO->setText(QCoreApplication::translate("User_menu", "logo", nullptr));
+        borrow_borrow_button->setText(QCoreApplication::translate("User_menu", "\345\200\237\344\271\246", nullptr));
+        borrow_quit_button->setText(QCoreApplication::translate("User_menu", "\351\200\200\345\207\272", nullptr));
     } // retranslateUi
 
 };

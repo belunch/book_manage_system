@@ -24,6 +24,7 @@ private slots:
     void push_quit();
     void push_reset();
     void push_feed_back();
+    void return_user_menu();
 
     
 private:
