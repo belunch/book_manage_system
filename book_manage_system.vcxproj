@@ -99,6 +99,7 @@
     <ClCompile Include="history.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="people.cpp" />
+    <ClCompile Include="sqlite-amalgamation-3500200\sqlite3.c" />
     <ClCompile Include="user_menu.cpp" />
     <QtRcc Include="book_manage_system.qrc" />
     <QtUic Include="book_manage_system.ui" />
@@ -115,6 +116,7 @@
     <QtMoc Include="Login.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="sqlite-amalgamation-3500200\sqlite3.h" />
     <QtMoc Include="backword.h" />
     <ClInclude Include="book.h" />
     <QtMoc Include="Data Processing Layer.h" />
