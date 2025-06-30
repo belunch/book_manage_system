@@ -21,6 +21,7 @@ public:
     void serch_by_cata(std::string cata);
 private:
     backword* Back;
+	user User;
 signals:
     void return_back(bool success, std::string error_message);
     void return_bookmessage(std::vector<book>);
