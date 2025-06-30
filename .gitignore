@@ -33,3 +33,60 @@
 
 .vs
 
+# ======================
+# Visual Studio
+# ======================
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.pdb
+*.ilk
+*.idb
+*.tlog
+*.log
+*.sdf
+*.ipch
+*.suo
+*.user
+*.userosscache
+*.VC.db
+*.VC.VC.opendb
+.vs/
+
+# ======================
+# Qt
+# ======================
+Makefile*
+*.pro.user
+*.qmake.stash
+moc_*
+ui_*
+qrc_*
+*.moc
+*.o
+*.obj
+build-*/
+
+# ======================
+# CMake
+# ======================
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CMakeUserPresets.json
+
+# ======================
+# System/Editor
+# ======================
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+~$*
+.idea/
+.vscode/
+*.swp
+*.swo

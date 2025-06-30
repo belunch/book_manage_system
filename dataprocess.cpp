@@ -122,6 +122,7 @@ void data_process::Sign_up(std::string user_name, std::string user_key, std::str
 	}
 
 	void data_process::change_password(std::string old_key, std::string new_key) {
+		//************
 		if (old_key.empty() || new_key.empty()) {
 			emit return_back(false, "Old password or new password cannot be empty.");
 			return;
