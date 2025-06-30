@@ -1,4 +1,3 @@
 ﻿   Qt/MSBuild: 3.4.0.1
    Qt: 6.9.1
-  user_menu.cpp
-  book_manage_system.vcxproj -> D:\univercity\data_struct\book_manage\book_manage_system\x64\Debug\book_manage_system.exe
+  book_manage_system.vcxproj -> C:\Users\Lenovo\Desktop\book_manage_system\x64\Debug\book_manage_system.exe
