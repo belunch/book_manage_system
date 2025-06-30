@@ -19,10 +19,24 @@ public:
     void return_book(std::string id);
     void serch_by_key(std::string key);
     void serch_by_cata(std::string cata);
+    void submit_feedback(std::string feedback);
+    void examine_feedback();
+    void return_book_cal_fine();
+    void pay_fine();
+    void view_readers();
+    void continue_pay_fine();
+    void data_backup();
+    void data_recovery();
+    void add_book(std::string book_name, std::string author_name, std::string cata, std::string ISBN,std::string book_id );
+    void change_book(std::string new_book_name, std::string new_author_name, std::string new_cata, std::string new_ISBN, std::string book_id);
+    void delete_book(std::string book_id);
 private:
     backword* Back;
     user User;
 signals:
+    void return_user_message(std::vector<user>);
     void return_back(bool success, std::string error_message);
     void return_bookmessage(std::vector<book>);
+    
+
 };

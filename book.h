@@ -10,4 +10,6 @@ public:
 	std::string category;
 	std::string ISBN;
 	std::string id;
+
+	void borrrow();//only ÇÐ»»Ò»ÏÂin_library×´Ì¬£»
 };
