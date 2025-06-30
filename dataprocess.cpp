@@ -1,6 +1,11 @@
 #include"Data Processing Layer.h"
 using namespace std;
 
+
+bool is_valid_user_key(const string& user_key);
+bool is_valid_id(const std::string& user_id);
+
+
 data_process::data_process(backword* back, QWidget* pargent)
 {
 	Back = back;
@@ -35,6 +40,10 @@ void  data_process::Sign_in(std::string user_name, std::string user_key)
 		emit return_back(true, "Login successful.");
 	}
 }
+/*
+
+
+
 
 void data_process::Sign_up(std::string user_name, std::string user_key, std::string user_id, std::string user_tele_num)
 {
@@ -55,17 +64,17 @@ void data_process::Sign_up(std::string user_name, std::string user_key, std::str
 		emit return_back(false, "手机号格式错误，请重新输入。");
 		return;
 	}
-	vector<user> userlist = back->usermessage();
+	vector<user> userlist = Back->usermessage();
 	for (const auto& userObj : userlist) {
 		if (userObj.user_name == user_name) {
 			emit return_back(false, "用户已存在，请直接登录");
 			return;
 		}
-		if (userObj.id_card == user_id) {
+		if (userObj.user_id == user_id) {
 			emit return_back(false, "用户已存在，请直接登录");
 			return;
 		}
-		if (userObj.telephone == user_tele_num) {
+		if (userObj.user_tele_num == user_tele_num) {
 			emit return_back(false, "用户已存在，请直接登录");
 			return;
 		}
@@ -74,7 +83,7 @@ void data_process::Sign_up(std::string user_name, std::string user_key, std::str
 	User.user_key = user_key;
 	User.user_id = user_id;
 	User.user_tele_num = user_tele_num;
-	bool have_saved = back->save_user_message(user);
+	bool have_saved = Back->save_user_message();
 	if (have_saved) {
 		emit return_back(true, "注册成功，请登录。");
 	}
@@ -82,7 +91,16 @@ void data_process::Sign_up(std::string user_name, std::string user_key, std::str
 		emit return_back(false, "注册失败，请稍后再试。");
 	}
 }
-bool is_valid_user_key(const std::string& user_key) {
+
+
+
+
+
+
+
+
+bool is_valid_user_key(const std::string& user_key)
+{
 	// 长度必须6位
 	if (user_tele_num.length() != 6) {
 		return false;
@@ -93,6 +111,7 @@ bool is_valid_user_key(const std::string& user_key) {
 			return false;
 		}
 	}
+}
 	bool is_valid_id(const std::string & user_id) {
 		int len = user_id.length();
 		if (len != 18) {
@@ -141,13 +160,13 @@ bool is_valid_user_key(const std::string& user_key) {
 			return;
 		}
 		bool valid = 1;
-		bool have_changed = back->change_user_key(valid);
+		bool have_changed = Back->change_user_key(valid);
 		if (have_changed) {
 			emit return_back(true, "Password changed successfully.");
 			return;
 		}
 	}
-	bool is_valid_new_key(const std::string & new_key) {
+	bool is_valid_new_key(const std::string& new_key) {
 		// 长度必须6位
 		if (user_tele_num.length() != 6) {
 			return false;
@@ -158,6 +177,7 @@ bool is_valid_user_key(const std::string& user_key) {
 				return false;
 			}
 		}
+	}
 
 
 		void serch_by_key(std::string key) {
@@ -165,7 +185,7 @@ bool is_valid_user_key(const std::string& user_key) {
 				emit return_back(false, "Search key cannot be empty.");
 				return;
 			}
-			std::vector<book> booklist = back->Get_book_message();
+			std::vector<book> booklist = Back->Get_book_message();
 			std::vector<book> books;
 			// 遍历 booklist，筛选书名包含 key 的书籍
 			for (const book& b : booklist) {
@@ -176,3 +196,11 @@ bool is_valid_user_key(const std::string& user_key) {
 			emit return_bookmessage(books);
 			return;
 		}
+
+
+
+
+*/
+
+
+

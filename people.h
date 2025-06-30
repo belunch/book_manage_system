@@ -2,6 +2,7 @@
 #include"history.h"
 #include <string>
 
+
 class people
 {
 
@@ -20,5 +21,8 @@ public:
 
 class admin :public people
 {
-
+    std::string admin_name;
+    std::string admin_key;
+    std::string admin_id;
+    std::string admin_tele_num;
 };
