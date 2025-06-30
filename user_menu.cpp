@@ -12,6 +12,11 @@ user_menu::user_menu(QWidget* parent)
 	connect(ui.button_reset_password, &QPushButton::clicked, this, &user_menu::push_reset);
 	connect(ui.button_feedback, &QPushButton::clicked, this, &user_menu::push_feed_back);
 	connect(ui.borrow_quit_button, &QPushButton::clicked, this, &user_menu::return_user_menu);
+	connect(ui.return_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);
+	connect(ui.feedback_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);
+	connect(ui.serch_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);
+	connect(ui.history_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);
+	connect(ui.reset_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);
 	ui.stackedWidget->setCurrentIndex(0);
 }
 
@@ -24,16 +29,16 @@ void user_menu::push_borrow()
 }
 void user_menu::push_return()
 {
-	ui.welcom_line->setText("return");
+	ui.stackedWidget->setCurrentIndex(2);
 }
 void user_menu::push_serch()
 {
-	ui.welcom_line->setText("serch");
+	ui.stackedWidget->setCurrentIndex(3);
 }
 
 void user_menu::push_history()
 {
-	ui.welcom_line->setText("history");
+	ui.stackedWidget->setCurrentIndex(4);
 }
 
 void user_menu::push_quit()
@@ -45,12 +50,12 @@ void user_menu::push_quit()
 
 void user_menu::push_feed_back()
 {
-	ui.welcom_line->setText("feedback");
+	ui.stackedWidget->setCurrentIndex(6);
 }
 
 void user_menu::push_reset()
 {
-	ui.welcom_line->setText("reset");
+	ui.stackedWidget->setCurrentIndex(5);
 }
 
 void user_menu::return_user_menu()

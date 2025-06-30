@@ -79,12 +79,21 @@
     <ClCompile Include="backword.cpp">
       <Filter>Source Files\backword</Filter>
     </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>Source Files\front</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Login.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="user_menu.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="manager.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="register.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -103,6 +112,9 @@
     </QtMoc>
     <QtMoc Include="Data Processing Layer.h">
       <Filter>Header Files\data_process</Filter>
+    </QtMoc>
+    <QtMoc Include="manager.h">
+      <Filter>Header Files\front</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

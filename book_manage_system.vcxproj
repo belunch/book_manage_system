@@ -97,6 +97,7 @@
     <ClCompile Include="dataprocess.cpp" />
     <ClCompile Include="date.cpp" />
     <ClCompile Include="history.cpp" />
+    <ClCompile Include="manager.cpp" />
     <ClCompile Include="people.cpp" />
     <ClCompile Include="user_menu.cpp" />
     <QtRcc Include="book_manage_system.qrc" />
@@ -106,6 +107,8 @@
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="Login.ui" />
+    <QtUic Include="manager.ui" />
+    <QtUic Include="register.ui" />
     <QtUic Include="user_menu.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +120,7 @@
     <QtMoc Include="Data Processing Layer.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="history.h" />
+    <QtMoc Include="manager.h" />
     <ClInclude Include="people.h" />
     <QtMoc Include="usermenu.h" />
   </ItemGroup>

@@ -40,19 +40,22 @@ template <> constexpr inline auto Login::qt_create_metaobjectdata<qt_meta_tag_ZN
     namespace QMC = QtMocConstants;
     QtMocHelpers::StringRefStorage qt_stringData {
         "Login",
-        "Login_success",
+        "manager_Login_success",
         "",
+        "Login_success",
         "push_Login",
         "push_quit"
     };
 
     QtMocHelpers::UintData qt_methods {
-        // Signal 'Login_success'
+        // Signal 'manager_Login_success'
         QtMocHelpers::SignalData<void()>(1, 2, QMC::AccessPublic, QMetaType::Void),
+        // Signal 'Login_success'
+        QtMocHelpers::SignalData<void()>(3, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'push_Login'
-        QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'push_quit'
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'push_quit'
+        QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -76,14 +79,17 @@ void Login::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
     auto *_t = static_cast<Login *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: _t->Login_success(); break;
-        case 1: _t->push_Login(); break;
-        case 2: _t->push_quit(); break;
+        case 0: _t->manager_Login_success(); break;
+        case 1: _t->Login_success(); break;
+        case 2: _t->push_Login(); break;
+        case 3: _t->push_quit(); break;
         default: ;
         }
     }
     if (_c == QMetaObject::IndexOfMethod) {
-        if (QtMocHelpers::indexOfMethod<void (Login::*)()>(_a, &Login::Login_success, 0))
+        if (QtMocHelpers::indexOfMethod<void (Login::*)()>(_a, &Login::manager_Login_success, 0))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (Login::*)()>(_a, &Login::Login_success, 1))
             return;
     }
 }
@@ -107,21 +113,27 @@ int Login::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 4)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }
 
 // SIGNAL 0
-void Login::Login_success()
+void Login::manager_Login_success()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
+}
+
+// SIGNAL 1
+void Login::Login_success()
+{
+    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
 }
 QT_WARNING_POP
