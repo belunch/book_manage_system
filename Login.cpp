@@ -15,9 +15,14 @@ Login::~Login()
 void Login::push_Login()
 {
     //往后端传，根据返回值继续
-
-
-    emit Login_success();
+    if (ui.manager_check->isChecked())
+    {
+        emit manager_Login_success();
+    }
+    else
+    {
+        emit Login_success();
+    }
 }
 
 void Login::push_quit()

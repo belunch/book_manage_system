@@ -12,6 +12,7 @@ public:
     ~Login();
 
 signals:
+    void manager_Login_success();
     void Login_success();
 private slots:
     void push_Login();

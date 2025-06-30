@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -38,6 +39,7 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_password;
     QLineEdit *lineEdit_password;
+    QCheckBox *manager_check;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton_login;
     QSpacerItem *horizontalSpacer;
@@ -118,6 +120,11 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_2);
 
+        manager_check = new QCheckBox(layoutWidget);
+        manager_check->setObjectName("manager_check");
+
+        verticalLayout->addWidget(manager_check);
+
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName("horizontalLayout");
         pushButton_login = new QPushButton(layoutWidget);
@@ -150,6 +157,7 @@ public:
         label_icon->setText(QCoreApplication::translate("Log_in", "\344\272\272\345\244\264\345\233\276", nullptr));
         label_user->setText(QCoreApplication::translate("Log_in", "\347\224\250\346\210\267\345\220\215\357\274\232", nullptr));
         label_password->setText(QCoreApplication::translate("Log_in", "\345\257\206\347\240\201\357\274\232", nullptr));
+        manager_check->setText(QCoreApplication::translate("Log_in", "\346\210\221\346\230\257\347\256\241\347\220\206\345\221\230", nullptr));
         pushButton_login->setText(QCoreApplication::translate("Log_in", "\347\231\273\345\275\225", nullptr));
         pushButton_quit->setText(QCoreApplication::translate("Log_in", "\351\200\200\345\207\272", nullptr));
     } // retranslateUi
