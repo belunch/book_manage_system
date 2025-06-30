@@ -108,6 +108,7 @@
     <ClCompile Include="main.cpp" />
     <QtUic Include="Login.ui" />
     <QtUic Include="manager.ui" />
+    <QtUic Include="register.ui" />
     <QtUic Include="user_menu.ui" />
   </ItemGroup>
   <ItemGroup>

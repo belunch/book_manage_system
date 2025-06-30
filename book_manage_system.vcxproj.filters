@@ -93,6 +93,9 @@
     <QtUic Include="manager.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="register.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="book_manage_system.h">
