@@ -2,9 +2,11 @@
 #include"ui_user_menu.h"
 #include <QtWidgets/QWidget>
 #include<QtUiTools/QUiLoader>
+#include <QMessageBox>
 #include<QFile>
 #include<QString>
 #include<string>
+#include<book.h>
 
 
 
@@ -50,5 +52,8 @@ private slots:
     
 private:
     Ui::User_menu ui;
+
+    void print_message(bool success, std::string message);
+    void print_book_message(std::vector<book>);
 
 };

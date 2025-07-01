@@ -40,6 +40,74 @@ void  data_process::Sign_in(std::string user_name, std::string user_key)
 		emit return_back(true, "Login successful.");
 	}
 }
+void data_process::Sign_up(std::string user_name, std::string user_key, std::string user_id, std::string user_tele_num)
+{
+
+}
+void data_process::change_password(std::string old_key, std::string new_key)
+{
+
+}
+void data_process::borrow_book(std::string id)
+{
+
+}
+void data_process::return_book(std::string id)
+{
+
+}
+void data_process::serch_by_key(std::string key)
+{
+
+}
+void data_process::serch_by_cata(std::string cata)
+{
+
+}
+void data_process::submit_feedback(std::string feedback)
+{
+
+}
+void data_process::examine_feedback()
+{
+
+}
+void data_process::return_book_cal_fine()
+{
+
+}
+void data_process::pay_fine()
+{
+
+}
+void data_process::view_readers()
+{
+
+}
+void data_process::continue_pay_fine()
+{
+
+}
+void data_process::data_backup()
+{
+
+}
+void data_process::data_recovery()
+{
+
+}
+void data_process::add_book(std::string book_name, std::string author_name, std::string cata, std::string ISBN, std::string book_id)
+{
+
+}
+void data_process::change_book(std::string new_book_name, std::string new_author_name, std::string new_cata, std::string new_ISBN, std::string book_id)
+{
+
+}
+void data_process::delete_book(std::string book_id)
+{
+
+}
 /*
 
 

@@ -1,26 +1,26 @@
-#include"usermenu.h"
+ï»¿#include"usermenu.h"
 
 user_menu::user_menu(QWidget* parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	connect(ui.button_borrow, &QPushButton::clicked, this, &user_menu::push_borrow);//½øÈë½èÊé½çÃæ
-	connect(ui.button_return, &QPushButton::clicked, this, &user_menu::push_return);//½øÈë»¹Êé½çÃæ
-	connect(ui.button_serch, &QPushButton::clicked, this, &user_menu::push_serch);//½øÈë²éÑ¯½çÃæ
-	connect(ui.button_history, &QPushButton::clicked, this, &user_menu::push_history);//½øÈëÀúÊ·½çÃæ
-	connect(ui.button_signout, &QPushButton::clicked, this, &user_menu::push_quit);//µÇ³ö
-	connect(ui.button_reset_password, &QPushButton::clicked, this, &user_menu::push_reset);//½øÈëÖØÖÃÃÜÂë½çÃæ
-	connect(ui.button_feedback, &QPushButton::clicked, this, &user_menu::push_feed_back);//½øÈë·´À¡Ìá½»½çÃæ
-	connect(ui.borrow_quit_button, &QPushButton::clicked, this, &user_menu::return_user_menu);//½èÊé½çÃæµÄ·µ»Ø°´Å¥
-	connect(ui.return_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//»¹Êé½çÃæµÄ·µ»Ø°´Å¥
-	connect(ui.feedback_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//·´À¡½çÃæµÄ·µ»Ø°´Å¥
-	connect(ui.serch_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//²éÕÒ½çÃæµÄ·µ»Ø°´Å¥
-	connect(ui.history_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//ÀúÊ·½çÃæµÄ·µ»Ø°´Å¥
-	connect(ui.reset_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//ÖØÖÃÃÜÂëµÄ·µ»Ø°´Å¥
+	connect(ui.button_borrow, &QPushButton::clicked, this, &user_menu::push_borrow);//è¿›å…¥å€Ÿä¹¦ç•Œé¢
+	connect(ui.button_return, &QPushButton::clicked, this, &user_menu::push_return);//è¿›å…¥è¿˜ä¹¦ç•Œé¢
+	connect(ui.button_serch, &QPushButton::clicked, this, &user_menu::push_serch);//è¿›å…¥æŸ¥è¯¢ç•Œé¢
+	connect(ui.button_history, &QPushButton::clicked, this, &user_menu::push_history);//è¿›å…¥å†å²ç•Œé¢
+	connect(ui.button_signout, &QPushButton::clicked, this, &user_menu::push_quit);//ç™»å‡º
+	connect(ui.button_reset_password, &QPushButton::clicked, this, &user_menu::push_reset);//è¿›å…¥é‡ç½®å¯†ç ç•Œé¢
+	connect(ui.button_feedback, &QPushButton::clicked, this, &user_menu::push_feed_back);//è¿›å…¥åé¦ˆæäº¤ç•Œé¢
+	connect(ui.borrow_quit_button, &QPushButton::clicked, this, &user_menu::return_user_menu);//å€Ÿä¹¦ç•Œé¢çš„è¿”å›æŒ‰é’®
+	connect(ui.return_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//è¿˜ä¹¦ç•Œé¢çš„è¿”å›æŒ‰é’®
+	connect(ui.feedback_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//åé¦ˆç•Œé¢çš„è¿”å›æŒ‰é’®
+	connect(ui.serch_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//æŸ¥æ‰¾ç•Œé¢çš„è¿”å›æŒ‰é’®
+	connect(ui.history_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//å†å²ç•Œé¢çš„è¿”å›æŒ‰é’®
+	connect(ui.reset_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//é‡ç½®å¯†ç çš„è¿”å›æŒ‰é’®
 
-	connect(ui.borrow_borrow_button, &QPushButton::clicked, this, &user_menu::borrow_borrow_button);//Á¬½Ó½èÊé½çÃæµÄ½èÊé°´Å¥ºÍº¯Êı
-	connect(ui.return_return_button, &QPushButton::clicked, this, &user_menu::return_return_button);//Á¬½Ó»¹Êé½çÃæµÄ°´Å¥Óëº¯Êı
-	connect(ui.serch_by_name, &QPushButton::clicked, this, &user_menu::serch_serch_by_name);//Á¬½Ó°´ÊéÃû²éÕÒ°´Å¥Óëº¯Êı
+	connect(ui.borrow_borrow_button, &QPushButton::clicked, this, &user_menu::borrow_borrow_button);//è¿æ¥å€Ÿä¹¦ç•Œé¢çš„å€Ÿä¹¦æŒ‰é’®å’Œå‡½æ•°
+	connect(ui.return_return_button, &QPushButton::clicked, this, &user_menu::return_return_button);//è¿æ¥è¿˜ä¹¦ç•Œé¢çš„æŒ‰é’®ä¸å‡½æ•°
+	connect(ui.serch_by_name, &QPushButton::clicked, this, &user_menu::serch_serch_by_name);//è¿æ¥æŒ‰ä¹¦åæŸ¥æ‰¾æŒ‰é’®ä¸å‡½æ•°
 	connect(ui.serch_by_cata, &QPushButton::clicked, this, &user_menu::serch_serch_by_cata);
 	connect(ui.history_serch, &QPushButton::clicked, this, &user_menu::history_serch_history);
 	connect(ui.reset_reset, &QPushButton::clicked, this, &user_menu::reset_reset_password);
@@ -33,7 +33,7 @@ user_menu::~user_menu()
 {}
 
 //*********************************************************************
-//ÒÔÏÂµÄÊÇÇĞ»»Ò³Ãæ°´Å¥£¬²»ÓÃÏòÏÂÃæ·¢ĞÅºÅ£»
+//ä»¥ä¸‹çš„æ˜¯åˆ‡æ¢é¡µé¢æŒ‰é’®ï¼Œä¸ç”¨å‘ä¸‹é¢å‘ä¿¡å·ï¼›
 //*********************************************************************
 
 
@@ -48,7 +48,33 @@ void user_menu::push_return()
 }
 void user_menu::push_serch()
 {
+	
 	ui.stackedWidget->setCurrentIndex(3);
+	ui.serch_table->setRowCount(0);
+	ui.serch_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	ui.serch_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+	ui.serch_table->setSelectionMode(QAbstractItemView::SingleSelection);
+	ui.serch_table->horizontalHeader()->setStretchLastSection(true);
+	//æµ‹è¯•ç”¨å†…å®¹
+	//ui.serch_table->setRowCount(5);
+	//ui.serch_table->setItem(0, 0, new QTableWidgetItem(QString::fromLocal8Bit("ä¸­æ–‡å†…å®¹")));
+	//ui.serch_table->setItem(0, 1, new QTableWidgetItem("25"));
+	//ui.serch_table->setItem(0, 2, new QTableWidgetItem("ç”·"));
+
+	//ui.serch_table->setItem(1, 0, new QTableWidgetItem("æå››"));
+	//ui.serch_table->setItem(1, 1, new QTableWidgetItem("30"));
+	//ui.serch_table->setItem(1, 2, new QTableWidgetItem("å¥³"));
+
+	//QMessageBox::information(nullptr, "æç¤º", "è¿™æ˜¯ä¸€æ¡ä¿¡æ¯æç¤º");
+
+	book book_1("å°ç‹çš„æ•…äº‹", "å°ç‹", "çˆ±æƒ…", "LOVE_1", "001");
+	book book_2("å°ç¾çš„å¤ä»‡", "å°ç¾", "åŠ¨ä½œ", "action_1", "010");
+	vector<book> books;
+	books.push_back(book_1);
+	books.push_back(book_2);
+	print_book_message(books);
+
+
 }
 
 void user_menu::push_history()
@@ -83,7 +109,7 @@ void user_menu::return_user_menu()
 
 
 //*********************************************************************
-//ÒÔÏÂÊÇÓë°´¼üÁ¬½ÓµÄº¯Êı
+//ä»¥ä¸‹æ˜¯ä¸æŒ‰é”®è¿æ¥çš„å‡½æ•°
 //*********************************************************************
 
 
@@ -128,7 +154,7 @@ void user_menu::reset_reset_password()
 	re_new_pass = ui.reset_config_newpass->text();
 	if (new_pass != re_new_pass)
 	{
-		//·µ»ØÒ»¸ö±¨´íĞÅºÅ
+		//è¿”å›ä¸€ä¸ªæŠ¥é”™ä¿¡å·
 	}
 	else
 	{
@@ -153,6 +179,53 @@ void user_menu::commit_commit_feedback()
 
 
 
+
 //*********************************************************************
-//
+//ä»¥ä¸‹å‡½æ•°æ˜¯ä¸æ•°æ®å±‚çš„ä¿¡å·è¿æ¥çš„
 //*********************************************************************
+
+void user_menu::print_message(bool success, std::string message)
+{
+	//QMessageBox::information(nullptr, "æç¤º", "è¿™æ˜¯ä¸€æ¡ä¿¡æ¯æç¤º");
+	//QString::fromLocal8Bit("ä¸­æ–‡å†…å®¹")
+	QMessageBox::information(nullptr, QString::fromLocal8Bit("æç¤º"), QString::fromLocal8Bit(message));
+
+}
+
+void user_menu::print_book_message(std::vector<book> books)
+{
+	//æµ‹è¯•ç”¨å†…å®¹
+//ui.serch_table->setRowCount(5);
+//ui.serch_table->setItem(0, 0, new QTableWidgetItem(QString::fromLocal8Bit("ä¸­æ–‡å†…å®¹")));
+//ui.serch_table->setItem(0, 1, new QTableWidgetItem("25"));
+//ui.serch_table->setItem(0, 2, new QTableWidgetItem("ç”·"));
+	ui.serch_table->setRowCount(books.size());
+	int i = 0;
+	for (book that_book : books)
+	{
+		QString book_name = QString::fromUtf8(that_book.book_name);
+		QString author_name = QString::fromUtf8(that_book.author);
+		QString catalogy = QString::fromUtf8(that_book.category);
+		QString ISBN = QString::fromUtf8(that_book.ISBN);
+		QString in_library;
+		if (that_book.in_library)
+		{
+			in_library = QString::fromUtf8("\xe6\x98\xaf");
+		}
+		else
+		{
+			in_library = QString::fromUtf8("\xe5\x90\xa6");
+		}
+		QString book_ID = QString::fromLocal8Bit(that_book.id);
+		ui.serch_table->setItem(i, 0, new QTableWidgetItem(book_name));
+		ui.serch_table->setItem(i, 1, new QTableWidgetItem(author_name));
+		ui.serch_table->setItem(i, 2, new QTableWidgetItem(catalogy));
+		ui.serch_table->setItem(i, 3, new QTableWidgetItem(in_library));
+		ui.serch_table->setItem(i, 4, new QTableWidgetItem(book_ID));
+
+		i++;
+	}
+
+
+
+}
