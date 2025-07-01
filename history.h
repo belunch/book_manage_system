@@ -5,6 +5,7 @@
 
 class history
 {
+public:
 	std::string recode_num;//Ö÷¼ü£¬µ±±àºÅ¿´´ý
 	std::string book_id;
 	std::string user_name;

@@ -3,6 +3,10 @@
 #include <QtWidgets/QWidget>
 #include<QtUiTools/QUiLoader>
 #include<QFile>
+#include<QString>
+#include<string>
+
+
 
 class user_menu :public QWidget
 {
@@ -14,6 +18,14 @@ public:
 
 signals:
     void Logout();
+    void borrow_book(std::string book_id);
+    void return_book(std::string book_id);
+    void serch_by_name(std::string key);
+    void serch_by_cata(std::string cata);
+    void serch_history();
+    void reset_password(std::string old_pass, std::string new_pass);
+    void commit_feedback(std::string feed_back);
+
 
 
 private slots:
@@ -25,6 +37,15 @@ private slots:
     void push_reset();
     void push_feed_back();
     void return_user_menu();
+
+    void borrow_borrow_button();
+    void return_return_button();
+    void serch_serch_by_name();
+    void serch_serch_by_cata();
+    void history_serch_history();
+    void reset_reset_password();
+    void commit_commit_feedback();
+
 
     
 private:
