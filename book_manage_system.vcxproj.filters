@@ -85,6 +85,9 @@
     <ClCompile Include="sqlite-amalgamation-3500200\sqlite3.c">
       <Filter>Source Files\backword</Filter>
     </ClCompile>
+    <ClCompile Include="register.cpp">
+      <Filter>Source Files\front</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Login.ui">
@@ -117,6 +120,9 @@
       <Filter>Header Files\data_process</Filter>
     </QtMoc>
     <QtMoc Include="manager.h">
+      <Filter>Header Files\front</Filter>
+    </QtMoc>
+    <QtMoc Include="register.h">
       <Filter>Header Files\front</Filter>
     </QtMoc>
   </ItemGroup>

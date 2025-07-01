@@ -12,11 +12,13 @@ public:
     ~Login();
 
 signals:
+    void push_register();
     void manager_Login_success();
     void Login_success();
 private slots:
     void push_Login();
     void push_quit();
+    
 private:
     Ui::Log_in ui;
 };
