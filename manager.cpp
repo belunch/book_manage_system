@@ -4,6 +4,7 @@ manager::manager(QWidget* parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	//页面切换
 	connect(ui.book_manage, &QPushButton::clicked, this, &manager::book_page);
 	connect(ui.reader_manage, &QPushButton::clicked, this, &manager::reader);
 	connect(ui.data_manage, &QPushButton::clicked, this, &manager::data);
@@ -15,12 +16,20 @@ manager::manager(QWidget* parent)
 	connect(ui.feedback_quit, &QPushButton::clicked, this, &manager::back_menu);
 	connect(ui.change_quit, &QPushButton::clicked, this, &manager::back_menu);
 	connect(ui.quit_button, &QPushButton::clicked, this, &manager::quit);
+	//向数据层传
 	connect(ui.change_change, &QPushButton::clicked, this, &manager::change_pass);
 	connect(ui.book_serch_by_cata, &QPushButton::clicked, this, &manager::serch_by_cata);
 	connect(ui.book_serch_by_name, &QPushButton::clicked, this, &manager::serch_by_name);
 	connect(ui.data_databackup, &QPushButton::clicked, this, &manager::data_backup);
 	connect(ui.data_datarecover, &QPushButton::clicked, this, &manager::data_recovery);
+
+	connect(ui.book_add, &QPushButton::clicked, this, &manager::push_book_add);
+	connect(ui.book_change, &QPushButton::clicked, this, &manager::push_book_change);
+	connect(ui.book_delete, &QPushButton::clicked, this, &manager::push_book_delete);
+
 	ui.stackedWidget->setCurrentIndex(0);
+	
+	book_manage_window = new book_manage_win();
 }
 manager::~manager()
 {
@@ -94,6 +103,22 @@ void manager::serch_by_name()
 	emit serch_by_name_sig(std_name);
 }
 
+void manager::push_book_add()
+{
+	book_manage_window->show();
+	book_manage_window->set_page(0);
+}
+
+void manager::push_book_change()
+{
+	book_manage_window->show();
+	book_manage_window->set_page(1);
+}
+void manager::push_book_delete()
+{
+	book_manage_window->show();
+	book_manage_window->set_page(2);
+}
 
 
 /*接受数据层来的信号的函数*/

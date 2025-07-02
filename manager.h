@@ -4,6 +4,7 @@
 #include<string>
 #include<QMessageBox>
 #include"people.h"
+#include"book_manage.h"
 using namespace std;
 
 class manager : public QWidget
@@ -13,7 +14,7 @@ Q_OBJECT
 public:
     manager(QWidget* parent = nullptr);
     ~manager();
-
+    
 signals:
     void data_backup();
     void data_recovery();
@@ -35,6 +36,10 @@ private slots:
     void change_pass();
     void serch_by_cata();
     void serch_by_name();
+    void push_book_add();
+    void push_book_change();
+    void push_book_delete();
+
 
 
 
@@ -44,4 +49,5 @@ private slots:
     void return_back(bool success,string message);
 private:
     Ui::Manager ui;
+    book_manage_win* book_manage_window;
 };
