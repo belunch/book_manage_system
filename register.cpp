@@ -35,15 +35,13 @@ void register_win::pre_register()
 		emit push_register(std_name, std_pass, std_ID, std_tele);
 	}
 	
-
-
-
-	
 	/*
 	ui.label->setText(name);//测试槽函数联通是否成功
 	注册键槽函数连接正常；
 	*/
-	
-
-
  }
+
+void register_win::print_message(bool success, std::string message)
+{
+	QMessageBox::information(nullptr, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit(message));
+}

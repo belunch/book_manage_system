@@ -11,12 +11,15 @@ user_menu::user_menu(QWidget* parent)
 	connect(ui.button_signout, &QPushButton::clicked, this, &user_menu::push_quit);//登出
 	connect(ui.button_reset_password, &QPushButton::clicked, this, &user_menu::push_reset);//进入重置密码界面
 	connect(ui.button_feedback, &QPushButton::clicked, this, &user_menu::push_feed_back);//进入反馈提交界面
+	connect(ui.button_fine, &QPushButton::clicked, this, &user_menu::push_fine);//进入罚款缴纳界面
+
 	connect(ui.borrow_quit_button, &QPushButton::clicked, this, &user_menu::return_user_menu);//借书界面的返回按钮
 	connect(ui.return_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//还书界面的返回按钮
 	connect(ui.feedback_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//反馈界面的返回按钮
 	connect(ui.serch_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//查找界面的返回按钮
 	connect(ui.history_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//历史界面的返回按钮
 	connect(ui.reset_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//重置密码的返回按钮
+	connect(ui.button_fine_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//交罚款界面的返回按钮
 
 	connect(ui.borrow_borrow_button, &QPushButton::clicked, this, &user_menu::borrow_borrow_button);//连接借书界面的借书按钮和函数
 	connect(ui.return_return_button, &QPushButton::clicked, this, &user_menu::return_return_button);//连接还书界面的按钮与函数
@@ -25,6 +28,7 @@ user_menu::user_menu(QWidget* parent)
 	connect(ui.history_serch, &QPushButton::clicked, this, &user_menu::history_serch_history);
 	connect(ui.reset_reset, &QPushButton::clicked, this, &user_menu::reset_reset_password);
 	connect(ui.feedback_feedback, &QPushButton::clicked, this, &user_menu::commit_commit_feedback);
+	connect(ui.button_fine_confirm, &QPushButton::clicked, this, &user_menu::pay_fine);
 
 	ui.stackedWidget->setCurrentIndex(0);
 }
@@ -67,12 +71,12 @@ void user_menu::push_serch()
 
 	//QMessageBox::information(nullptr, "提示", "这是一条信息提示");
 
-	book book_1("小王的故事", "小王", "爱情", "LOVE_1", "001");
-	book book_2("小美的复仇", "小美", "动作", "action_1", "010");
-	vector<book> books;
-	books.push_back(book_1);
-	books.push_back(book_2);
-	print_book_message(books);
+	//book book_1("小王的故事", "小王", "爱情", "LOVE_1", "001");
+	//book book_2("小美的复仇", "小美", "动作", "action_1", "010");
+	//vector<book> books;
+	//books.push_back(book_1);
+	//books.push_back(book_2);
+	//print_book_message(books);
 
 
 }
@@ -80,6 +84,21 @@ void user_menu::push_serch()
 void user_menu::push_history()
 {
 	ui.stackedWidget->setCurrentIndex(4);
+
+	//测试用
+	//vector<history> historys;
+	//date day1;
+	//day1.year = 1989;
+	//day1.month = 12;
+	//day1.day = 14;
+	//history History(day1);
+	//History.boorow_day = day1;
+	//History.return_day = day1;
+	//History.book_id = "001";
+	//historys.push_back(History);
+	//History.book_id = "010";
+	//historys.push_back(History);
+	//printn_history_message(historys);
 }
 
 void user_menu::push_quit()
@@ -92,6 +111,12 @@ void user_menu::push_quit()
 void user_menu::push_feed_back()
 {
 	ui.stackedWidget->setCurrentIndex(6);
+}
+
+void user_menu::push_fine()
+{
+	ui.stackedWidget->setCurrentIndex(7);
+
 }
 
 void user_menu::push_reset()
@@ -138,7 +163,7 @@ void user_menu::serch_serch_by_cata()
 {
 	QString book_cata = ui.serch_by_cata->text();
 	std::string std_cata = book_cata.toStdString();
-	emit serch_by_name(std_cata);
+	emit serch_by_cata(std_cata);
 }
 
 void user_menu::history_serch_history()
@@ -154,7 +179,7 @@ void user_menu::reset_reset_password()
 	re_new_pass = ui.reset_config_newpass->text();
 	if (new_pass != re_new_pass)
 	{
-		//返回一个报错信号
+		print_message(false, "两次输入的密码必须相同");
 	}
 	else
 	{
@@ -199,6 +224,7 @@ void user_menu::print_book_message(std::vector<book> books)
 //ui.serch_table->setItem(0, 0, new QTableWidgetItem(QString::fromLocal8Bit("中文内容")));
 //ui.serch_table->setItem(0, 1, new QTableWidgetItem("25"));
 //ui.serch_table->setItem(0, 2, new QTableWidgetItem("男"));
+	ui.serch_table->setRowCount(0);
 	ui.serch_table->setRowCount(books.size());
 	int i = 0;
 	for (book that_book : books)
@@ -228,4 +254,43 @@ void user_menu::print_book_message(std::vector<book> books)
 
 
 
+}
+
+
+void user_menu::printn_history_message(std::vector<history> histories) {
+
+	ui.history_table->setRowCount(0);
+	// 设置表格行数为历史记录数量
+	ui.history_table->setRowCount(static_cast<int>(histories.size()));
+
+	// 遍历每条历史记录
+	for (int row = 0; row < histories.size(); ++row) {
+		const history& h = histories[row];
+
+		// 第一列：书名（显示book_id）
+		QTableWidgetItem* bookItem = new QTableWidgetItem(QString::fromStdString(h.book_id));
+		ui.history_table->setItem(row, 0, bookItem);
+
+		// 第二列：借出日期（格式化为"年-月-日"）
+		QString borrowDate = QString("%1-%2-%3")
+			.arg(h.borrow_day.year)
+			.arg(h.borrow_day.month, 2, 10, QLatin1Char('0'))  // 固定2位宽度，补零
+			.arg(h.borrow_day.day, 2, 10, QLatin1Char('0'));
+		QTableWidgetItem* borrowItem = new QTableWidgetItem(borrowDate);
+		ui.history_table->setItem(row, 1, borrowItem);
+
+		// 第三列：还书日期（检查有效性并格式化）
+		QTableWidgetItem* returnItem = nullptr;
+		if (h.return_day.year > 0) { // 假设year>0表示有效日期
+			QString returnDate = QString("%1-%2-%3")
+				.arg(h.return_day.year)
+				.arg(h.return_day.month, 2, 10, QLatin1Char('0'))
+				.arg(h.return_day.day, 2, 10, QLatin1Char('0'));
+			returnItem = new QTableWidgetItem(returnDate);
+		}
+		else {
+			returnItem = new QTableWidgetItem("未归还");
+		}
+		ui.history_table->setItem(row, 2, returnItem);
+	}
 }

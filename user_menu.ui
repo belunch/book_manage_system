@@ -70,22 +70,9 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>7</number>
    </property>
    <widget class="QWidget" name="page_main_menu">
-    <widget class="QPushButton" name="button_feedback">
-     <property name="geometry">
-      <rect>
-       <x>360</x>
-       <y>320</y>
-       <width>81</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>我要反馈</string>
-     </property>
-    </widget>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
@@ -189,18 +176,38 @@
       </item>
      </layout>
     </widget>
-    <widget class="QPushButton" name="button_reset_password">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
        <x>360</x>
-       <y>280</y>
-       <width>81</width>
-       <height>24</height>
+       <y>225</y>
+       <width>82</width>
+       <height>111</height>
       </rect>
      </property>
-     <property name="text">
-      <string>重置密码</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="button_fine">
+        <property name="text">
+         <string>缴纳罚款</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_reset_password">
+        <property name="text">
+         <string>重置密码</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_feedback">
+        <property name="text">
+         <string>我要反馈</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QWidget" name="page_borrow">
@@ -448,6 +455,21 @@
        <height>231</height>
       </rect>
      </property>
+     <column>
+      <property name="text">
+       <string>新建列</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>书籍编码</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>还书日期</string>
+      </property>
+     </column>
     </widget>
     <widget class="QLabel" name="history_lable">
      <property name="geometry">
@@ -628,6 +650,47 @@
       <rect>
        <x>330</x>
        <y>290</y>
+       <width>81</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>返回</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_fine">
+    <widget class="QLabel" name="lable">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>80</y>
+       <width>191</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>这是一个交罚款的二维码。</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_fine_confirm">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>310</y>
+       <width>81</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>确定</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_fine_quit">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>310</y>
        <width>81</width>
        <height>24</height>
       </rect>

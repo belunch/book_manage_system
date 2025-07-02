@@ -7,6 +7,7 @@
 #include<QString>
 #include<string>
 #include<book.h>
+#include<people.h>
 
 
 
@@ -27,6 +28,8 @@ signals:
     void serch_history();
     void reset_password(std::string old_pass, std::string new_pass);
     void commit_feedback(std::string feed_back);
+    void serch_fine();
+    void pay_fine();
 
 
 
@@ -38,6 +41,7 @@ private slots:
     void push_quit();
     void push_reset();
     void push_feed_back();
+    void push_fine();
     void return_user_menu();
 
     void borrow_borrow_button();
@@ -55,5 +59,6 @@ private:
 
     void print_message(bool success, std::string message);
     void print_book_message(std::vector<book>);
+    void printn_history_message(std::vector<history>);
 
 };

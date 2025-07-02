@@ -1,7 +1,10 @@
 #include"date.h"
 
-date::date()
+date::date(int y,int m,int d)
 {
+	year = y;
+	month = m;
+	day = d;
 
 }
 
