@@ -17,6 +17,7 @@ class book_manage_system : public QWidget
 public:
     book_manage_system(data_process* data,QWidget *parent = nullptr);
     ~book_manage_system();
+    manager* Manager_main_menu;
 
 private slots:
     void login_success();//切换到用户主界面
@@ -29,7 +30,6 @@ private:
     data_process* Data;
     Login* Login_window;
     user_menu* User_main_menu;
-    manager* Manager_main_menu;
     register_win* Register_menu;
 };
 
