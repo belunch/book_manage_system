@@ -7,6 +7,7 @@
 #include<QString>
 #include<string>
 #include<book.h>
+#include<people.h>
 
 
 
@@ -55,5 +56,6 @@ private:
 
     void print_message(bool success, std::string message);
     void print_book_message(std::vector<book>);
+    void printn_history_message(std::vector<history>);
 
 };

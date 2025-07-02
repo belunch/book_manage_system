@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="page_menu">
     <widget class="QPushButton" name="book_manage">
@@ -128,6 +128,36 @@
        <height>261</height>
       </rect>
      </property>
+     <column>
+      <property name="text">
+       <string>书名</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>作者</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>分类</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ISBN</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>书籍唯一表示码</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>当前是否在馆</string>
+      </property>
+     </column>
     </widget>
     <widget class="QLineEdit" name="lineEdit">
      <property name="geometry">
@@ -241,6 +271,26 @@
        <height>281</height>
       </rect>
      </property>
+     <column>
+      <property name="text">
+       <string>新建列</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>姓名</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>身份证号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>欠费金额</string>
+      </property>
+     </column>
     </widget>
     <widget class="QPushButton" name="reader_quit">
      <property name="geometry">
@@ -320,6 +370,11 @@
        <height>271</height>
       </rect>
      </property>
+     <column>
+      <property name="text">
+       <string>反馈</string>
+      </property>
+     </column>
     </widget>
    </widget>
    <widget class="QWidget" name="page_change_pass">

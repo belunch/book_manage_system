@@ -3,6 +3,7 @@
 #include <QtWidgets/QWidget>
 #include<string>
 #include<QString>
+#include <QMessageBox>
 using namespace std;
 
 
@@ -21,5 +22,5 @@ private slots:
     void pre_register();//对输入预处理、结尾发出push_register信号；
 private:
     Ui::Register ui;
-
+    void print_message(bool success, std::string message);
 };
