@@ -11,12 +11,15 @@ user_menu::user_menu(QWidget* parent)
 	connect(ui.button_signout, &QPushButton::clicked, this, &user_menu::push_quit);//登出
 	connect(ui.button_reset_password, &QPushButton::clicked, this, &user_menu::push_reset);//进入重置密码界面
 	connect(ui.button_feedback, &QPushButton::clicked, this, &user_menu::push_feed_back);//进入反馈提交界面
+	connect(ui.button_fine, &QPushButton::clicked, this, &user_menu::push_fine);//进入罚款缴纳界面
+
 	connect(ui.borrow_quit_button, &QPushButton::clicked, this, &user_menu::return_user_menu);//借书界面的返回按钮
 	connect(ui.return_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//还书界面的返回按钮
 	connect(ui.feedback_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//反馈界面的返回按钮
 	connect(ui.serch_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//查找界面的返回按钮
 	connect(ui.history_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//历史界面的返回按钮
 	connect(ui.reset_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//重置密码的返回按钮
+	connect(ui.button_fine_quit, &QPushButton::clicked, this, &user_menu::return_user_menu);//交罚款界面的返回按钮
 
 	connect(ui.borrow_borrow_button, &QPushButton::clicked, this, &user_menu::borrow_borrow_button);//连接借书界面的借书按钮和函数
 	connect(ui.return_return_button, &QPushButton::clicked, this, &user_menu::return_return_button);//连接还书界面的按钮与函数
@@ -25,6 +28,7 @@ user_menu::user_menu(QWidget* parent)
 	connect(ui.history_serch, &QPushButton::clicked, this, &user_menu::history_serch_history);
 	connect(ui.reset_reset, &QPushButton::clicked, this, &user_menu::reset_reset_password);
 	connect(ui.feedback_feedback, &QPushButton::clicked, this, &user_menu::commit_commit_feedback);
+	connect(ui.button_fine_confirm, &QPushButton::clicked, this, &user_menu::pay_fine);
 
 	ui.stackedWidget->setCurrentIndex(0);
 }
@@ -107,6 +111,12 @@ void user_menu::push_quit()
 void user_menu::push_feed_back()
 {
 	ui.stackedWidget->setCurrentIndex(6);
+}
+
+void user_menu::push_fine()
+{
+	ui.stackedWidget->setCurrentIndex(7);
+
 }
 
 void user_menu::push_reset()

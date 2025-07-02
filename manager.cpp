@@ -3,6 +3,7 @@
 manager::manager(QWidget* parent)
 	: QWidget(parent)
 {
+	book_manage_window = new book_manage_win();
 	ui.setupUi(this);
 	//页面切换
 	connect(ui.book_manage, &QPushButton::clicked, this, &manager::book_page);
@@ -16,6 +17,8 @@ manager::manager(QWidget* parent)
 	connect(ui.feedback_quit, &QPushButton::clicked, this, &manager::back_menu);
 	connect(ui.change_quit, &QPushButton::clicked, this, &manager::back_menu);
 	connect(ui.quit_button, &QPushButton::clicked, this, &manager::quit);
+
+	connect(book_manage_window, &book_manage_win::quit, this, &manager::back_book_main_menu);
 	//向数据层传
 	connect(ui.change_change, &QPushButton::clicked, this, &manager::change_pass);
 	connect(ui.book_serch_by_cata, &QPushButton::clicked, this, &manager::serch_by_cata);
@@ -29,7 +32,7 @@ manager::manager(QWidget* parent)
 
 	ui.stackedWidget->setCurrentIndex(0);
 	
-	book_manage_window = new book_manage_win();
+	
 }
 manager::~manager()
 {
@@ -69,6 +72,9 @@ void manager::back_menu()
 {
 	ui.stackedWidget->setCurrentIndex(0);
 }
+
+void manager::back_book_main_menu()//这个比较特殊、与book_main_window的信号连接。
+{}//这个函数的功能用其他方法实现了
 
 /*向数据层传递信息（部分函数不在此处，直接用信号连接到一起了）*/
 
@@ -119,6 +125,8 @@ void manager::push_book_delete()
 	book_manage_window->show();
 	book_manage_window->set_page(2);
 }
+
+
 
 
 /*接受数据层来的信号的函数*/

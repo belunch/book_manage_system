@@ -25,6 +25,7 @@ signals:
     
     
 private slots:
+    //页面切换
     void back_menu();
     void quit();
     void change_password();
@@ -32,17 +33,19 @@ private slots:
     void reader();
     void feed_back();
     void book_page();
-
-    void change_pass();
-    void serch_by_cata();
-    void serch_by_name();
     void push_book_add();
     void push_book_change();
     void push_book_delete();
+    void back_book_main_menu();
+
+    //向数据层发信号
+    void change_pass();
+    void serch_by_cata();
+    void serch_by_name();
 
 
 
-
+    //接受信号的处理函数
     void print_feedback(vector<string>feedbacks);
     void pring_reader(vector<user> usermessage);
     void print_book(vector<book> books);

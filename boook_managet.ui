@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="add_book">
     <widget class="QLabel" name="label">
@@ -57,7 +57,7 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QLineEdit" name="lineEdit_4"/>
+       <widget class="QLineEdit" name="add_bookid"/>
       </item>
       <item row="0" column="2">
        <widget class="QLabel" name="label_4">
@@ -67,7 +67,7 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLineEdit" name="lineEdit_3"/>
+       <widget class="QLineEdit" name="add_author"/>
       </item>
       <item row="1" column="2">
        <widget class="QLabel" name="label_5">
@@ -77,10 +77,10 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="add_ISBN"/>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="add_bookname"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
@@ -97,7 +97,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_9"/>
+       <widget class="QLineEdit" name="add_cata"/>
       </item>
      </layout>
     </widget>
@@ -134,7 +134,7 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QLineEdit" name="lineEdit_5"/>
+       <widget class="QLineEdit" name="change_bookid"/>
       </item>
       <item row="0" column="2">
        <widget class="QLabel" name="label_8">
@@ -144,7 +144,7 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLineEdit" name="lineEdit_6"/>
+       <widget class="QLineEdit" name="change_author"/>
       </item>
       <item row="1" column="2">
        <widget class="QLabel" name="label_9">
@@ -154,10 +154,10 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_7"/>
+       <widget class="QLineEdit" name="change_isbn"/>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit_8"/>
+       <widget class="QLineEdit" name="change_bookname"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_10">
@@ -174,7 +174,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_10"/>
+       <widget class="QLineEdit" name="change_cata"/>
       </item>
      </layout>
     </widget>
@@ -183,24 +183,29 @@
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>113</x>
-       <y>50</y>
-       <width>341</width>
-       <height>121</height>
+       <x>100</x>
+       <y>100</y>
+       <width>141</width>
+       <height>31</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <pointsize>28</pointsize>
-      </font>
-     </property>
      <property name="text">
-      <string>确定要删除图书吗？</string>
+      <string>请输入书籍唯一识别码</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="delete_bookid">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>100</y>
+       <width>221</width>
+       <height>23</height>
+      </rect>
      </property>
     </widget>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="button_confer">
    <property name="geometry">
     <rect>
      <x>160</x>
@@ -213,7 +218,7 @@
     <string>确认</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="button_quit">
    <property name="geometry">
     <rect>
      <x>370</x>
