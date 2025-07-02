@@ -38,6 +38,8 @@ signals:
     void return_user_message(std::vector<user>);
     void return_back(bool success, std::string error_message);
     void return_bookmessage(std::vector<book>);
+	void return_feedback(std::vector<std::string> feedbacks);
+	void return_fine(float fine,std::string);
     
     
 
