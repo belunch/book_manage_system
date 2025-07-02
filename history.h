@@ -13,6 +13,7 @@ public:
 	date boorow_day;
 	date return_day;
 
+	history(); // 默认构造函数
 	history(date borrow_day);
 	~history();
 	void set_back_day(date return_day);
