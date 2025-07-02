@@ -3,7 +3,9 @@
 manager::manager(QWidget* parent)
 	: QWidget(parent)
 {
+	book_manage_window = new book_manage_win();
 	ui.setupUi(this);
+	//页面切换
 	connect(ui.book_manage, &QPushButton::clicked, this, &manager::book_page);
 	connect(ui.reader_manage, &QPushButton::clicked, this, &manager::reader);
 	connect(ui.data_manage, &QPushButton::clicked, this, &manager::data);
@@ -15,12 +17,22 @@ manager::manager(QWidget* parent)
 	connect(ui.feedback_quit, &QPushButton::clicked, this, &manager::back_menu);
 	connect(ui.change_quit, &QPushButton::clicked, this, &manager::back_menu);
 	connect(ui.quit_button, &QPushButton::clicked, this, &manager::quit);
+
+	connect(book_manage_window, &book_manage_win::quit, this, &manager::back_book_main_menu);
+	//向数据层传
 	connect(ui.change_change, &QPushButton::clicked, this, &manager::change_pass);
 	connect(ui.book_serch_by_cata, &QPushButton::clicked, this, &manager::serch_by_cata);
 	connect(ui.book_serch_by_name, &QPushButton::clicked, this, &manager::serch_by_name);
 	connect(ui.data_databackup, &QPushButton::clicked, this, &manager::data_backup);
 	connect(ui.data_datarecover, &QPushButton::clicked, this, &manager::data_recovery);
+
+	connect(ui.book_add, &QPushButton::clicked, this, &manager::push_book_add);
+	connect(ui.book_change, &QPushButton::clicked, this, &manager::push_book_change);
+	connect(ui.book_delete, &QPushButton::clicked, this, &manager::push_book_delete);
+
 	ui.stackedWidget->setCurrentIndex(0);
+	
+	
 }
 manager::~manager()
 {
@@ -61,6 +73,9 @@ void manager::back_menu()
 	ui.stackedWidget->setCurrentIndex(0);
 }
 
+void manager::back_book_main_menu()//这个比较特殊、与book_main_window的信号连接。
+{}//这个函数的功能用其他方法实现了
+
 /*向数据层传递信息（部分函数不在此处，直接用信号连接到一起了）*/
 
 
@@ -93,6 +108,24 @@ void manager::serch_by_name()
 	string std_name = name.toStdString();
 	emit serch_by_name_sig(std_name);
 }
+
+void manager::push_book_add()
+{
+	book_manage_window->show();
+	book_manage_window->set_page(0);
+}
+
+void manager::push_book_change()
+{
+	book_manage_window->show();
+	book_manage_window->set_page(1);
+}
+void manager::push_book_delete()
+{
+	book_manage_window->show();
+	book_manage_window->set_page(2);
+}
+
 
 
 

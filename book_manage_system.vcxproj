@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClCompile Include="backword.cpp" />
     <ClCompile Include="book.cpp" />
+    <ClCompile Include="book_manage.cpp" />
     <ClCompile Include="dataprocess.cpp" />
     <ClCompile Include="date.cpp" />
     <ClCompile Include="history.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="book_manage_system.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="boook_managet.ui" />
     <QtUic Include="Login.ui" />
     <QtUic Include="manager.ui" />
     <QtUic Include="register.ui" />
@@ -118,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="register.h" />
+    <QtMoc Include="book_manage.h" />
     <ClInclude Include="sqlite-amalgamation-3500200\sqlite3.h" />
     <QtMoc Include="backword.h" />
     <ClInclude Include="book.h" />

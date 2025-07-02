@@ -88,6 +88,9 @@
     <ClCompile Include="register.cpp">
       <Filter>Source Files\front</Filter>
     </ClCompile>
+    <ClCompile Include="book_manage.cpp">
+      <Filter>Source Files\front</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Login.ui">
@@ -100,6 +103,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="register.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="boook_managet.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -123,6 +129,9 @@
       <Filter>Header Files\front</Filter>
     </QtMoc>
     <QtMoc Include="register.h">
+      <Filter>Header Files\front</Filter>
+    </QtMoc>
+    <QtMoc Include="book_manage.h">
       <Filter>Header Files\front</Filter>
     </QtMoc>
   </ItemGroup>
