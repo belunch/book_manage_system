@@ -10,7 +10,7 @@ public:
 	std::string book_id;
 	std::string user_name;
 	std::string user_id;
-	date boorow_day;
+	date borrow_day;
 	date return_day;
 
 	history(date borrow_day);
