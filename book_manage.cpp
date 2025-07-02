@@ -26,7 +26,7 @@ void book_manage_win::push_confer()
 	string std_book_name, std_author, std_ISBN, std_book_id, std_cata;
 	switch (page)
 	{
-	case 1://Ìí¼Ó
+	case 0://Ìí¼Ó
 		book_name = ui.add_bookname->text();
 		author = ui.add_author->text();
 		ISBN = ui.add_ISBN->text();
@@ -43,7 +43,7 @@ void book_manage_win::push_confer()
 
 		break;
 
-	case 2://ÐÞ¸Ä
+	case 1://ÐÞ¸Ä
 		book_name = ui.change_bookname->text();
 		author = ui.change_author->text();
 		ISBN = ui.change_isbn->text();
@@ -59,7 +59,7 @@ void book_manage_win::push_confer()
 		emit add_book(std_book_name, std_author, std_cata, std_ISBN, std_book_id);
 
 		break;
-	case 3://É¾³ý
+	case 2://É¾³ý
 		book_id = ui.delete_bookid->text();
 		std_book_id = book_id.toStdString();
 		emit delete_book(std_book_id);

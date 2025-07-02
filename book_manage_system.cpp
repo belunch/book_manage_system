@@ -45,7 +45,9 @@ book_manage_system::book_manage_system(data_process* data,QWidget *parent)
 	/*connect(Register_menu, &register_win::push_manager_register, Data, &data_process::Sign_up);*///靠，又漏一个
     
     //来自book_manage的
-	connect(Manager_main_menu->book_manage_window, &book_manage_win::add_book_sig, Data, &data_process::add_book);
+	connect(Manager_main_menu->book_manage_window, &book_manage_win::add_book, Data, &data_process::add_book);
+	connect(Manager_main_menu->book_manage_window, &book_manage_win::change_book, Data, &data_process::change_book);
+	connect(Manager_main_menu->book_manage_window, &book_manage_win::delete_book, Data, &data_process::delete_book);
 
 }
 

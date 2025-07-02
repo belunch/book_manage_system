@@ -273,9 +273,9 @@ void user_menu::printn_history_message(std::vector<history> histories) {
 
 		// 第二列：借出日期（格式化为"年-月-日"）
 		QString borrowDate = QString("%1-%2-%3")
-			.arg(h.boorow_day.year)
-			.arg(h.boorow_day.month, 2, 10, QLatin1Char('0'))  // 固定2位宽度，补零
-			.arg(h.boorow_day.day, 2, 10, QLatin1Char('0'));
+			.arg(h.borrow_day.year)
+			.arg(h.borrow_day.month, 2, 10, QLatin1Char('0'))  // 固定2位宽度，补零
+			.arg(h.borrow_day.day, 2, 10, QLatin1Char('0'));
 		QTableWidgetItem* borrowItem = new QTableWidgetItem(borrowDate);
 		ui.history_table->setItem(row, 1, borrowItem);
 

@@ -12,6 +12,7 @@ class manager : public QWidget
 Q_OBJECT
 
 public:
+    book_manage_win* book_manage_window;
     manager(QWidget* parent = nullptr);
     ~manager();
     
@@ -52,5 +53,5 @@ private slots:
     void return_back(bool success,string message);
 private:
     Ui::Manager ui;
-    book_manage_win* book_manage_window;
+    
 };
