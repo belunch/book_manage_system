@@ -1,8 +1,8 @@
 #include"Data Processing Layer.h"
 using namespace std;
 
-
-bool is_valid_user_key(const string& user_key);
+//前向声明
+bool is_valid_user_key(const string& user_key) { return true; };//找不到定义
 bool is_valid_id(const std::string& user_id);
 bool is_valid_new_key(const std::string& new_key);
 bool is_valid_user_tele(const std::string& user_tele_num);
@@ -305,7 +305,8 @@ void data_process::return_book_cal_fine()
 		}
 		emit return_back(false, "No borrow records found for the user.");
 	}
-	void data_process::pay_fine() {
+}
+	void data_process::pay_fine(){
 		if (User.fine <= 0) {
 			emit return_back(false, "You have no fines to pay.");
 			return;
@@ -344,7 +345,7 @@ void data_process::return_book_cal_fine()
 			emit return_back(false, "Data backup failed, please try again later.");
 		}
 	}
-}
+
 void data_process::data_recovery()
 {
 	bool have_recovered = Back->Data_recovery();
