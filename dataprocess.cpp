@@ -554,14 +554,11 @@ void data_process::view_bookmessages() {
 	return;
 }
 
-void data_process::leavedays(std::string user_id) {
-	if (user_id.empty()) {
-		emit return_back(false, "User ID cannot be empty.");
-		return;
-	}
+void data_process::leavedays() {
+	
 	std::vector<history> historylist = Back->get_borrow_message();
 	for (const auto& record : historylist) {
-		if (record.user_id == user_id && record.return_day.year == 0) {
+		if (record.user_id == User.user_id && record.return_day.year == 0) {
 			date today = date::getCurrentDate();
 			int days = today.daysTo(record.borrow_day);
 			emit return_leavedays(days, "Days left for borrowed book.");

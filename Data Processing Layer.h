@@ -35,7 +35,7 @@ public:
     void admin_change_password(std::string old_key, std::string new_key); 
     void view_user_history();
     void view_bookmessages(); 
-    void leavedays(std::string user_id);
+    void leavedays();
 private:
     backword* Back;
     user User;
