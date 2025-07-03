@@ -17,6 +17,7 @@ book_manage_system::book_manage_system(data_process* data,QWidget *parent)
     connect(Register_menu, &register_win::quit, this, &book_manage_system::log_out);
     connect(Login_window, &Login::manager_Login_success, this, &book_manage_system::manager_login);
     connect(Login_window, &Login::push_register, this, &book_manage_system::register_window);
+    
 
 
 
@@ -33,17 +34,21 @@ book_manage_system::book_manage_system(data_process* data,QWidget *parent)
     connect(User_main_menu, &user_menu::serch_by_name, Data, &data_process::serch_by_key);
     connect(User_main_menu, &user_menu::serch_by_cata, Data, &data_process::serch_by_cata);
     connect(User_main_menu, &user_menu::serch_history, Data, &data_process::view_user_history);
-    //md，漏了
 	connect(User_main_menu, &user_menu::reset_password, Data, &data_process::change_password);
 	connect(User_main_menu, &user_menu::commit_feedback, Data, &data_process::submit_feedback);
 	connect(User_main_menu, &user_menu::serch_fine, Data, &data_process::continue_pay_fine);
 	connect(User_main_menu, &user_menu::pay_fine, Data, &data_process::pay_fine);
+    connect(User_main_menu, &user_menu::enter_serch, Data, &data_process::view_bookmessages);
+	connect(User_main_menu, &user_menu::enter_fine, Data, &data_process::continue_pay_fine);
 	//来自manager的
 	connect(Manager_main_menu, &manager::data_backup, Data, &data_process::data_backup);
 	connect(Manager_main_menu, &manager::data_recovery, Data, &data_process::data_recovery);
 	connect(Manager_main_menu, &manager::serch_by_name_sig, Data, &data_process::serch_by_key);
 	connect(Manager_main_menu, &manager::serch_by_cata_sig, Data, &data_process::serch_by_cata);
 	connect(Manager_main_menu, &manager::change_password_sig, Data, &data_process::admin_change_password);
+    connect(Manager_main_menu, &manager::enter_usermessage, Data, &data_process::view_readers);
+    connect(Manager_main_menu, &manager::enter_feed_back, Data, &data_process::examine_feedback);
+	connect(Manager_main_menu, &manager::enter_book, Data, &data_process::view_bookmessages);
 
 	//来自register的
 	connect(Register_menu, &register_win::push_register, Data, &data_process::Sign_up);

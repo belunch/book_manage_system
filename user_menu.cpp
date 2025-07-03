@@ -59,6 +59,8 @@ void user_menu::push_serch()
 	ui.serch_table->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.serch_table->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui.serch_table->horizontalHeader()->setStretchLastSection(true);
+
+	emit enter_serch();
 	//测试用内容
 	//ui.serch_table->setRowCount(5);
 	//ui.serch_table->setItem(0, 0, new QTableWidgetItem(QString::fromLocal8Bit("中文内容")));
@@ -117,6 +119,8 @@ void user_menu::push_fine()
 {
 	ui.stackedWidget->setCurrentIndex(7);
 
+	emit enter_fine();
+
 }
 
 void user_menu::push_reset()
@@ -154,14 +158,14 @@ void user_menu::return_return_button()
 
 void user_menu::serch_serch_by_name()
 {
-	QString book_name_key = ui.serch_by_name->text();
+	QString book_name_key = ui.serch_line_edit->text();
 	std::string std_name_key = book_name_key.toUtf8().constData();
 	emit serch_by_name(std_name_key);
 }
 
 void user_menu::serch_serch_by_cata()
 {
-	QString book_cata = ui.serch_by_cata->text();
+	QString book_cata = ui.serch_line_edit->text();
 	std::string std_cata = book_cata.toUtf8().constData();
 	emit serch_by_cata(std_cata);
 }

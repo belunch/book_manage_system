@@ -49,10 +49,14 @@ void manager::quit()
 void manager::book_page()
 {
 	ui.stackedWidget->setCurrentIndex(1);
+
+	emit enter_book(); // 发送信号，通知进入图书管理界面
 }
 void manager::reader()
 {
 	ui.stackedWidget->setCurrentIndex(2);
+
+	emit enter_usermessage(); // 发送信号，通知进入用户信息界面
 }
 
 void manager::data()
@@ -63,6 +67,7 @@ void manager::data()
 void manager::feed_back()
 {
 	ui.stackedWidget->setCurrentIndex(4);
+	emit enter_feed_back();
 }
 void manager::change_password()
 {
@@ -151,7 +156,7 @@ void manager::print_feedback(std::vector<std::string> feedbacks)
 
 	// 设置表头标签
 	QStringList headers;
-	headers << "反馈信息";
+	/*headers << "反馈信息";*/
 	table->setHorizontalHeaderLabels(headers);
 
 	// 遍历并填充反馈信息
@@ -183,7 +188,7 @@ void manager::print_feedback(std::vector<std::string> feedbacks)
 void manager::pring_reader(std::vector<user> usermessage)
 {
 	// 获取表格控件
-	QTableWidget* table = ui.tableWidget;  // 请确认实际控件名称
+	QTableWidget* table = ui.tableWidget_2;  // 请确认实际控件名称
 
 	// 清除表格之前的所有内容（包括行）
 	table->setRowCount(0);
@@ -243,8 +248,8 @@ void manager::pring_reader(std::vector<user> usermessage)
 
 void manager::print_book(vector<book> books)
 {
-	ui.tableWidget_2->setRowCount(0);
-	ui.tableWidget_2->setRowCount(books.size());
+	ui.tableWidget->setRowCount(0);
+	ui.tableWidget->setRowCount(books.size());
 	int i = 0;
 	for (book that_book : books)
 	{
@@ -262,12 +267,12 @@ void manager::print_book(vector<book> books)
 			in_library = QString::fromUtf8("\xe5\x90\xa6");
 		}
 		QString book_ID = QString::fromUtf8(that_book.id);
-		ui.tableWidget_2->setItem(i, 0, new QTableWidgetItem(book_name));
-		ui.tableWidget_2->setItem(i, 1, new QTableWidgetItem(author_name));
-		ui.tableWidget_2->setItem(i, 2, new QTableWidgetItem(catalogy));
-		ui.tableWidget_2->setItem(i, 3, new QTableWidgetItem(ISBN));
-		ui.tableWidget_2->setItem(i, 4, new QTableWidgetItem(book_ID));
-		ui.tableWidget_2->setItem(i, 5, new QTableWidgetItem(in_library));
+		ui.tableWidget->setItem(i, 0, new QTableWidgetItem(book_name));
+		ui.tableWidget->setItem(i, 1, new QTableWidgetItem(author_name));
+		ui.tableWidget->setItem(i, 2, new QTableWidgetItem(catalogy));
+		ui.tableWidget->setItem(i, 3, new QTableWidgetItem(ISBN));
+		ui.tableWidget->setItem(i, 4, new QTableWidgetItem(book_ID));
+		ui.tableWidget->setItem(i, 5, new QTableWidgetItem(in_library));
 
 		i++;
 	}

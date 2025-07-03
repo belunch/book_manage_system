@@ -405,7 +405,7 @@ bool backword::borrow_out(std::string book_id, std::string user_id)
     sqlite3_bind_text(check_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
     rc = sqlite3_step(check_stmt);
     if (rc != SQLITE_ROW || sqlite3_column_int(check_stmt, 0) != 1) {
-        // ���ڹݻ�δ�ҵ�
+        // 结果为空
         sqlite3_finalize(check_stmt);
         sqlite3_close(db);
         return false;

@@ -37,6 +37,9 @@ signals:
     void serch_fine();
     void pay_fine();
 
+    void enter_serch();
+    void enter_fine();
+
 
 
 private slots:

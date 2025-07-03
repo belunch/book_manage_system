@@ -29,6 +29,9 @@ signals:
     void serch_by_cata_sig(string key);
     void change_password_sig(string old_pass, string new_pass);
     void log_out();
+    void enter_usermessage();
+    void enter_feed_back();
+    void enter_book();
     
     
 private slots:
@@ -49,6 +52,7 @@ private slots:
     void change_pass();
     void serch_by_cata();
     void serch_by_name();
+    
 
 
 
