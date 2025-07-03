@@ -10,6 +10,7 @@ book_manage_system::book_manage_system(data_process* data,QWidget *parent)
     Manager_main_menu = new manager();
     Register_menu = new register_win();
     Login_window->show();
+    log_out();
     connect(Login_window, &Login::Login_success, this, &book_manage_system::login_success);
     connect(User_main_menu, &user_menu::Logout, this, &book_manage_system::log_out);
     connect(Manager_main_menu, &manager::log_out, this, &book_manage_system::log_out);
@@ -49,37 +50,70 @@ book_manage_system::book_manage_system(data_process* data,QWidget *parent)
 	connect(Manager_main_menu->book_manage_window, &book_manage_win::change_book, Data, &data_process::change_book);
 	connect(Manager_main_menu->book_manage_window, &book_manage_win::delete_book, Data, &data_process::delete_book);
 
+
+    //与数据层连接的
+    connect(Data, &data_process::return_history, User_main_menu, &user_menu::printn_history_message);
+    connect(Data, &data_process::return_user_message, Manager_main_menu, &manager::pring_reader);
+    connect(Data, &data_process::return_feedback, Manager_main_menu, &manager::print_feedback);
+    connect(Data, &data_process::return_fine, User_main_menu, &user_menu::print_fine);
 }
 
 book_manage_system::~book_manage_system()
 {}
 
-void book_manage_system::manager_login()
+void book_manage_system::manager_login()//管理员登录成功
 {
     Login_window->hide();
     Manager_main_menu->show();
+
+    disconnect(Data, &data_process::return_back, NULL, NULL);
+    disconnect(Data, &data_process::return_bookmessage, NULL, NULL);
+
+    connect(Data, &data_process::return_back, Manager_main_menu,&manager::return_back);
+    connect(Data, &data_process::return_bookmessage, Manager_main_menu,&manager::print_book);
 }
 
-void book_manage_system::login_success()
+void book_manage_system::login_success()//普通用户登录成功
 {
     Login_window->hide();
     
     User_main_menu->show();
+
+    disconnect(Data, &data_process::return_back, NULL, NULL);
+    disconnect(Data, &data_process::return_bookmessage, NULL, NULL);
+
+    connect(Data, &data_process::return_back, User_main_menu, &user_menu::print_message);
+    connect(Data, &data_process::return_bookmessage, User_main_menu, &user_menu::print_book_message);
+
 }
 
-void book_manage_system::register_window()
+void book_manage_system::register_window()//注册界面
 {
     Login_window->hide();
 
     Register_menu->show();
 
+    disconnect(Data, &data_process::return_back, NULL, NULL);
+    disconnect(Data, &data_process::return_bookmessage, NULL, NULL);
 
+    connect(Data, &data_process::return_back, Register_menu, &register_win::print_message);
 }
 
-void book_manage_system::log_out()
+void book_manage_system::log_out()//等出，返回登录界面
 {
 	Manager_main_menu->hide();
     User_main_menu->hide();
     Register_menu->hide();
     Login_window->show();
+
+    //disconnect(Data, &data_process::return_history, NULL, NULL);
+    disconnect(Data, &data_process::return_back, NULL, NULL);
+    disconnect(Data, &data_process::return_bookmessage, NULL, NULL);
+    //return_leaves只在提醒预期那块用，不用断开连接；还没做；
+    //return_history好像只在用户查看历史那个地方看
+    //return_usermessage只在管理员看的地方用，不用断开；
+    //return_feedback只有管理员用；
+    //return_fine只在返回罚款数额的地方用,这个还没做；->已完成;
+
+    connect(Data, &data_process::return_back, Login_window, &Login::return_back);
 }

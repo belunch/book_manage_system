@@ -13,6 +13,8 @@ class register_win : public QWidget
 public:
     register_win(QWidget* parent = nullptr);
     ~register_win();
+
+    void print_message(bool success, std::string message);
     
 signals:
     void quit();
@@ -22,5 +24,5 @@ private slots:
     void pre_register();//对输入预处理、结尾发出push_register信号；
 private:
     Ui::Register ui;
-    void print_message(bool success, std::string message);
+    
 };

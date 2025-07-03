@@ -13,6 +13,7 @@ Q_OBJECT
 public:
     Login(QWidget * parent = nullptr);
     ~Login();
+    void return_back(bool, string);
 
 signals:
     void push_register();
@@ -24,9 +25,11 @@ private slots:
     void push_Login();
     void push_quit();
     
+    
+    
 private:
     bool is_admin;
     Ui::Log_in ui;
-    void return_back(bool ,string);
+    
     
 };

@@ -339,7 +339,12 @@ void data_process::return_book_cal_fine()//这个函数是干啥的来着？还�
 	}
 	void data_process::continue_pay_fine()//还未实现
 	{
-
+		Back->restore_fine();
+		emit return_back(true, "Fine reset successfully.");
+		return;
+		// 这里可以添加逻辑来处理继续支付罚款的情况
+		// 例如，可能需要提示用户输入新的罚款金额或其他操作
+		// 目前只是简单地返回成功状态
 	}
 	void data_process::data_backup()
 	{

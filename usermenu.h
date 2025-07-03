@@ -18,6 +18,12 @@ class user_menu :public QWidget
 public:
     user_menu(QWidget* parent = nullptr);
     ~user_menu();
+    //处理返回信号的函数
+    void print_message(bool success, std::string message);
+    void print_book_message(std::vector<book>);
+    void printn_history_message(std::vector<history>);
+    void print_fine(float fine ,std::string message);
+    void print_leavedays(int days, std::string message);
 
 signals:
     void Logout();
@@ -57,8 +63,6 @@ private slots:
 private:
     Ui::User_menu ui;
 
-    void print_message(bool success, std::string message);
-    void print_book_message(std::vector<book>);
-    void printn_history_message(std::vector<history>);
+
 
 };

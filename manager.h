@@ -15,6 +15,12 @@ public:
     book_manage_win* book_manage_window;
     manager(QWidget* parent = nullptr);
     ~manager();
+
+    //接受信号的处理函数
+    void print_feedback(vector<string>feedbacks);
+    void pring_reader(vector<user> usermessage);
+    void print_book(vector<book> books);
+    void return_back(bool success, string message);
     
 signals:
     void data_backup();
@@ -46,11 +52,7 @@ private slots:
 
 
 
-    //接受信号的处理函数
-    void print_feedback(vector<string>feedbacks);
-    void pring_reader(vector<user> usermessage);
-    void print_book(vector<book> books);
-    void return_back(bool success,string message);
+
 private:
     Ui::Manager ui;
     

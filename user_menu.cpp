@@ -294,3 +294,17 @@ void user_menu::printn_history_message(std::vector<history> histories) {
 		ui.history_table->setItem(row, 2, returnItem);
 	}
 }
+
+void user_menu::print_fine(float fine, std::string message)
+{
+	
+		// 保留 2 位小数
+	ui.finelabel->setText(QString::number(fine, 'f', 2));
+	
+}
+
+void user_menu::print_leavedays(int days, std::string message)
+{
+	QString prompt = QString("提示：您有一本书在 %1 天后逾期").arg(days);
+	QMessageBox::information(this, "逾期提醒", prompt);
+}
