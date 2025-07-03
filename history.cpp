@@ -1,10 +1,10 @@
 #include"history.h"
 
-history::history() : boorow_day(date()), return_day(date()) {}
+history::history() : borrow_day(date()), return_day(date()) {}
 
 history::history(date borrow_day)
 {
-    boorow_day = borrow_day;
+    borrow_day = borrow_day;
 }
 
 history::~history()

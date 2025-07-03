@@ -79,7 +79,9 @@ void data_process::Sign_up(std::string user_name, std::string user_key, std::str
 	User.user_key = user_key;
 	User.user_id = user_id;
 	User.user_tele_num = user_tele_num;
-	bool have_saved = Back->save_user_message();//这个地方接口不对
+	vector<user> users;
+	users.push_back(User);//将用户信息存入users向量中
+	bool have_saved = Back->save_user_message(users);//这个地方接口不对
 	if (have_saved) {
 		emit return_back(true, "注册成功，请登录。");
 	}
@@ -134,7 +136,7 @@ void data_process::change_password(std::string old_key, std::string new_key)
 		return;
 	}
 	User.user_key = new_key;
-	bool have_changed = Back->can_change_password();
+	bool have_changed = Back->can_change_password(User.user_id,new_key);
 	if (have_changed) {
 		emit return_back(true, "Password changed successfully.");
 		return;
@@ -183,7 +185,7 @@ void data_process::borrow_book(std::string id)
 		emit return_back(false, "You have already borrowed a book and cannot borrow another one at the moment.");
 		return;
 	}
-	bool have_borrowed = Back->borrow_out();//这好像也少参数
+	bool have_borrowed = Back->borrow_out(id,User.user_id);//这好像也少参数
 	if (have_borrowed) {
 		emit return_back(true, "Book borrowed successfully.");
 		return;
@@ -202,7 +204,7 @@ void data_process::return_book(std::string id)
 				return;
 			}
 			if (User.fine == 0) {
-				bool have_returned = Back->return_success();//少参数，靠设计做的太辣鸡了
+				bool have_returned = Back->return_success(id,User.user_id);//少参数，靠设计做的太辣鸡了
 				if (have_returned) {
 					emit return_back(true, "Book returned successfully.");
 					return;
@@ -265,7 +267,7 @@ void data_process::submit_feedback(std::string feedback)//参数有问题
 		emit return_back(false, "Feedback cannot be empty.");
 		return;
 	}
-	bool have_saved = Back->store_feedback(feedback);
+	bool have_saved = Back->store_feedback(User.user_name,feedback);
 	if (have_saved) {
 		emit return_back(true, "Feedback submitted successfully.");
 	} else {
