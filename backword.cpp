@@ -3,6 +3,7 @@
 #include "sqlite3.h"
 #include <string>
 #include <vector>
+#include <fstream>
 
 backword::backword() : QObject() {
     // ��ʼ�����루�����Ҫ��
@@ -65,7 +66,27 @@ static int bookCallback(void* data, int argc, char** argv, char** azColName) {
     return 0;
 }
 
+<<<<<<< HEAD
 // �����Ƿ����
+=======
+// �ص������������ռ�����Ա����
+static int adminCallback(void* data, int argc, char** argv, char** azColName) {
+    std::vector<admin>* admins = static_cast<std::vector<admin>*>(data);
+    admin a;
+    for(int i = 0; i < argc; i++) {
+        std::string colName = azColName[i];
+        const char* value = argv[i] ? argv[i] : "NULL";
+        if (colName == "admin_name") a.admin_name = value;
+        else if (colName == "admin_key") a.admin_key = value;
+        else if (colName == "admin_id") a.admin_id = value;
+        else if (colName == "admin_tele_num") a.admin_tele_num = value;
+    }
+    admins->push_back(a);
+    return 0;
+}
+
+// �����Ƿ����
+>>>>>>> merge_sui
 static bool tableExists(sqlite3* db, const std::string& tableName) {
     const char* sql = "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?;";
     sqlite3_stmt* stmt;
@@ -106,6 +127,31 @@ std::vector<user> backword::usermessage()
     return users;
 }
 
+std::vector<admin> backword::adminmessage()
+{
+    sqlite3* db;
+    std::vector<admin> admins;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+        return admins;
+    }
+    if (!tableExists(db, "admin")) {
+        std::cerr << "�������ݿ��в�����admin����" << std::endl;
+        sqlite3_close(db);
+        return admins;
+    }
+    const char* sql = "SELECT * FROM admin;";
+    char* zErrMsg = 0;
+    rc = sqlite3_exec(db, sql, adminCallback, &admins, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL����: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
+    }
+    sqlite3_close(db);
+    return admins;
+}
+
 bool backword::save_user_message(std::vector<user> users)
 {
     sqlite3* db;
@@ -138,6 +184,48 @@ bool backword::save_user_message(std::vector<user> users)
         rc = sqlite3_step(stmt);
         if (rc != SQLITE_DONE) {
             std::cerr << "�����û���Ϣʧ��: " << sqlite3_errmsg(db) << std::endl;
+            sqlite3_finalize(stmt);
+            sqlite3_close(db);
+            return false;
+        }
+        sqlite3_reset(stmt);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+
+bool backword::save_admin_message(std::vector<admin> admins)
+{
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ���admin���Ƿ����
+    if (!tableExists(db, "admin")) {
+        std::cerr << "�������ݿ��в�����admin����" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // Ԥ����SQL���
+    const char* sql = "INSERT OR REPLACE INTO admin (admin_name, admin_key, admin_id, admin_tele_num) VALUES (?, ?, ?, ?);";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "׼���������ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    for (const auto& a : admins) {
+        sqlite3_bind_text(stmt, 1, a.admin_name.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, a.admin_key.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, a.admin_id.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, a.admin_tele_num.c_str(), -1, SQLITE_STATIC);
+        rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            std::cerr << "�������Ա��Ϣʧ��: " << sqlite3_errmsg(db) << std::endl;
             sqlite3_finalize(stmt);
             sqlite3_close(db);
             return false;
@@ -470,70 +558,197 @@ std::vector<std::string> examine_feedback(){
     return feedbacks;
 }
 
-// 查看反馈
-std::vector<std::string> backword::examine_feedback() {
-    // TODO: 实现反馈查看逻辑
-    return {};
+bool backword::calcu_fine(float fine, std::string user_id) {
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ���user���Ƿ����
+    if (!tableExists(db, "user")) {
+        std::cerr << "�������ݿ��в�����user����" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // ֱ������ָ���û��ķ�����
+    const char* sql = "UPDATE user SET fine = ? WHERE user_id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "׼���������ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_double(stmt, 1, fine);
+    sqlite3_bind_text(stmt, 2, user_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "���·�����ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
 }
-
-// 计算罚款
-bool backword::calcu_fine(float fine) {
-    // TODO: 实现罚款计算逻辑
-    return false;
+bool backword::restore_fine(string user_id){
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ���user���Ƿ����
+    if (!tableExists(db, "user")) {
+        std::cerr << "�������ݿ��в�����user����" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // ��ָ���û��ķ���������Ϊ0
+    const char* sql = "UPDATE user SET fine = 0 WHERE user_id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "׼���������ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, user_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "���·�����ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
 }
-
-// 支付罚款
-float backword::pay_fine() {
-    // TODO: 实现支付罚款逻辑
-    return 0.0f;
-}
-
-// 重置罚款
-bool backword::restore_fine() {
-    // TODO: 实现罚款重置逻辑
-    return false;
-}
-
-// 保存用户信息
-//bool backword::save_user_message(vector<user> save_user) {
-//    // TODO: 实现用户信息保存
-//    return false;
-//}
-
-// 数据备份
 bool backword::Data_backups() {
-    // TODO: 实现数据备份逻辑
-    return false;
+    std::ifstream src("your_database.db", std::ios::binary);
+    std::ofstream dst("your_database_backup.db", std::ios::binary);
+    if (!src || !dst) return false;
+    dst << src.rdbuf();
+    return src && dst;
 }
 
-// 数据恢复
 bool backword::Data_recovery() {
-    // TODO: 实现数据恢复逻辑
-    return false;
+    std::ifstream src("your_database_backup.db", std::ios::binary);
+    std::ofstream dst("your_database.db", std::ios::binary);
+    if (!src || !dst) return false;
+    dst << src.rdbuf();
+    return src && dst;
 }
-
-// 保存图书信息
-bool backword::save_book(std::string book_name, std::string author_name,
-    std::string cata, std::string ISBN, std::string book_id) {
-    // TODO: 实现图书信息保存
-    return false;
+bool backword::save_book(std::string book_name, std::string author_name, std::string category, std::string ISBN, std::string book_id) {
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ���book���Ƿ����
+    if (!tableExists(db, "book")) {
+        std::cerr << "�������ݿ��в�����book����" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // Ԥ����SQL���
+    const char* sql = "INSERT INTO book (book_name, author, category, ISBN, id, in_library) VALUES (?, ?, ?, ?, ?, 1);";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "׼���������ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, book_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, author_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, category.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, ISBN.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "����ͼ����Ϣʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
 }
-
-// 获取图书信息
-std::vector<book> backword::Get_book_message() {
-    // TODO: 实现图书信息获取
-    return {};
+bool backword::change_book_message(std::string new_book_name, std::string new_author_name, std::string new_category, std::string new_ISBN, std::string book_id) {
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ���book���Ƿ����
+    if (!tableExists(db, "book")) {
+        std::cerr << "�������ݿ��в�����book����" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // ����ͼ����Ϣ
+    const char* sql = "UPDATE book SET book_name = ?, author = ?, category = ?, ISBN = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "׼���������ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, new_book_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, new_author_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, new_category.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, new_ISBN.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "����ͼ����Ϣʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
 }
-
-// 修改图书信息
-bool backword::change_book_message(std::string new_book_name, std::string new_author_name,
-    std::string new_cata, std::string new_ISBN, std::string book_id) {
-    // TODO: 实现图书信息修改
-    return false;
-}
-
-// 删除图书
 bool backword::delete_book(std::string book_id) {
-    // TODO: 实现图书删除逻辑
-    return false;
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ���book���Ƿ����
+    if (!tableExists(db, "book")) {
+        std::cerr << "�������ݿ��в�����book����" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // ɾ��ͼ���¼
+    const char* sql = "DELETE FROM book WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "׼��ɾ�����ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "ɾ��ͼ���¼ʧ��: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
 }
