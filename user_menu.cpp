@@ -141,28 +141,28 @@ void user_menu::return_user_menu()
 void user_menu::borrow_borrow_button()
 {
 	QString book_ID = ui.borrow_line_edit->text();
-	std::string std_ID = book_ID.toStdString();
+	std::string std_ID = book_ID.toUtf8().constData();
 	emit borrow_book(std_ID);
 }
 
 void user_menu::return_return_button()
 {
 	QString book_ID = ui.return_line_edit->text();
-	std::string std_ID = book_ID.toStdString();
+	std::string std_ID = book_ID.toUtf8().constData();
 	emit return_book(std_ID);
 }
 
 void user_menu::serch_serch_by_name()
 {
 	QString book_name_key = ui.serch_by_name->text();
-	std::string std_name_key = book_name_key.toStdString();
+	std::string std_name_key = book_name_key.toUtf8().constData();
 	emit serch_by_name(std_name_key);
 }
 
 void user_menu::serch_serch_by_cata()
 {
 	QString book_cata = ui.serch_by_cata->text();
-	std::string std_cata = book_cata.toStdString();
+	std::string std_cata = book_cata.toUtf8().constData();
 	emit serch_by_cata(std_cata);
 }
 
@@ -183,8 +183,8 @@ void user_menu::reset_reset_password()
 	}
 	else
 	{
-		std::string std_new_pass = new_pass.toStdString();
-		std::string std_old_pass = old_pass.toStdString();
+		std::string std_new_pass = new_pass.toUtf8().constData();
+		std::string std_old_pass = old_pass.toUtf8().constData();
 
 		emit reset_password(std_old_pass,std_new_pass);
 	}
@@ -193,7 +193,7 @@ void user_menu::reset_reset_password()
 void user_menu::commit_commit_feedback()
 {
 	QString feedback = ui.textEdit->toPlainText();
-	std::string std_feedback = feedback.toStdString();
+	std::string std_feedback = feedback.toUtf8().constData();
 	emit commit_feedback(std_feedback);
 }
 
@@ -213,7 +213,7 @@ void user_menu::print_message(bool success, std::string message)
 {
 	//QMessageBox::information(nullptr, "提示", "这是一条信息提示");
 	//QString::fromLocal8Bit("中文内容")
-	QMessageBox::information(nullptr, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit(message));
+	QMessageBox::information(nullptr, QString::fromUtf8("提示"), QString::fromUtf8(message));
 
 }
 
@@ -242,7 +242,7 @@ void user_menu::print_book_message(std::vector<book> books)
 		{
 			in_library = QString::fromUtf8("\xe5\x90\xa6");
 		}
-		QString book_ID = QString::fromLocal8Bit(that_book.id);
+		QString book_ID = QString::fromUtf8(that_book.id);
 		ui.serch_table->setItem(i, 0, new QTableWidgetItem(book_name));
 		ui.serch_table->setItem(i, 1, new QTableWidgetItem(author_name));
 		ui.serch_table->setItem(i, 2, new QTableWidgetItem(catalogy));

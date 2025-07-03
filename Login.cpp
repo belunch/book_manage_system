@@ -18,8 +18,8 @@ void Login::push_Login()//这个肯定得改，这逻辑包不对的
 {
     QString account = ui.line_username->text();
     QString password = ui.lineEdit_password->text();
-    string std_accout = account.toStdString();
-    string std_password = password.toStdString();
+    string std_accout = account.toUtf8().constData();
+    string std_password = password.toUtf8().constData();
 
 
     //往后端传，根据返回值继续
@@ -57,7 +57,7 @@ void Login::return_back(bool success, string message)
     }
     else
     {
-        QMessageBox::information(nullptr, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit(message));
+        QMessageBox::information(nullptr, QString::fromUtf8("提示"), QString::fromUtf8(message));
     }
 
 

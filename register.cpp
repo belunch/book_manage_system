@@ -22,10 +22,10 @@ void register_win::pre_register()
 	ID = ui.id_line->text();
 	tele_num = ui.telenum_line->text();
 	string std_name, std_pass, std_ID, std_tele;
-	std_name = name.toStdString();
-	std_pass = pass.toStdString();
-	std_ID = ID.toStdString();
-	std_tele = tele_num.toStdString();
+	std_name = name.toUtf8().constData();
+	std_pass = pass.toUtf8().constData();
+	std_ID = ID.toUtf8().constData();
+	std_tele = tele_num.toUtf8().constData();
 	if (ui.checkBox_manager->isChecked())
 	{
 		emit push_manager_register(std_name, std_pass, std_ID, std_tele);
@@ -43,5 +43,5 @@ void register_win::pre_register()
 
 void register_win::print_message(bool success, std::string message)
 {
-	QMessageBox::information(nullptr, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit(message));
+	QMessageBox::information(nullptr, QString::fromUtf8("提示"), QString::fromUtf8(message));
 }

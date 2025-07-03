@@ -90,8 +90,8 @@ void manager::change_pass()
 	}
 	else
 	{
-		string std_old_pass = oldpass.toStdString();
-		string std_new_pass = newpass.toStdString();
+		string std_old_pass = oldpass.toUtf8().constData();
+		string std_new_pass = newpass.toUtf8().constData();
 		emit change_password_sig(std_old_pass, std_new_pass);
 	}
 
@@ -99,13 +99,13 @@ void manager::change_pass()
 void manager::serch_by_cata()
 {
 	QString cata = ui.lineEdit->text();
-	string std_cata = cata.toStdString();
+	string std_cata = cata.toUtf8().constData();
 	emit serch_by_cata_sig(std_cata);
 }
 void manager::serch_by_name()
 {
 	QString name = ui.lineEdit->text();
-	string std_name = name.toStdString();
+	string std_name = name.toUtf8().constData();
 	emit serch_by_name_sig(std_name);
 }
 
@@ -132,7 +132,7 @@ void manager::push_book_delete()
 /*接受数据层来的信号的函数*/
 void manager::return_back(bool success, string message)
 {
-	QMessageBox::information(nullptr, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit(message));
+	QMessageBox::information(nullptr, QString::fromUtf8("提示"), QString::fromUtf8(message));
 }
 
 void manager::print_feedback(std::vector<std::string> feedbacks)
@@ -261,7 +261,7 @@ void manager::print_book(vector<book> books)
 		{
 			in_library = QString::fromUtf8("\xe5\x90\xa6");
 		}
-		QString book_ID = QString::fromLocal8Bit(that_book.id);
+		QString book_ID = QString::fromUtf8(that_book.id);
 		ui.tableWidget_2->setItem(i, 0, new QTableWidgetItem(book_name));
 		ui.tableWidget_2->setItem(i, 1, new QTableWidgetItem(author_name));
 		ui.tableWidget_2->setItem(i, 2, new QTableWidgetItem(catalogy));

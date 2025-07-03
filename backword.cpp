@@ -4,12 +4,11 @@
 #include <string>
 #include <vector>
 
-backword::backword()
-{
-
+backword::backword() : QObject() {
+    // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½
 }
 
-// »Øµ÷º¯Êı£¬ÓÃÓÚÊÕ¼¯ÓÃ»§Êı¾İ
+// ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
 static int userCallback(void* data, int argc, char** argv, char** azColName) {
     std::vector<user>* users = static_cast<std::vector<user>*>(data);
     user u;
@@ -26,13 +25,53 @@ static int userCallback(void* data, int argc, char** argv, char** azColName) {
     return 0;
 }
 
-// ¼ì²é±íÊÇ·ñ´æÔÚ
+// ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
+static int recordCallback(void* data, int argc, char** argv, char** azColName) {
+    std::vector<history>* records = static_cast<std::vector<history>*>(data);
+    history h;
+    for(int i = 0; i < argc; i++) {
+        std::string colName = azColName[i];
+        const char* value = argv[i] ? argv[i] : "0";
+        if (colName == "recode_num") h.recode_num = value;
+        else if (colName == "book_id") h.book_id = value;
+        else if (colName == "user_name") h.user_name = value;
+        else if (colName == "user_id") h.user_id = value;
+        else if (colName == "boorow_year") h.borrow_day.year = atoi(value);
+        else if (colName == "boorow_month") h.borrow_day.month = atoi(value);
+        else if (colName == "boorow_day") h.borrow_day.day = atoi(value);
+        else if (colName == "return_year") h.return_day.year = atoi(value);
+        else if (colName == "return_month") h.return_day.month = atoi(value);
+        else if (colName == "return_day") h.return_day.day = atoi(value);
+    }
+    records->push_back(h);
+    return 0;
+}
+
+// ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+static int bookCallback(void* data, int argc, char** argv, char** azColName) {
+    std::vector<book>* books = static_cast<std::vector<book>*>(data);
+    book b;
+    for(int i = 0; i < argc; i++) {
+        std::string colName = azColName[i];
+        const char* value = argv[i] ? argv[i] : "";
+        if (colName == "in_library") b.in_library = atoi(value);
+        else if (colName == "book_name") b.book_name = value;
+        else if (colName == "author") b.author = value;
+        else if (colName == "category") b.category = value;
+        else if (colName == "ISBN") b.ISBN = value;
+        else if (colName == "id") b.id = value;
+    }
+    books->push_back(b);
+    return 0;
+}
+
+// ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 static bool tableExists(sqlite3* db, const std::string& tableName) {
     const char* sql = "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?;";
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
-        std::cerr << "×¼±¸Óï¾äÊ§°Ü: " << sqlite3_errmsg(db) << std::endl;
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
         return false;
     }
     sqlite3_bind_text(stmt, 1, tableName.c_str(), -1, SQLITE_STATIC);
@@ -48,11 +87,11 @@ std::vector<user> backword::usermessage()
     std::vector<user> users;
     int rc = sqlite3_open("your_database.db", &db);
     if (rc) {
-        std::cerr << "ÎŞ·¨´ò¿ªÊı¾İ¿â: " << sqlite3_errmsg(db) << std::endl;
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
         return users;
     }
     if (!tableExists(db, "user")) {
-        std::cerr << "´íÎó£ºÊı¾İ¿âÖĞ²»´æÔÚuser±í£¡" << std::endl;
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½userï¿½ï¿½ï¿½ï¿½" << std::endl;
         sqlite3_close(db);
         return users;
     }
@@ -60,136 +99,441 @@ std::vector<user> backword::usermessage()
     char* zErrMsg = 0;
     rc = sqlite3_exec(db, sql, userCallback, &users, &zErrMsg);
     if (rc != SQLITE_OK) {
-        std::cerr << "SQL´íÎó: " << zErrMsg << std::endl;
+        std::cerr << "SQLï¿½ï¿½ï¿½ï¿½: " << zErrMsg << std::endl;
         sqlite3_free(zErrMsg);
     }
     sqlite3_close(db);
     return users;
 }
 
-bool backword::save_user_message()
+bool backword::save_user_message(std::vector<user> users)
 {
-	return save_user_message();
-}
-bool backword::can_change_password()
-{
-	return can_change_password();
-}
-std::vector<history> backword::get_borrow_message()
-{
-	return get_borrow_message();
-}
-std::vector<book> backword::get_book_message()
-{
-	return get_book_message();
-}
-
-/*#include <iostream>
-#include <sqlite3.h>
-#include <string>
-#include <vector>
-
-// ÓÃ»§Êı¾İ½á¹¹Ìå
-struct user {
-    std::string user_name;
-    std::string user_key;
-    std::string user_id;       // Ö÷¼ü
-    std::string user_tele_num;
-    float fine;
-};
-
-// »Øµ÷º¯Êı£¬ÓÃÓÚÊÕ¼¯ÓÃ»§Êı¾İ
-static int userCallback(void* data, int argc, char** argv, char** azColName) {
-    std::vector<user>* users = static_cast<std::vector<user>*>(data);
-    user u;
-    
-    for(int i = 0; i < argc; i++) {
-        std::string colName = azColName[i];
-        const char* value = argv[i] ? argv[i] : "NULL";
-        
-        if (colName == "user_name") u.user_name = value;
-        else if (colName == "user_key") u.user_key = value;
-        else if (colName == "user_id") u.user_id = value;
-        else if (colName == "user_tele_num") u.user_tele_num = value;
-        else if (colName == "fine") u.fine = atof(value);
-    }
-    
-    users->push_back(u);
-    return 0;
-}
-
-// ¼ì²é±íÊÇ·ñ´æÔÚ
-bool tableExists(sqlite3* db, const std::string& tableName) {
-    const char* sql = "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?;";
-    sqlite3_stmt* stmt;
-    
-    int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        std::cerr << "×¼±¸Óï¾äÊ§°Ü: " << sqlite3_errmsg(db) << std::endl;
-        return false;
-    }
-    
-    sqlite3_bind_text(stmt, 1, tableName.c_str(), -1, SQLITE_STATIC);
-    rc = sqlite3_step(stmt);
-    bool exists = (rc == SQLITE_ROW);
-    
-    sqlite3_finalize(stmt);
-    return exists;
-}
-
-// »ñÈ¡ËùÓĞÓÃ»§ĞÅÏ¢
-std::vector<user> usermessage() {
     sqlite3* db;
-    std::vector<user> users;
-    
-    // ´ò¿ªÊı¾İ¿â
     int rc = sqlite3_open("your_database.db", &db);
     if (rc) {
-        std::cerr << "ÎŞ·¨´ò¿ªÊı¾İ¿â: " << sqlite3_errmsg(db) << std::endl;
-        return users;
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return false;
     }
-    
-    // ¼ì²éuser±íÊÇ·ñ´æÔÚ
+    // ï¿½ï¿½ï¿½userï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
     if (!tableExists(db, "user")) {
-        std::cerr << "´íÎó£ºÊı¾İ¿âÖĞ²»´æÔÚuser±í£¡" << std::endl;
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½userï¿½ï¿½ï¿½ï¿½" << std::endl;
         sqlite3_close(db);
-        return users;
+        return false;
     }
-    
-    // Ö´ĞĞ²éÑ¯
-    const char* sql = "SELECT * FROM user;";
-    char* zErrMsg = 0;
-    
-    rc = sqlite3_exec(db, sql, userCallback, &users, &zErrMsg);
+    // Ô¤ï¿½ï¿½ï¿½ï¿½SQLï¿½ï¿½ï¿½
+    const char* sql = "INSERT OR REPLACE INTO user (user_name, user_key, user_id, user_tele_num, fine) VALUES (?, ?, ?, ?, ?);";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
-        std::cerr << "SQL´íÎó: " << zErrMsg << std::endl;
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    for (const auto& u : users) {
+        sqlite3_bind_text(stmt, 1, u.user_name.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, u.user_key.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, u.user_id.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, u.user_tele_num.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_double(stmt, 5, u.fine);
+        rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+            sqlite3_finalize(stmt);
+            sqlite3_close(db);
+            return false;
+        }
+        sqlite3_reset(stmt);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+
+bool backword::can_change_password(std::string user_id, std::string new_key)
+{
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ï¿½ï¿½ï¿½userï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+    if (!tableExists(db, "user")) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½userï¿½ï¿½ï¿½ï¿½" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+    const char* sql = "UPDATE user SET user_key = ? WHERE user_id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, new_key.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, user_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+
+std::vector<history> backword::get_borrow_message()
+{
+    sqlite3* db;
+    std::vector<history> records;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return records;
+    }
+    if (!tableExists(db, "record")) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½recordï¿½ï¿½ï¿½ï¿½" << std::endl;
+        sqlite3_close(db);
+        return records;
+    }
+    const char* sql = "SELECT * FROM record;";
+    char* zErrMsg = 0;
+    rc = sqlite3_exec(db, sql, recordCallback, &records, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQLï¿½ï¿½ï¿½ï¿½: " << zErrMsg << std::endl;
         sqlite3_free(zErrMsg);
     }
-    
-    // ¹Ø±ÕÊı¾İ¿â
     sqlite3_close(db);
-    return users;
+    return records;
 }
 
-// ´òÓ¡ÓÃ»§ĞÅÏ¢
-void printUsers(const std::vector<user>& users) {
-    std::cout << "\nÓÃ»§×ÜÊı: " << users.size() << std::endl;
-    for (const auto& u : users) {
-        std::cout << "--------------------------------" << std::endl;
-        std::cout << "ÓÃ»§Ãû: " << u.user_name << std::endl;
-        std::cout << "ÃÜÂë: " << u.user_key << std::endl;
-        std::cout << "Éí·İÖ¤ºÅ: " << u.user_id << std::endl;
-        std::cout << "ÊÖ»úºÅ: " << u.user_tele_num << std::endl;
-        std::cout << "Ç·¿î½ğ¶î: " << u.fine << std::endl;
+std::vector<book> backword::get_book_message()//0ï¿½ï¿½ï¿½Ú¹İ£ï¿½1ï¿½Ú¹ï¿½
+{
+    sqlite3* db;
+    std::vector<book> books;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return books;
     }
+    if (!tableExists(db, "book")) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½bookï¿½ï¿½ï¿½ï¿½" << std::endl;
+        sqlite3_close(db);
+        return books;
+    }
+    const char* sql = "SELECT * FROM book;";
+    char* zErrMsg = 0;
+    rc = sqlite3_exec(db, sql, bookCallback, &books, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQLï¿½ï¿½ï¿½ï¿½: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
+    }
+    sqlite3_close(db);
+    return books;
 }
 
-int main() {
-    // »ñÈ¡ËùÓĞÓÃ»§ĞÅÏ¢
-    std::vector<user> allUsers = usermessage();
-    
-    // ´òÓ¡ÓÃ»§ĞÅÏ¢
-    printUsers(allUsers);
-    
-    return 0;
-}*/
+bool backword::borrow_out(std::string book_id, std::string user_id)
+{
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ï¿½ï¿½ï¿½bookï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+    if (!tableExists(db, "book")) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½bookï¿½ï¿½ï¿½ï¿½" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ú¹ï¿½
+    const char* check_sql = "SELECT in_library FROM book WHERE id = ?;";
+    sqlite3_stmt* check_stmt;
+    rc = sqlite3_prepare_v2(db, check_sql, -1, &check_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(check_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(check_stmt);
+    if (rc != SQLITE_ROW || sqlite3_column_int(check_stmt, 0) != 1) {
+        // ï¿½ï¿½ï¿½Ú¹İ»ï¿½Î´ï¿½Òµï¿½
+        sqlite3_finalize(check_stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(check_stmt);
+    // ï¿½ï¿½ï¿½ï¿½bookï¿½ï¿½in_libraryÎª0
+    const char* update_sql = "UPDATE book SET in_library = 0 WHERE id = ?;";
+    sqlite3_stmt* update_stmt;
+    rc = sqlite3_prepare_v2(db, update_sql, -1, &update_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(update_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(update_stmt);
+    sqlite3_finalize(update_stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½×´Ì¬Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // ï¿½ï¿½È¡ï¿½ï¿½Ç°ÏµÍ³Ê±ï¿½ï¿½
+    time_t t = time(nullptr);
+    struct tm now;
+#ifdef _WIN32
+    localtime_s(&now, &t);
+#else
+    localtime_r(&t, &now);
+#endif
+    int year = now.tm_year + 1900;
+    int month = now.tm_mon + 1;
+    int day = now.tm_mday;
+    // ï¿½ï¿½ï¿½ï¿½recordï¿½ï¿½
+    const char* insert_sql = "INSERT INTO record (recode_num, book_id, user_name, user_id, boorow_year, boorow_month, boorow_day, return_year, return_month, return_day) VALUES (?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL);";
+    sqlite3_stmt* insert_stmt;
+    rc = sqlite3_prepare_v2(db, insert_sql, -1, &insert_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // recode_numÊ¼ï¿½ï¿½Îª"1"
+    sqlite3_bind_text(insert_stmt, 1, "1", -1, SQLITE_STATIC);
+    sqlite3_bind_text(insert_stmt, 2, book_id.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(insert_stmt, 3, user_id.c_str(), -1, SQLITE_STATIC); // user_nameï¿½Ö¶Îºï¿½ï¿½æ²¹ï¿½ï¿½
+    sqlite3_bind_text(insert_stmt, 4, user_id.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_int(insert_stmt, 5, year);
+    sqlite3_bind_int(insert_stmt, 6, month);
+    sqlite3_bind_int(insert_stmt, 7, day);
+    rc = sqlite3_step(insert_stmt);
+    sqlite3_finalize(insert_stmt);
+    sqlite3_close(db);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â¼Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    return true;
+}
+
+bool backword::return_success(std::string book_id, std::string user_id)
+{
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ï¿½ï¿½Ñ¯Î´ï¿½é»¹ï¿½Ä½ï¿½ï¿½Ä¼ï¿½Â¼
+    const char* select_sql = "SELECT recode_num FROM record WHERE book_id = ? AND user_id = ? AND return_year IS NULL AND return_month IS NULL AND return_day IS NULL ORDER BY boorow_year DESC, boorow_month DESC, boorow_day DESC LIMIT 1;";
+    sqlite3_stmt* select_stmt;
+    rc = sqlite3_prepare_v2(db, select_sql, -1, &select_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(select_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(select_stmt, 2, user_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(select_stmt);
+    if (rc != SQLITE_ROW) {
+        // Ã»ï¿½ï¿½Î´ï¿½é»¹ï¿½ï¿½Â¼
+        sqlite3_finalize(select_stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    std::string recode_num = reinterpret_cast<const char*>(sqlite3_column_text(select_stmt, 0));
+    sqlite3_finalize(select_stmt);
+    // ï¿½ï¿½È¡ï¿½ï¿½Ç°ÏµÍ³Ê±ï¿½ï¿½
+    time_t t = time(nullptr);
+    struct tm now;
+#ifdef _WIN32
+    localtime_s(&now, &t);
+#else
+    localtime_r(&t, &now);
+#endif
+    int year = now.tm_year + 1900;
+    int month = now.tm_mon + 1;
+    int day = now.tm_mday;
+    // ï¿½ï¿½ï¿½ï¿½recordï¿½ï¿½ï¿½é»¹ï¿½ï¿½ï¿½ï¿½
+    const char* update_record_sql = "UPDATE record SET return_year = ?, return_month = ?, return_day = ? WHERE recode_num = ?;";
+    sqlite3_stmt* update_record_stmt;
+    rc = sqlite3_prepare_v2(db, update_record_sql, -1, &update_record_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½Ä¼ï¿½Â¼ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_int(update_record_stmt, 1, year);
+    sqlite3_bind_int(update_record_stmt, 2, month);
+    sqlite3_bind_int(update_record_stmt, 3, day);
+    sqlite3_bind_text(update_record_stmt, 4, recode_num.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(update_record_stmt);
+    sqlite3_finalize(update_record_stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "ï¿½ï¿½ï¿½Â½ï¿½ï¿½Ä¼ï¿½Â¼Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // ï¿½ï¿½ï¿½ï¿½bookï¿½ï¿½in_libraryÎª1
+    const char* update_book_sql = "UPDATE book SET in_library = 1 WHERE id = ?;";
+    sqlite3_stmt* update_book_stmt;
+    rc = sqlite3_prepare_v2(db, update_book_sql, -1, &update_book_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(update_book_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(update_book_stmt);
+    sqlite3_finalize(update_book_stmt);
+    sqlite3_close(db);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½×´Ì¬Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    return true;
+}
+
+bool backword::store_feedback(std::string user_name, std::string feedback)
+{
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // ï¿½ï¿½ï¿½feedbackï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+    if (!tableExists(db, "feedback")) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½feedbackï¿½ï¿½ï¿½ï¿½" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // Ô¤ï¿½ï¿½ï¿½ï¿½SQLï¿½ï¿½ï¿½
+    const char* sql = "INSERT INTO feedback (user_name, user_feedback) VALUES (?, ?);";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, user_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, feedback.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "ï¿½ï¿½ï¿½ë·´ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+
+std::vector<std::string> examine_feedback(){
+    sqlite3* db;
+    std::vector<std::string> feedbacks;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½: " << sqlite3_errmsg(db) << std::endl;
+        return feedbacks;
+    }
+    // ï¿½ï¿½ï¿½feedbackï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+    if (!tableExists(db, "feedback")) {
+        std::cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½feedbackï¿½ï¿½ï¿½ï¿½" << std::endl;
+        sqlite3_close(db);
+        return feedbacks;
+    }
+    const char* sql = "SELECT user_feedback FROM feedback;";
+    char* zErrMsg = 0;
+    rc = sqlite3_exec(db, sql, [](void* data, int argc, char** argv, char** azColName) -> int {
+        auto feedbacks = static_cast<std::vector<std::string>*>(data);
+        if (argc > 0 && argv[0]) {
+            feedbacks->push_back(argv[0]);
+        }
+        return 0;
+    }, &feedbacks, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQLï¿½ï¿½ï¿½ï¿½: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
+    }
+    sqlite3_close(db);
+    return feedbacks;
+}
+
+// æŸ¥çœ‹åé¦ˆ
+std::vector<std::string> backword::examine_feedback() {
+    // TODO: å®ç°åé¦ˆæŸ¥çœ‹é€»è¾‘
+    return {};
+}
+
+// è®¡ç®—ç½šæ¬¾
+bool backword::calcu_fine(float fine) {
+    // TODO: å®ç°ç½šæ¬¾è®¡ç®—é€»è¾‘
+    return false;
+}
+
+// æ”¯ä»˜ç½šæ¬¾
+float backword::pay_fine() {
+    // TODO: å®ç°æ”¯ä»˜ç½šæ¬¾é€»è¾‘
+    return 0.0f;
+}
+
+// é‡ç½®ç½šæ¬¾
+bool backword::restore_fine() {
+    // TODO: å®ç°ç½šæ¬¾é‡ç½®é€»è¾‘
+    return false;
+}
+
+// ä¿å­˜ç”¨æˆ·ä¿¡æ¯
+//bool backword::save_user_message(vector<user> save_user) {
+//    // TODO: å®ç°ç”¨æˆ·ä¿¡æ¯ä¿å­˜
+//    return false;
+//}
+
+// æ•°æ®å¤‡ä»½
+bool backword::Data_backups() {
+    // TODO: å®ç°æ•°æ®å¤‡ä»½é€»è¾‘
+    return false;
+}
+
+// æ•°æ®æ¢å¤
+bool backword::Data_recovery() {
+    // TODO: å®ç°æ•°æ®æ¢å¤é€»è¾‘
+    return false;
+}
+
+// ä¿å­˜å›¾ä¹¦ä¿¡æ¯
+bool backword::save_book(std::string book_name, std::string author_name,
+    std::string cata, std::string ISBN, std::string book_id) {
+    // TODO: å®ç°å›¾ä¹¦ä¿¡æ¯ä¿å­˜
+    return false;
+}
+
+// è·å–å›¾ä¹¦ä¿¡æ¯
+std::vector<book> backword::Get_book_message() {
+    // TODO: å®ç°å›¾ä¹¦ä¿¡æ¯è·å–
+    return {};
+}
+
+// ä¿®æ”¹å›¾ä¹¦ä¿¡æ¯
+bool backword::change_book_message(std::string new_book_name, std::string new_author_name,
+    std::string new_cata, std::string new_ISBN, std::string book_id) {
+    // TODO: å®ç°å›¾ä¹¦ä¿¡æ¯ä¿®æ”¹
+    return false;
+}
+
+// åˆ é™¤å›¾ä¹¦
+bool backword::delete_book(std::string book_id) {
+    // TODO: å®ç°å›¾ä¹¦åˆ é™¤é€»è¾‘
+    return false;
+}
