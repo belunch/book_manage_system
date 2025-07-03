@@ -2,7 +2,7 @@
 using namespace std;
 
 //前向声明
-bool is_valid_user_key(const string& user_key) { return true; };//找不到定义
+bool is_valid_user_key(const string& user_key) { return user_key.length() == 6; };
 bool is_valid_id(const std::string& user_id);
 bool is_valid_new_key(const std::string& new_key);
 bool is_valid_user_tele(const std::string& user_tele_num);
@@ -25,6 +25,7 @@ void  data_process::Sign_in(std::string user_name, std::string user_key)
 	bool isMatched = false;  // 标记是否找到匹配项
 	for (const auto& userObj : userlist) {
 		if (userObj.user_name == user_name && userObj.user_key == user_key) {
+			User = userObj;
 			isMatched = true;
 			break;  // 找到匹配，跳出循环
 		}
@@ -78,7 +79,7 @@ void data_process::Sign_up(std::string user_name, std::string user_key, std::str
 	User.user_key = user_key;
 	User.user_id = user_id;
 	User.user_tele_num = user_tele_num;
-	bool have_saved = Back->save_user_message();
+	bool have_saved = Back->save_user_message();//这个地方接口不对
 	if (have_saved) {
 		emit return_back(true, "注册成功，请登录。");
 	}
@@ -132,6 +133,7 @@ void data_process::change_password(std::string old_key, std::string new_key)
 		emit return_back(false, "New password must be 6 digits.");
 		return;
 	}
+	User.user_key = new_key;
 	bool have_changed = Back->can_change_password();
 	if (have_changed) {
 		emit return_back(true, "Password changed successfully.");
@@ -181,7 +183,7 @@ void data_process::borrow_book(std::string id)
 		emit return_back(false, "You have already borrowed a book and cannot borrow another one at the moment.");
 		return;
 	}
-	bool have_borrowed = Back->borrow_out();
+	bool have_borrowed = Back->borrow_out();//这好像也少参数
 	if (have_borrowed) {
 		emit return_back(true, "Book borrowed successfully.");
 		return;
@@ -200,7 +202,7 @@ void data_process::return_book(std::string id)
 				return;
 			}
 			if (User.fine == 0) {
-				bool have_returned = Back->return_success();
+				bool have_returned = Back->return_success();//少参数，靠设计做的太辣鸡了
 				if (have_returned) {
 					emit return_back(true, "Book returned successfully.");
 					return;
@@ -215,12 +217,12 @@ void data_process::return_book(std::string id)
 				return; 
 			}
 		}
-		else {
-			emit return_back(false, "This book has not been borrowed or has already been returned.");
-			return;
-		}
 	}
-
+	
+	emit return_back(false, "This book has not been borrowed or has already been returned.");
+	return;
+		
+	//emit return_back(false, "systrem have something wrong ,please turn to staff.");
 
 }
 void data_process::serch_by_key(std::string key)
@@ -285,26 +287,28 @@ return;
 void data_process::return_book_cal_fine()//这个函数是干啥的来着？
 {
 	date today;
-	today.fromSystemTime();
+	today = date::getCurrentDate();//这个函数需要重写->已完成
 	std::vector<history> historylist = Back->get_borrow_message();
 	if (historylist.empty()) {
 		emit return_back(false, "No borrow records found.");
 		return;
 	}
 	for (const auto& record : historylist) {
-		if (record.user_id == User.user_id && record.return_day.year == today.year && record.return_day.month == today.month && record.return_day.day == today.day) {
-			int diff = record.return_day.daysDiff(record.borrow_day);
+		//对每一个未归还记录查找
+		if (record.user_id == User.user_id && record.return_day.year == 0 ) {
+			int diff = record.borrow_day.daysTo(today);//这个函数要重写->已完成
 			User.fine = 0.0;
 			if (diff > 30) {
-				User.fine = (diff - 30) * 0.2;
+				User.fine = (diff - 30) * 0.2;//0.2来着吗
 			}
 			else {
 				User.fine = 0.0;
 			}
 			emit return_fine(User.fine, "Fine calculated successfully.");
+			return;
 		}
-		emit return_back(false, "No borrow records found for the user.");
 	}
+	emit return_back(false, "No borrow records found for the user.");
 }
 	void data_process::pay_fine(){
 		if (User.fine <= 0) {
@@ -331,7 +335,7 @@ void data_process::return_book_cal_fine()//这个函数是干啥的来着？
 		emit return_user_message(userlist);
 		return;
 	}
-	void data_process::continue_pay_fine()
+	void data_process::continue_pay_fine()//还未实现
 	{
 
 	}
@@ -407,10 +411,9 @@ void data_process::delete_book(std::string book_id)
 				return;
 			}
 		}
-		else {
-			emit return_back(false, "Book not found.");
-			return;
-		}
 	}
+	emit return_back(false, "Book not found.");
+	return;
+
 }
 
