@@ -1,7 +1,7 @@
-#include"Data Processing Layer.h"
+ï»¿#include"Data Processing Layer.h"
 using namespace std;
 
-//Ç°ÏòÉùÃ÷
+//å‰å‘å£°æ˜
 bool is_valid_user_key(const string& user_key) { return user_key.length() == 6; };
 bool is_valid_id(const std::string& user_id);
 bool is_valid_new_key(const std::string& new_key);
@@ -22,12 +22,12 @@ void  data_process::Sign_in(std::string user_name, std::string user_key)
 		return;
 	}
 	vector<user> userlist = Back->usermessage();
-	bool isMatched = false;  // ±ê¼ÇÊÇ·ñÕÒµ½Æ¥ÅäÏî
+	bool isMatched = false;  // æ ‡è®°æ˜¯å¦æ‰¾åˆ°åŒ¹é…é¡¹
 	for (const auto& userObj : userlist) {
 		if (userObj.user_name == user_name && userObj.user_key == user_key) {
 			User = userObj;
 			isMatched = true;
-			break;  // ÕÒµ½Æ¥Åä£¬Ìø³öÑ­»·
+			break;  // æ‰¾åˆ°åŒ¹é…ï¼Œè·³å‡ºå¾ªç¯
 		}
 	}
 	if (!isMatched)
@@ -49,29 +49,29 @@ void data_process::Sign_up(std::string user_name, std::string user_key, std::str
 		return;
 	}
 	if (!is_valid_user_key(user_key)) {
-		emit return_back(false, "ÃÜÂë¸ñÊ½´íÎó£¬ÇëÖØĞÂÊäÈë¡£");
+		emit return_back(false, "å¯†ç æ ¼å¼é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚");
 		return;
 	}
 	if (!is_valid_id(user_id)) {
-		emit return_back(false, "Éí·İÖ¤ºÅ¸ñÊ½´íÎó£¬ÇëÖØĞÂÊäÈë¡£");
+		emit return_back(false, "èº«ä»½è¯å·æ ¼å¼é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚");
 		return;
 	}
 	if (!is_valid_user_tele(user_tele_num)) {
-		emit return_back(false, "ÊÖ»úºÅ¸ñÊ½´íÎó£¬ÇëÖØĞÂÊäÈë¡£");
+		emit return_back(false, "æ‰‹æœºå·æ ¼å¼é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚");
 		return;
 	}
 	vector<user> userlist = Back->usermessage();
 	for (const auto& userObj : userlist) {
 		if (userObj.user_name == user_name) {
-			emit return_back(false, "ÓÃ»§ÒÑ´æÔÚ£¬ÇëÖ±½ÓµÇÂ¼");
+			emit return_back(false, "ç”¨æˆ·å·²å­˜åœ¨ï¼Œè¯·ç›´æ¥ç™»å½•");
 			return;
 		}
 		if (userObj.user_id == user_id) {
-			emit return_back(false, "ÓÃ»§ÒÑ´æÔÚ£¬ÇëÖ±½ÓµÇÂ¼");
+			emit return_back(false, "ç”¨æˆ·å·²å­˜åœ¨ï¼Œè¯·ç›´æ¥ç™»å½•");
 			return;
 		}
 		if (userObj.user_tele_num == user_tele_num) {
-			emit return_back(false, "ÓÃ»§ÒÑ´æÔÚ£¬ÇëÖ±½ÓµÇÂ¼");
+			emit return_back(false, "ç”¨æˆ·å·²å­˜åœ¨ï¼Œè¯·ç›´æ¥ç™»å½•");
 			return;
 		}
 	}
@@ -79,12 +79,12 @@ void data_process::Sign_up(std::string user_name, std::string user_key, std::str
 	User.user_key = user_key;
 	User.user_id = user_id;
 	User.user_tele_num = user_tele_num;
-	bool have_saved = Back->save_user_message();//Õâ¸öµØ·½½Ó¿Ú²»¶Ô
+	bool have_saved = Back->save_user_message();//è¿™ä¸ªåœ°æ–¹æ¥å£ä¸å¯¹
 	if (have_saved) {
-		emit return_back(true, "×¢²á³É¹¦£¬ÇëµÇÂ¼¡£");
+		emit return_back(true, "æ³¨å†ŒæˆåŠŸï¼Œè¯·ç™»å½•ã€‚");
 	}
 	else {
-		emit return_back(false, "×¢²áÊ§°Ü£¬ÇëÉÔºóÔÙÊÔ¡£");
+		emit return_back(false, "æ³¨å†Œå¤±è´¥ï¼Œè¯·ç¨åå†è¯•ã€‚");
 	}
 }
 bool is_valid_id(const std::string& user_id) {
@@ -92,23 +92,23 @@ bool is_valid_id(const std::string& user_id) {
 	if (len != 18) {
 		return false;
 	}
-	// 18Î»Éí·İÖ¤£ºÇ°17Î»ÎªÊı×Ö£¬µÚ18Î»¿ÉÎªÊı×Ö»òX
+	// 18ä½èº«ä»½è¯ï¼šå‰17ä½ä¸ºæ•°å­—ï¼Œç¬¬18ä½å¯ä¸ºæ•°å­—æˆ–X
 	for (int i = 0; i < 17; i++) {
 		if (!std::isdigit(user_id[i])) {
 			return false;
 		}
 	}
-	// µÚ18Î»Ğ£Ñé£ºÔÊĞíÊı×Ö»òx/X£¨×ª´óĞ´Ğ£Ñé£©
+	// ç¬¬18ä½æ ¡éªŒï¼šå…è®¸æ•°å­—æˆ–x/Xï¼ˆè½¬å¤§å†™æ ¡éªŒï¼‰
 	char last_char = std::toupper(user_id[17]);
 	return (std::isdigit(last_char) || last_char == 'X');
 }
 
 bool is_valid_user_tele(const std::string& user_tele_num) {
-	// ³¤¶È±ØĞë11Î»
+	// é•¿åº¦å¿…é¡»11ä½
 	if (user_tele_num.length() != 11) {
 		return false;
 	}
-	// È«ÎªÊı×Ö
+	// å…¨ä¸ºæ•°å­—
 	for (char c : user_tele_num) {
 		if (!std::isdigit(c)) {
 			return false;
@@ -141,11 +141,11 @@ void data_process::change_password(std::string old_key, std::string new_key)
 	}
 }
 bool is_valid_new_key(const std::string& new_key) {
-	// ³¤¶È±ØĞë6Î»
+	// é•¿åº¦å¿…é¡»6ä½
 	if (new_key.length() != 6) {
 		return false;
 	}
-	// È«ÎªÊı×Ö
+	// å…¨ä¸ºæ•°å­—
 	for (char c : new_key) {
 		if (!std::isdigit(c)) {
 			return false;
@@ -183,7 +183,7 @@ void data_process::borrow_book(std::string id)
 		emit return_back(false, "You have already borrowed a book and cannot borrow another one at the moment.");
 		return;
 	}
-	bool have_borrowed = Back->borrow_out();//ÕâºÃÏñÒ²ÉÙ²ÎÊı
+	bool have_borrowed = Back->borrow_out();//è¿™å¥½åƒä¹Ÿå°‘å‚æ•°
 	if (have_borrowed) {
 		emit return_back(true, "Book borrowed successfully.");
 		return;
@@ -202,7 +202,7 @@ void data_process::return_book(std::string id)
 				return;
 			}
 			if (User.fine == 0) {
-				bool have_returned = Back->return_success();//ÉÙ²ÎÊı£¬¿¿Éè¼Æ×öµÄÌ«À±¼¦ÁË
+				bool have_returned = Back->return_success();//å°‘å‚æ•°ï¼Œé è®¾è®¡åšçš„å¤ªè¾£é¸¡äº†
 				if (have_returned) {
 					emit return_back(true, "Book returned successfully.");
 					return;
@@ -225,7 +225,7 @@ void data_process::return_book(std::string id)
 	//emit return_back(false, "systrem have something wrong ,please turn to staff.");
 
 }
-void data_process::serch_by_key(std::string key)
+void data_process::serch_by_key(std::string key)//è¿™ä¸ªå‚æ•°ä¼ é€’æœ‰é—®é¢˜
 {
 	if (key.empty()) {
 		emit return_back(false, "Search key cannot be empty.");
@@ -233,7 +233,7 @@ void data_process::serch_by_key(std::string key)
 	}
 	std::vector<book> booklist = Back->Get_book_message();
 	std::vector<book> books;
-	// ±éÀú booklist£¬É¸Ñ¡ÊéÃû°üº¬ key µÄÊé¼®
+	// éå† booklistï¼Œç­›é€‰ä¹¦ååŒ…å« key çš„ä¹¦ç±
 	for (const book& b : booklist) {
 		if (b.book_name.find(key) != std::string::npos) {
 			books.push_back(b);
@@ -242,7 +242,7 @@ void data_process::serch_by_key(std::string key)
 	emit return_bookmessage(books);
 	return;
 }
-void data_process::serch_by_cata(std::string cata)
+void data_process::serch_by_cata(std::string cata)//è¿™ä¸ªå‚æ•°ä¹Ÿæœ‰é—®é¢˜
 {
 	if (cata.empty()) {
 		emit return_back(false, "Category cannot be empty.");
@@ -250,7 +250,7 @@ void data_process::serch_by_cata(std::string cata)
 	}
 	std::vector<book> booklist = Back->Get_book_message();
 	std::vector<book> books;
-	// ±éÀú booklist£¬É¸Ñ¡Êé¼®Àà±ğÎª cata µÄÊé¼®
+	// éå† booklistï¼Œç­›é€‰ä¹¦ç±ç±»åˆ«ä¸º cata çš„ä¹¦ç±
 	for (const book& b : booklist) {
 		if (b.category == cata) {
 			books.push_back(b);
@@ -259,7 +259,7 @@ void data_process::serch_by_cata(std::string cata)
 	emit return_bookmessage(books);
 	return;
 }
-void data_process::submit_feedback(std::string feedback)
+void data_process::submit_feedback(std::string feedback)//å‚æ•°æœ‰é—®é¢˜
 {
 	if (feedback.empty()) {
 		emit return_back(false, "Feedback cannot be empty.");
@@ -279,27 +279,27 @@ void data_process::examine_feedback()
 		emit return_back(false,"No feedback available at the moment.");
 		return;
 	}
-	// Èç¹ûÓĞ·´À¡£¬Ö±½Ó·µ»Ø
+	// å¦‚æœæœ‰åé¦ˆï¼Œç›´æ¥è¿”å›
 emit return_feedback(feedbacks);
 return;
 }
 
-void data_process::return_book_cal_fine()//Õâ¸öº¯ÊıÊÇ¸ÉÉ¶µÄÀ´×Å£¿
+void data_process::return_book_cal_fine()//è¿™ä¸ªå‡½æ•°æ˜¯å¹²å•¥çš„æ¥ç€ï¼Ÿè¿˜æ²¡æœ‰è¿æ¥
 {
 	date today;
-	today = date::getCurrentDate();//Õâ¸öº¯ÊıĞèÒªÖØĞ´->ÒÑÍê³É
+	today = date::getCurrentDate();//è¿™ä¸ªå‡½æ•°éœ€è¦é‡å†™->å·²å®Œæˆ
 	std::vector<history> historylist = Back->get_borrow_message();
 	if (historylist.empty()) {
 		emit return_back(false, "No borrow records found.");
 		return;
 	}
 	for (const auto& record : historylist) {
-		//¶ÔÃ¿Ò»¸öÎ´¹é»¹¼ÇÂ¼²éÕÒ
+		//å¯¹æ¯ä¸€ä¸ªæœªå½’è¿˜è®°å½•æŸ¥æ‰¾
 		if (record.user_id == User.user_id && record.return_day.year == 0 ) {
-			int diff = record.borrow_day.daysTo(today);//Õâ¸öº¯ÊıÒªÖØĞ´->ÒÑÍê³É
+			int diff = record.borrow_day.daysTo(today);//è¿™ä¸ªå‡½æ•°è¦é‡å†™->å·²å®Œæˆ
 			User.fine = 0.0;
 			if (diff > 30) {
-				User.fine = (diff - 30) * 0.2;//0.2À´×ÅÂğ
+				User.fine = (diff - 30) * 0.2;//0.2æ¥ç€å—
 			}
 			else {
 				User.fine = 0.0;
@@ -335,7 +335,7 @@ void data_process::return_book_cal_fine()//Õâ¸öº¯ÊıÊÇ¸ÉÉ¶µÄÀ´×Å£¿
 		emit return_user_message(userlist);
 		return;
 	}
-	void data_process::continue_pay_fine()//»¹Î´ÊµÏÖ
+	void data_process::continue_pay_fine()//è¿˜æœªå®ç°
 	{
 
 	}

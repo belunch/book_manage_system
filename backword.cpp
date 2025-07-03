@@ -4,9 +4,8 @@
 #include <string>
 #include <vector>
 
-backword::backword()
-{
-
+backword::backword() : QObject() {
+    // 初始化代码（如果需要）
 }
 
 // 回调函数，用于收集用户数据
@@ -193,3 +192,92 @@ int main() {
     
     return 0;
 }*/
+
+// 构造函数
+
+
+// 图书借出功能
+bool backword::borrow_out() {
+    // TODO: 实现图书借出逻辑
+    return false;
+}
+
+// 图书归还功能
+bool backword::return_success() {
+    // TODO: 实现图书归还逻辑
+    return false;
+}
+
+// 存储用户反馈
+bool backword::store_feedback(std::string feed_back) {
+    // TODO: 实现反馈存储逻辑
+    return false;
+}
+
+// 查看反馈
+std::vector<std::string> backword::examine_feedback() {
+    // TODO: 实现反馈查看逻辑
+    return {};
+}
+
+// 计算罚款
+bool backword::calcu_fine(float fine) {
+    // TODO: 实现罚款计算逻辑
+    return false;
+}
+
+// 支付罚款
+float backword::pay_fine() {
+    // TODO: 实现支付罚款逻辑
+    return 0.0f;
+}
+
+// 重置罚款
+bool backword::restore_fine() {
+    // TODO: 实现罚款重置逻辑
+    return false;
+}
+
+// 保存用户信息
+bool backword::save_user_message(user save_user) {
+    // TODO: 实现用户信息保存
+    return false;
+}
+
+// 数据备份
+bool backword::Data_backups() {
+    // TODO: 实现数据备份逻辑
+    return false;
+}
+
+// 数据恢复
+bool backword::Data_recovery() {
+    // TODO: 实现数据恢复逻辑
+    return false;
+}
+
+// 保存图书信息
+bool backword::save_book(std::string book_name, std::string author_name,
+    std::string cata, std::string ISBN, std::string book_id) {
+    // TODO: 实现图书信息保存
+    return false;
+}
+
+// 获取图书信息
+std::vector<book> backword::Get_book_message() {
+    // TODO: 实现图书信息获取
+    return {};
+}
+
+// 修改图书信息
+bool backword::change_book_message(std::string new_book_name, std::string new_author_name,
+    std::string new_cata, std::string new_ISBN, std::string book_id) {
+    // TODO: 实现图书信息修改
+    return false;
+}
+
+// 删除图书
+bool backword::delete_book(std::string book_id) {
+    // TODO: 实现图书删除逻辑
+    return false;
+}

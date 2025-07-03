@@ -33,11 +33,11 @@ void book_manage_win::push_confer()
 		book_id = ui.add_bookid->text();
 		cata = ui.add_cata->text();
 
-		std_book_name = book_name.toStdString();
-		std_author = author.toStdString();
-		std_ISBN = ISBN.toStdString();
-		std_book_id = book_id.toStdString();
-		std_cata = cata.toStdString();
+		std_book_name = book_name.toUtf8().constData();
+		std_author = author.toUtf8().constData();
+		std_ISBN = ISBN.toUtf8().constData();
+		std_book_id = book_id.toUtf8().constData();
+		std_cata = cata.toUtf8().constData();
 
 		emit add_book(std_book_name, std_author, std_cata, std_ISBN, std_book_id);
 
@@ -50,18 +50,18 @@ void book_manage_win::push_confer()
 		book_id = ui.change_bookid->text();
 		cata = ui.change_cata->text();
 
-		std_book_name = book_name.toStdString();
-		std_author = author.toStdString();
-		std_ISBN = ISBN.toStdString();
-		std_book_id = book_id.toStdString();
-		std_cata = cata.toStdString();
+		std_book_name = book_name.toUtf8().constData();
+		std_author = author.toUtf8().constData();
+		std_ISBN = ISBN.toUtf8().constData();
+		std_book_id = book_id.toUtf8().constData();
+		std_cata = cata.toUtf8().constData();
 
 		emit add_book(std_book_name, std_author, std_cata, std_ISBN, std_book_id);
 
 		break;
 	case 2://É¾³ý
 		book_id = ui.delete_bookid->text();
-		std_book_id = book_id.toStdString();
+		std_book_id = book_id.toUtf8().constData();
 		emit delete_book(std_book_id);
 
 	default:
