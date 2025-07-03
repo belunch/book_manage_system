@@ -17,7 +17,7 @@ public:
     bool return_success(std::string book_id, std::string user_id);
     bool store_feedback(std::string user_name, std::string user_feedback);
     std::vector<std::string> examine_feedback();
-    bool calcu_fine(float fine);
+    bool calcu_fine(float fine,string user_id);
     float pay_fine();
     bool restore_fine();
     bool save_user_message(std::vector<user> users);

@@ -470,3 +470,39 @@ std::vector<std::string> examine_feedback(){
     sqlite3_close(db);
     return feedbacks;
 }
+
+bool backword::calcu_fine(float fine, std::string user_id) {
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // 检查user表是否存在
+    if (!tableExists(db, "user")) {
+        std::cerr << "错误：数据库中不存在user表！" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 直接设置指定用户的罚款金额
+    const char* sql = "UPDATE user SET fine = ? WHERE user_id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备更新语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_double(stmt, 1, fine);
+    sqlite3_bind_text(stmt, 2, user_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "更新罚款金额失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
