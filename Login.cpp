@@ -27,13 +27,13 @@ void Login::push_Login()//这个肯定得改，这逻辑包不对的
     {
         is_admin = true;
         emit manager_Login_sig(std_accout,std_password);
-        emit manager_Login_success();
+        /*emit manager_Login_success();*/
     }
     else
     {
         is_admin = false;
         emit user_Login_sig(std_accout, std_password);
-        emit Login_success();
+        /*emit Login_success();*/
     }
 }
 
@@ -46,7 +46,7 @@ void Login::return_back(bool success, string message)
 {
     if (success)
     {
-        if (is_admin)
+        if (!is_admin)
         {
             emit Login_success();
         }

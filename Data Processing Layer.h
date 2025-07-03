@@ -30,10 +30,18 @@ public:
     void add_book(std::string book_name, std::string author_name, std::string cata, std::string ISBN,std::string book_id );
     void change_book(std::string new_book_name, std::string new_author_name, std::string new_cata, std::string new_ISBN, std::string book_id);
     void delete_book(std::string book_id);
+    void admin_Sign_in(string admin_name, string admin_key);
+    void Admin_Sign_up(std::string admin_name, std::string admin_key, std::string admin_id, std::string admin_tele_num);
+    void admin_change_password(std::string old_key, std::string new_key); 
+    void view_user_history();
+    void view_bookmessages(); 
+    void leavedays();
 private:
     backword* Back;
     user User;
+    admin Admin;
 signals:
+
     void return_leavedays(int days, std::string message);
     void return_history(std::vector<history> history);
     void return_user_message(std::vector<user>);

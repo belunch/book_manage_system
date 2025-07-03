@@ -56,7 +56,7 @@ void book_manage_win::push_confer()
 		std_book_id = book_id.toUtf8().constData();
 		std_cata = cata.toUtf8().constData();
 
-		emit add_book(std_book_name, std_author, std_cata, std_ISBN, std_book_id);
+		emit change_book(std_book_name, std_author, std_cata, std_ISBN, std_book_id);
 
 		break;
 	case 2://É¾³ý
