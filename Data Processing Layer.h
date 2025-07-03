@@ -34,12 +34,14 @@ private:
     backword* Back;
     user User;
 signals:
+    void return_leavedays(int days, std::string message);
     void return_history(std::vector<history> history);
     void return_user_message(std::vector<user>);
     void return_back(bool success, std::string error_message);
     void return_bookmessage(std::vector<book>);
 	void return_feedback(std::vector<std::string> feedbacks);
 	void return_fine(float fine,std::string);
+	
     
     
 
