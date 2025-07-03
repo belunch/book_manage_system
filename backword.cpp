@@ -3,6 +3,7 @@
 #include "sqlite3.h"
 #include <string>
 #include <vector>
+#include <fstream>
 
 backword::backword()
 {
@@ -66,6 +67,22 @@ static int bookCallback(void* data, int argc, char** argv, char** azColName) {
     return 0;
 }
 
+// 回调函数，用于收集管理员数据
+static int adminCallback(void* data, int argc, char** argv, char** azColName) {
+    std::vector<admin>* admins = static_cast<std::vector<admin>*>(data);
+    admin a;
+    for(int i = 0; i < argc; i++) {
+        std::string colName = azColName[i];
+        const char* value = argv[i] ? argv[i] : "NULL";
+        if (colName == "admin_name") a.admin_name = value;
+        else if (colName == "admin_key") a.admin_key = value;
+        else if (colName == "admin_id") a.admin_id = value;
+        else if (colName == "admin_tele_num") a.admin_tele_num = value;
+    }
+    admins->push_back(a);
+    return 0;
+}
+
 // 检查表是否存在
 static bool tableExists(sqlite3* db, const std::string& tableName) {
     const char* sql = "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?;";
@@ -107,6 +124,31 @@ std::vector<user> backword::usermessage()
     return users;
 }
 
+std::vector<admin> backword::adminmessage()
+{
+    sqlite3* db;
+    std::vector<admin> admins;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return admins;
+    }
+    if (!tableExists(db, "admin")) {
+        std::cerr << "错误：数据库中不存在admin表！" << std::endl;
+        sqlite3_close(db);
+        return admins;
+    }
+    const char* sql = "SELECT * FROM admin;";
+    char* zErrMsg = 0;
+    rc = sqlite3_exec(db, sql, adminCallback, &admins, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL错误: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
+    }
+    sqlite3_close(db);
+    return admins;
+}
+
 bool backword::save_user_message(std::vector<user> users)
 {
     sqlite3* db;
@@ -139,6 +181,48 @@ bool backword::save_user_message(std::vector<user> users)
         rc = sqlite3_step(stmt);
         if (rc != SQLITE_DONE) {
             std::cerr << "插入用户信息失败: " << sqlite3_errmsg(db) << std::endl;
+            sqlite3_finalize(stmt);
+            sqlite3_close(db);
+            return false;
+        }
+        sqlite3_reset(stmt);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+
+bool backword::save_admin_message(std::vector<admin> admins)
+{
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // 检查admin表是否存在
+    if (!tableExists(db, "admin")) {
+        std::cerr << "错误：数据库中不存在admin表！" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 预处理SQL语句
+    const char* sql = "INSERT OR REPLACE INTO admin (admin_name, admin_key, admin_id, admin_tele_num) VALUES (?, ?, ?, ?);";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备插入语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    for (const auto& a : admins) {
+        sqlite3_bind_text(stmt, 1, a.admin_name.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, a.admin_key.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, a.admin_id.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, a.admin_tele_num.c_str(), -1, SQLITE_STATIC);
+        rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            std::cerr << "插入管理员信息失败: " << sqlite3_errmsg(db) << std::endl;
             sqlite3_finalize(stmt);
             sqlite3_close(db);
             return false;
@@ -498,6 +582,165 @@ bool backword::calcu_fine(float fine, std::string user_id) {
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         std::cerr << "更新罚款金额失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+bool backword::restore_fine(string user_id){
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // 检查user表是否存在
+    if (!tableExists(db, "user")) {
+        std::cerr << "错误：数据库中不存在user表！" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 将指定用户的罚款金额重置为0
+    const char* sql = "UPDATE user SET fine = 0 WHERE user_id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备更新语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, user_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "更新罚款金额失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+bool backword::Data_backups() {
+    std::ifstream src("your_database.db", std::ios::binary);
+    std::ofstream dst("your_database_backup.db", std::ios::binary);
+    if (!src || !dst) return false;
+    dst << src.rdbuf();
+    return src && dst;
+}
+
+bool backword::Data_recovery() {
+    std::ifstream src("your_database_backup.db", std::ios::binary);
+    std::ofstream dst("your_database.db", std::ios::binary);
+    if (!src || !dst) return false;
+    dst << src.rdbuf();
+    return src && dst;
+}
+bool backword::save_book(std::string book_name, std::string author_name, std::string category, std::string ISBN, std::string book_id) {
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // 检查book表是否存在
+    if (!tableExists(db, "book")) {
+        std::cerr << "错误：数据库中不存在book表！" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 预处理SQL语句
+    const char* sql = "INSERT INTO book (book_name, author, category, ISBN, id, in_library) VALUES (?, ?, ?, ?, ?, 1);";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备插入语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, book_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, author_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, category.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, ISBN.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "插入图书信息失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+bool backword::change_book_message(std::string new_book_name, std::string new_author_name, std::string new_category, std::string new_ISBN, std::string book_id) {
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // 检查book表是否存在
+    if (!tableExists(db, "book")) {
+        std::cerr << "错误：数据库中不存在book表！" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 更新图书信息
+    const char* sql = "UPDATE book SET book_name = ?, author = ?, category = ?, ISBN = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备更新语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, new_book_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, new_author_name.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, new_category.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, new_ISBN.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "更新图书信息失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return true;
+}
+bool backword::delete_book(std::string book_id) {
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // 检查book表是否存在
+    if (!tableExists(db, "book")) {
+        std::cerr << "错误：数据库中不存在book表！" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 删除图书记录
+    const char* sql = "DELETE FROM book WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备删除语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "删除图书记录失败: " << sqlite3_errmsg(db) << std::endl;
         sqlite3_finalize(stmt);
         sqlite3_close(db);
         return false;
