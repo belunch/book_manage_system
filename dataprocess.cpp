@@ -233,7 +233,7 @@ void data_process::serch_by_key(std::string key)//这个参数传递有问题
 		emit return_back(false, "Search key cannot be empty.");
 		return;
 	}
-	std::vector<book> booklist = Back->Get_book_message();
+	std::vector<book> booklist = Back->get_book_message();
 	std::vector<book> books;
 	// 遍历 booklist，筛选书名包含 key 的书籍
 	for (const book& b : booklist) {
@@ -250,7 +250,7 @@ void data_process::serch_by_cata(std::string cata)//这个参数也有问题
 		emit return_back(false, "Category cannot be empty.");
 		return;
 	}
-	std::vector<book> booklist = Back->Get_book_message();
+	std::vector<book> booklist = Back->get_book_message();
 	std::vector<book> books;
 	// 遍历 booklist，筛选书籍类别为 cata 的书籍
 	for (const book& b : booklist) {
@@ -317,7 +317,7 @@ void data_process::return_book_cal_fine()//这个函数是干啥的来着？还�
 			emit return_back(false, "You have no fines to pay.");
 			return;
 		}
-		bool have_paid = Back->restore_fine();
+		bool have_paid = Back->restore_fine(User.user_id);//这地方对不对啊
 		if (have_paid) {
 			emit return_back(true, "Fine paid successfully.");
 			return;
@@ -339,8 +339,7 @@ void data_process::return_book_cal_fine()//这个函数是干啥的来着？还�
 	}
 	void data_process::continue_pay_fine()//还未实现
 	{
-		Back->restore_fine();
-		emit return_back(true, "Fine reset successfully.");
+		emit return_fine(User.fine, "Fine reset successfully.");
 		return;
 		// 这里可以添加逻辑来处理继续支付罚款的情况
 		// 例如，可能需要提示用户输入新的罚款金额或其他操作
@@ -405,7 +404,7 @@ void data_process::delete_book(std::string book_id)
 		emit return_back(false, "Book ID cannot be empty.");
 		return;
 	}
-	vector<book> booklist = Back->Get_book_message();
+	vector<book> booklist = Back->get_book_message();
 	for (const auto& b : booklist) {
 		if (b.id == book_id) {
 			bool have_deleted = Back->delete_book(book_id);
@@ -423,4 +422,152 @@ void data_process::delete_book(std::string book_id)
 	return;
 
 }
+//***************************************************************************************************
 
+void  data_process::admin_Sign_in(string admin_name, string admin_key)
+{
+	if (admin_name.empty() || admin_key.empty())
+	{
+		emit return_back(false, "adminname or password cannot be empty.");
+		return;
+	}
+	vector<admin> adminlist = Back->adminmessage();
+	bool isMatched = false;  // 标记是否找到匹配项
+	for (const auto& adminObj : adminlist) {
+		if (adminObj.admin_name == admin_name && adminObj.admin_key == admin_key) {
+			Admin = adminObj;
+			isMatched = true;
+			break;  // 找到匹配，跳出循环
+		}
+	}
+	if (!isMatched)
+	{
+		emit return_back(false, "Adminname or password is incorrect.");
+		return;
+	}
+	else {
+		Admin.admin_name = admin_name;
+		Admin.admin_key = admin_key;
+		emit return_back(true, "Login successful.");
+	}
+}
+void data_process::Admin_Sign_up(std::string admin_name, std::string admin_key, std::string admin_id, std::string admin_tele_num)
+{
+	if (admin_name.empty() || admin_key.empty() || admin_id.empty() || admin_tele_num.empty())
+	{
+		emit return_back(false, "Adminname, password, ID or phone number cannot be empty.");
+		return;
+	}
+	if (!is_valid_user_key(admin_key)) {
+		emit return_back(false, "密码格式错误，请重新输入。");
+		return;
+	}
+	if (!is_valid_id(admin_id)) {
+		emit return_back(false, "身份证号格式错误，请重新输入。");
+		return;
+	}
+	if (!is_valid_user_tele(admin_tele_num)) {
+		emit return_back(false, "手机号格式错误，请重新输入。");
+		return;
+	}
+	vector<admin> adminlist = Back->adminmessage();
+	for (const auto& adminObj : adminlist) {
+		if (adminObj.admin_name == admin_name) {
+			emit return_back(false, "用户已存在，请直接登录");
+			return;
+		}
+		if (adminObj.admin_id == admin_id) {
+			emit return_back(false, "用户已存在，请直接登录");
+			return;
+		}
+		if (adminObj.admin_tele_num == admin_tele_num) {
+			emit return_back(false, "用户已存在，请直接登录");
+			return;
+		}
+	}
+	Admin.admin_name = admin_name;
+	Admin.admin_key = admin_key;
+	Admin.admin_id = admin_id;
+	Admin.admin_tele_num = admin_tele_num;
+	vector<admin> admins;
+	admins.push_back(Admin);//将用户信息存入users向量中
+	bool have_saved = Back->save_admin_message(admins);//这个地方接口不对
+	if (have_saved) {
+		emit return_back(true, "注册成功，请登录。");
+	}
+	else {
+		emit return_back(false, "注册失败，请稍后再试。");
+	}
+}
+
+void data_process::admin_change_password(std::string old_key, std::string new_key)
+{
+	//if (old_key.empty() || new_key.empty()) {
+	//	emit return_back(false, "Old password or new password cannot be empty.");
+	//	return;
+	//}
+	//if (old_key != Admin.admin_key) {
+	//	emit return_back(false, "Old password is incorrect.");
+	//	return;
+	//}
+	//if (old_key == new_key) {
+	//	emit return_back(false, "New password cannot be the same as old password.");
+	//	return;
+	//}
+	//if (!is_valid_new_key(new_key)) {
+	//	emit return_back(false, "New password must be 6 digits.");
+	//	return;
+	//}
+	//Admin.admin_key = new_key;
+	//bool have_changed = Back->admin_can_change_password(Admin.admin_id, new_key);//接口不对
+	//if (have_changed) {
+	//	emit return_back(true, "Password changed successfully.");
+	//	return;
+	//}
+}
+
+void data_process::view_user_history()
+{
+	
+	std::vector<history> historylist = Back->get_borrow_message();
+	std::vector<history> user_history;
+	for (const auto& record : historylist) {
+		if (record.user_id == User.user_id) {
+			user_history.push_back(record);
+		}
+	}
+	if (user_history.empty()) {
+		emit return_back(false, "No borrow records found for the user.");
+		return;
+	}
+	emit return_history(user_history);
+	return;
+}
+
+void data_process::view_bookmessages() {
+	std::vector<book> booklist = Back->get_book_message();
+	if (booklist.empty()) {
+		emit return_back(false, "No books available.");
+		return;
+	}
+	emit return_bookmessage(booklist);
+	return;
+}
+
+void data_process::leavedays(std::string user_id) {
+	if (user_id.empty()) {
+		emit return_back(false, "User ID cannot be empty.");
+		return;
+	}
+	std::vector<history> historylist = Back->get_borrow_message();
+	for (const auto& record : historylist) {
+		if (record.user_id == user_id && record.return_day.year == 0) {
+			date today = date::getCurrentDate();
+			int days = today.daysTo(record.borrow_day);
+			emit return_leavedays(days, "Days left for borrowed book.");
+			return;
+		}
+	}
+	emit return_back(false, "No borrowed books found for the user.");
+	return;
+}

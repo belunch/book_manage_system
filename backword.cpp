@@ -66,9 +66,9 @@ static int bookCallback(void* data, int argc, char** argv, char** azColName) {
     return 0;
 }
 
-<<<<<<< HEAD
+
 // �����Ƿ����
-=======
+
 // �ص������������ռ�����Ա����
 static int adminCallback(void* data, int argc, char** argv, char** azColName) {
     std::vector<admin>* admins = static_cast<std::vector<admin>*>(data);
@@ -86,7 +86,6 @@ static int adminCallback(void* data, int argc, char** argv, char** azColName) {
 }
 
 // �����Ƿ����
->>>>>>> merge_sui
 static bool tableExists(sqlite3* db, const std::string& tableName) {
     const char* sql = "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?;";
     sqlite3_stmt* stmt;
@@ -299,30 +298,69 @@ std::vector<history> backword::get_borrow_message()
     return records;
 }
 
-std::vector<book> backword::get_book_message()//0���ڹݣ�1�ڹ�
-{
-    sqlite3* db;
+std::vector<book> backword::get_book_message() {
+    sqlite3* db = nullptr;
     std::vector<book> books;
+
+    // 打开数据库
     int rc = sqlite3_open("your_database.db", &db);
-    if (rc) {
-        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+    if (rc != SQLITE_OK) {
+        if (db) {
+            std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+            sqlite3_close(db);
+        }
         return books;
     }
+
+    // 检查表是否存在
     if (!tableExists(db, "book")) {
-        std::cerr << "�������ݿ��в�����book����" << std::endl;
+        std::cerr << "错误: 数据库中不存在book表" << std::endl;
         sqlite3_close(db);
         return books;
     }
+
+    // 执行查询
     const char* sql = "SELECT * FROM book;";
-    char* zErrMsg = 0;
+    char* zErrMsg = nullptr;
     rc = sqlite3_exec(db, sql, bookCallback, &books, &zErrMsg);
+
+    // 错误处理
     if (rc != SQLITE_OK) {
-        std::cerr << "SQL����: " << zErrMsg << std::endl;
-        sqlite3_free(zErrMsg);
+        std::cerr << "SQL错误: " << (zErrMsg ? zErrMsg : "未知错误") << std::endl;
     }
+
+    // 清理资源
+    if (zErrMsg) sqlite3_free(zErrMsg);
     sqlite3_close(db);
+
     return books;
 }
+
+
+//std::vector<book> backword::get_book_message()//0���ڹݣ�1�ڹ�
+//{
+//    sqlite3* db;
+//    std::vector<book> books;
+//    int rc = sqlite3_open("your_database.db", &db);
+//    if (rc) {
+//        std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+//        return books;
+//    }
+//    if (!tableExists(db, "book")) {
+//        std::cerr << "�������ݿ��в�����book����" << std::endl;
+//        sqlite3_close(db);
+//        return books;
+//    }
+//    const char* sql = "SELECT * FROM book;";
+//    char* zErrMsg = 0;
+//    rc = sqlite3_exec(db, sql, bookCallback, &books, &zErrMsg);
+//    if (rc != SQLITE_OK) {
+//        std::cerr << "SQL����: " << zErrMsg << std::endl;
+//        sqlite3_free(zErrMsg);
+//    }
+//    sqlite3_close(db);
+//    return books;
+//}
 
 bool backword::borrow_out(std::string book_id, std::string user_id)
 {
@@ -527,7 +565,7 @@ bool backword::store_feedback(std::string user_name, std::string feedback)
     return true;
 }
 
-std::vector<std::string> examine_feedback(){
+std::vector<std::string> backword::examine_feedback(){
     sqlite3* db;
     std::vector<std::string> feedbacks;
     int rc = sqlite3_open("your_database.db", &db);

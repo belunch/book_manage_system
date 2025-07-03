@@ -19,6 +19,9 @@ public:
     ~book_manage_system();
     manager* Manager_main_menu;
 
+
+signals:
+	void enter_user_menu();//进入用户主界面
 private slots:
     void login_success();//切换到用户主界面
     void log_out();//退出到登录界面
