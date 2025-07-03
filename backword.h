@@ -12,6 +12,7 @@ public:
     std::vector<user>usermessage();
 	std::vector<admin>adminmessage();
     bool can_change_password(std::string user_id, std::string new_key);
+	bool admin_change_password(std::string admin_id,std::string new_key);
     std::vector<history>get_borrow_message();
     std::vector<book>get_book_message();
     bool borrow_out(string book_id,string user_id);

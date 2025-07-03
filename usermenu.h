@@ -24,7 +24,7 @@ public:
     void printn_history_message(std::vector<history>);
     void print_fine(float fine ,std::string message);
     void print_leavedays(int days, std::string message);
-
+    void clear_all();//清空所有内容；
 signals:
     void Logout();
     void borrow_book(std::string book_id);
@@ -36,6 +36,9 @@ signals:
     void commit_feedback(std::string feed_back);
     void serch_fine();
     void pay_fine();
+
+    void enter_serch();
+    void enter_fine();
 
 
 

@@ -14,6 +14,7 @@ public:
     Login(QWidget * parent = nullptr);
     ~Login();
     void return_back(bool, string);
+    void clear_all();
 
 signals:
     void push_register();

@@ -21,6 +21,7 @@ public:
     void pring_reader(vector<user> usermessage);
     void print_book(vector<book> books);
     void return_back(bool success, string message);
+    void clear_all();
     
 signals:
     void data_backup();
@@ -29,6 +30,9 @@ signals:
     void serch_by_cata_sig(string key);
     void change_password_sig(string old_pass, string new_pass);
     void log_out();
+    void enter_usermessage();
+    void enter_feed_back();
+    void enter_book();
     
     
 private slots:
@@ -49,6 +53,7 @@ private slots:
     void change_pass();
     void serch_by_cata();
     void serch_by_name();
+    
 
 
 

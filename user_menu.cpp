@@ -59,6 +59,8 @@ void user_menu::push_serch()
 	ui.serch_table->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.serch_table->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui.serch_table->horizontalHeader()->setStretchLastSection(true);
+
+	emit enter_serch();
 	//测试用内容
 	//ui.serch_table->setRowCount(5);
 	//ui.serch_table->setItem(0, 0, new QTableWidgetItem(QString::fromLocal8Bit("中文内容")));
@@ -117,6 +119,8 @@ void user_menu::push_fine()
 {
 	ui.stackedWidget->setCurrentIndex(7);
 
+	emit enter_fine();
+
 }
 
 void user_menu::push_reset()
@@ -127,6 +131,8 @@ void user_menu::push_reset()
 void user_menu::return_user_menu()
 {
 	ui.stackedWidget->setCurrentIndex(0);
+
+	clear_all();
 }
 
 
@@ -154,14 +160,14 @@ void user_menu::return_return_button()
 
 void user_menu::serch_serch_by_name()
 {
-	QString book_name_key = ui.serch_by_name->text();
+	QString book_name_key = ui.serch_line_edit->text();
 	std::string std_name_key = book_name_key.toUtf8().constData();
 	emit serch_by_name(std_name_key);
 }
 
 void user_menu::serch_serch_by_cata()
 {
-	QString book_cata = ui.serch_by_cata->text();
+	QString book_cata = ui.serch_line_edit->text();
 	std::string std_cata = book_cata.toUtf8().constData();
 	emit serch_by_cata(std_cata);
 }
@@ -214,6 +220,8 @@ void user_menu::print_message(bool success, std::string message)
 	//QMessageBox::information(nullptr, "提示", "这是一条信息提示");
 	//QString::fromLocal8Bit("中文内容")
 	QMessageBox::information(nullptr, QString::fromUtf8("提示"), QString::fromUtf8(message));
+
+	clear_all();
 
 }
 
@@ -305,6 +313,30 @@ void user_menu::print_fine(float fine, std::string message)
 
 void user_menu::print_leavedays(int days, std::string message)
 {
-	QString prompt = QString("提示：您有一本书在 %1 天后逾期").arg(days);
-	QMessageBox::information(this, "逾期提醒", prompt);
+	if (days <= 10)
+	{
+		QString prompt = QString("提示：您有一本书在 %1 天后逾期").arg(days);
+		QMessageBox::information(this, "逾期提醒", prompt);
+
+	}
+	
+}
+
+void user_menu::clear_all()
+{
+	// 清空所有 QLineEdit 内容
+	QList<QLineEdit*> lineEdits = this->findChildren<QLineEdit*>();
+	foreach(QLineEdit * lineEdit, lineEdits) {
+		lineEdit->clear();
+	}
+
+	// 清空所有 QTableWidget 内容（保留表头）
+	QList<QTableWidget*> tables = this->findChildren<QTableWidget*>();
+	foreach(QTableWidget * table, tables) {
+		// 清除所有行但保留列头
+		table->clearContents();
+		table->setRowCount(0);
+	}
+
+	ui.textEdit->clear(); // 清空文本编辑器内容
 }

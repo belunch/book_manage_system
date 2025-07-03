@@ -14,6 +14,15 @@ register_win::~register_win()
 
 }
 
+void register_win::clear_all()
+{
+	// 清空所有 QLineEdit 内容
+	QList<QLineEdit*> lineEdits = this->findChildren<QLineEdit*>();
+	foreach(QLineEdit * lineEdit, lineEdits) {
+		lineEdit->clear();
+	}
+}
+
 void register_win::pre_register()
 {
 	QString name, pass, ID, tele_num;
@@ -44,4 +53,5 @@ void register_win::pre_register()
 void register_win::print_message(bool success, std::string message)
 {
 	QMessageBox::information(nullptr, QString::fromUtf8("提示"), QString::fromUtf8(message));
+	clear_all();
 }

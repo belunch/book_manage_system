@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="page_menu">
     <widget class="QPushButton" name="book_manage">
@@ -273,17 +273,17 @@
      </property>
      <column>
       <property name="text">
-       <string>新建列</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
        <string>姓名</string>
       </property>
      </column>
      <column>
       <property name="text">
        <string>身份证号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>电话</string>
       </property>
      </column>
      <column>
