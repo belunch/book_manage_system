@@ -21,6 +21,7 @@ public:
     void pring_reader(vector<user> usermessage);
     void print_book(vector<book> books);
     void return_back(bool success, string message);
+    void clear_all();
     
 signals:
     void data_backup();

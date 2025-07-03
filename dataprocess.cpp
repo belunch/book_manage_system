@@ -502,28 +502,28 @@ void data_process::Admin_Sign_up(std::string admin_name, std::string admin_key, 
 
 void data_process::admin_change_password(std::string old_key, std::string new_key)
 {
-	//if (old_key.empty() || new_key.empty()) {
-	//	emit return_back(false, "Old password or new password cannot be empty.");
-	//	return;
-	//}
-	//if (old_key != Admin.admin_key) {
-	//	emit return_back(false, "Old password is incorrect.");
-	//	return;
-	//}
-	//if (old_key == new_key) {
-	//	emit return_back(false, "New password cannot be the same as old password.");
-	//	return;
-	//}
-	//if (!is_valid_new_key(new_key)) {
-	//	emit return_back(false, "New password must be 6 digits.");
-	//	return;
-	//}
-	//Admin.admin_key = new_key;
-	//bool have_changed = Back->admin_can_change_password(Admin.admin_id, new_key);//接口不对
-	//if (have_changed) {
-	//	emit return_back(true, "Password changed successfully.");
-	//	return;
-	//}
+	if (old_key.empty() || new_key.empty()) {
+		emit return_back(false, "Old password or new password cannot be empty.");
+		return;
+	}
+	if (old_key != Admin.admin_key) {
+		emit return_back(false, "Old password is incorrect.");
+		return;
+	}
+	if (old_key == new_key) {
+		emit return_back(false, "New password cannot be the same as old password.");
+		return;
+	}
+	if (!is_valid_new_key(new_key)) {
+		emit return_back(false, "New password must be 6 digits.");
+		return;
+	}
+	Admin.admin_key = new_key;
+	bool have_changed = Back->admin_change_password(Admin.admin_id, new_key);//接口不对
+	if (have_changed) {
+		emit return_back(true, "Password changed successfully.");
+		return;
+	}
 }
 
 void data_process::view_user_history()
@@ -565,6 +565,6 @@ void data_process::leavedays() {
 			return;
 		}
 	}
-	emit return_back(false, "No borrowed books found for the user.");
+	emit return_leavedays(30, "No borrowed books found for you.");
 	return;
 }

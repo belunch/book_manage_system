@@ -290,6 +290,43 @@ bool backword::can_change_password(std::string user_id, std::string new_key)
     return true;
 }
 
+bool backword::admin_change_password(std::string admin_id, std::string new_key)
+{
+	sqlite3* db;
+	int rc = sqlite3_open("your_database.db", &db);
+	if (rc) {
+		std::cerr << "�޷������ݿ�: " << sqlite3_errmsg(db) << std::endl;
+		return false;
+	}
+	// ���admin���Ƿ����
+	if (!tableExists(db, "admin")) {
+		std::cerr << "�������ݿ��в�����admin����" << std::endl;
+		sqlite3_close(db);
+		return false;
+	}
+	// �����Ա�����
+	const char* sql = "UPDATE admin SET admin_key = ? WHERE admin_id = ?;";
+	sqlite3_stmt* stmt;
+	rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	if (rc != SQLITE_OK) {
+		std::cerr << "׼���������ʧ��: " << sqlite3_errmsg(db) << std::endl;
+		sqlite3_close(db);
+		return false;
+	}
+	sqlite3_bind_text(stmt, 1, new_key.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 2, admin_id.c_str(), -1, SQLITE_STATIC);
+	rc = sqlite3_step(stmt);
+	if (rc != SQLITE_DONE) {
+		std::cerr << "��������ʧ��: " << sqlite3_errmsg(db) << std::endl;
+		sqlite3_finalize(stmt);
+		sqlite3_close(db);
+		return false;
+	}
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+	return true;
+}
+
 std::vector<history> backword::get_borrow_message()
 {
     sqlite3* db;

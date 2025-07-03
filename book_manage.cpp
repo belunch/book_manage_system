@@ -13,6 +13,17 @@ void book_manage_win::set_page(int i)
 	ui.stackedWidget->setCurrentIndex(i);
 }
 
+void book_manage_win::clear_all()
+{
+	// 清空所有 QLineEdit 内容
+	QList<QLineEdit*> lineEdits = this->findChildren<QLineEdit*>();
+	foreach(QLineEdit * lineEdit, lineEdits) {
+		lineEdit->clear();
+	}
+
+
+}
+
 
 
 void book_manage_win::pushu_quit()

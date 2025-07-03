@@ -76,6 +76,7 @@ void manager::change_password()
 void manager::back_menu()
 {
 	ui.stackedWidget->setCurrentIndex(0);
+	clear_all();
 }
 
 void manager::back_book_main_menu()//这个比较特殊、与book_main_window的信号连接。
@@ -138,6 +139,26 @@ void manager::push_book_delete()
 void manager::return_back(bool success, string message)
 {
 	QMessageBox::information(nullptr, QString::fromUtf8("提示"), QString::fromUtf8(message));
+	clear_all();
+	book_manage_window->clear_all();
+}
+
+void manager::clear_all()
+{
+	// 清空所有 QLineEdit 内容
+	QList<QLineEdit*> lineEdits = this->findChildren<QLineEdit*>();
+	foreach(QLineEdit * lineEdit, lineEdits) {
+		lineEdit->clear();
+	}
+
+	// 清空所有 QTableWidget 内容（保留表头）
+	QList<QTableWidget*> tables = this->findChildren<QTableWidget*>();
+	foreach(QTableWidget * table, tables) {
+		// 清除所有行但保留列头
+		table->clearContents();
+		table->setRowCount(0);
+	}
+
 }
 
 void manager::print_feedback(std::vector<std::string> feedbacks)

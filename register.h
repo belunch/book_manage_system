@@ -13,7 +13,7 @@ class register_win : public QWidget
 public:
     register_win(QWidget* parent = nullptr);
     ~register_win();
-
+	void clear_all();//清空所有内容；
     void print_message(bool success, std::string message);
     
 signals:

@@ -62,3 +62,14 @@ void Login::return_back(bool success, string message)
 
 
 }
+
+void Login::clear_all()
+{
+    // 清空所有 QLineEdit 内容
+    QList<QLineEdit*> lineEdits = this->findChildren<QLineEdit*>();
+    foreach(QLineEdit * lineEdit, lineEdits) {
+        lineEdit->clear();
+    }
+
+
+}

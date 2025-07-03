@@ -65,6 +65,7 @@ book_manage_system::book_manage_system(data_process* data,QWidget *parent)
     connect(Data, &data_process::return_user_message, Manager_main_menu, &manager::pring_reader);
     connect(Data, &data_process::return_feedback, Manager_main_menu, &manager::print_feedback);
     connect(Data, &data_process::return_fine, User_main_menu, &user_menu::print_fine);
+    connect(Data, &data_process::return_back, User_main_menu, &user_menu::print_leavedays);
 }
 
 book_manage_system::~book_manage_system()
@@ -126,4 +127,6 @@ void book_manage_system::log_out()//等出，返回登录界面
     //return_fine只在返回罚款数额的地方用,这个还没做；->已完成;
 
     connect(Data, &data_process::return_back, Login_window, &Login::return_back);
+
+	Login_window->clear_all();//清空登录界面
 }
