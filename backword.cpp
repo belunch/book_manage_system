@@ -32,27 +32,37 @@ static int recordCallback(void* data, int argc, char** argv, char** azColName) {
     history h;
     for(int i = 0; i < argc; i++) {
         std::string colName = azColName[i];
-        const char* value = argv[i] ? argv[i] : "NULL";
+        const char* value = argv[i] ? argv[i] : "0";
         if (colName == "recode_num") h.recode_num = value;
         else if (colName == "book_id") h.book_id = value;
         else if (colName == "user_name") h.user_name = value;
         else if (colName == "user_id") h.user_id = value;
-        else if (colName == "boorow_day") {
-            int y, m, d;
-            sscanf_s(value, "%d-%d-%d", &y, &m, &d);
-            h.boorow_day.year = y;
-            h.boorow_day.month = m;
-            h.boorow_day.day = d;
-        }
-        else if (colName == "return_day") {
-            int y, m, d;
-            sscanf_s(value, "%d-%d-%d", &y, &m, &d);
-            h.return_day.year = y;
-            h.return_day.month = m;
-            h.return_day.day = d;
-        }
+        else if (colName == "boorow_year") h.boorow_day.year = atoi(value);
+        else if (colName == "boorow_month") h.boorow_day.month = atoi(value);
+        else if (colName == "boorow_day") h.boorow_day.day = atoi(value);
+        else if (colName == "return_year") h.return_day.year = atoi(value);
+        else if (colName == "return_month") h.return_day.month = atoi(value);
+        else if (colName == "return_day") h.return_day.day = atoi(value);
     }
     records->push_back(h);
+    return 0;
+}
+
+// 回调函数，用于收集图书数据
+static int bookCallback(void* data, int argc, char** argv, char** azColName) {
+    std::vector<book>* books = static_cast<std::vector<book>*>(data);
+    book b;
+    for(int i = 0; i < argc; i++) {
+        std::string colName = azColName[i];
+        const char* value = argv[i] ? argv[i] : "";
+        if (colName == "in_library") b.in_library = atoi(value);
+        else if (colName == "book_name") b.book_name = value;
+        else if (colName == "author") b.author = value;
+        else if (colName == "category") b.category = value;
+        else if (colName == "ISBN") b.ISBN = value;
+        else if (colName == "id") b.id = value;
+    }
+    books->push_back(b);
     return 0;
 }
 
@@ -202,21 +212,32 @@ std::vector<history> backword::get_borrow_message()
     return records;
 }
 
-std::vector<book> backword::get_book_message()
+std::vector<book> backword::get_book_message()//0不在馆，1在馆
 {
-    return get_book_message();
+    sqlite3* db;
+    std::vector<book> books;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return books;
+    }
+    if (!tableExists(db, "book")) {
+        std::cerr << "错误：数据库中不存在book表！" << std::endl;
+        sqlite3_close(db);
+        return books;
+    }
+    const char* sql = "SELECT * FROM book;";
+    char* zErrMsg = 0;
+    rc = sqlite3_exec(db, sql, bookCallback, &books, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL错误: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
+    }
+    sqlite3_close(db);
+    return books;
 }
-bool backword::borrow_out()
-{
-    // 实现借书逻辑
-    return true;
-}
-bool backword::return_success()
-{
-    // 实现还书逻辑
-    return true;
-}
-bool store_feedback(std::string feedback)
+
+bool backword::borrow_out(std::string book_id, std::string user_id)
 {
     sqlite3* db;
     int rc = sqlite3_open("your_database.db", &db);
@@ -224,24 +245,188 @@ bool store_feedback(std::string feedback)
         std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
         return false;
     }
-    // 检查feed_back表是否存在
-    if (!tableExists(db, "feed_back")) {
-        std::cerr << "错误：数据库中不存在feed_back表！" << std::endl;
+    // 检查book表是否存在
+    if (!tableExists(db, "book")) {
+        std::cerr << "错误：数据库中不存在book表！" << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 检查该书是否在馆
+    const char* check_sql = "SELECT in_library FROM book WHERE id = ?;";
+    sqlite3_stmt* check_stmt;
+    rc = sqlite3_prepare_v2(db, check_sql, -1, &check_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备查询语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(check_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(check_stmt);
+    if (rc != SQLITE_ROW || sqlite3_column_int(check_stmt, 0) != 1) {
+        // 不在馆或未找到
+        sqlite3_finalize(check_stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_finalize(check_stmt);
+    // 更新book表in_library为0
+    const char* update_sql = "UPDATE book SET in_library = 0 WHERE id = ?;";
+    sqlite3_stmt* update_stmt;
+    rc = sqlite3_prepare_v2(db, update_sql, -1, &update_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备更新语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(update_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(update_stmt);
+    sqlite3_finalize(update_stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "更新图书状态失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 获取当前系统时间
+    time_t t = time(nullptr);
+    struct tm now;
+#ifdef _WIN32
+    localtime_s(&now, &t);
+#else
+    localtime_r(&t, &now);
+#endif
+    int year = now.tm_year + 1900;
+    int month = now.tm_mon + 1;
+    int day = now.tm_mday;
+    // 插入record表
+    const char* insert_sql = "INSERT INTO record (recode_num, book_id, user_name, user_id, boorow_year, boorow_month, boorow_day, return_year, return_month, return_day) VALUES (?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL);";
+    sqlite3_stmt* insert_stmt;
+    rc = sqlite3_prepare_v2(db, insert_sql, -1, &insert_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备插入语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // recode_num始终为"1"
+    sqlite3_bind_text(insert_stmt, 1, "1", -1, SQLITE_STATIC);
+    sqlite3_bind_text(insert_stmt, 2, book_id.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(insert_stmt, 3, user_id.c_str(), -1, SQLITE_STATIC); // user_name字段后面补充
+    sqlite3_bind_text(insert_stmt, 4, user_id.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_int(insert_stmt, 5, year);
+    sqlite3_bind_int(insert_stmt, 6, month);
+    sqlite3_bind_int(insert_stmt, 7, day);
+    rc = sqlite3_step(insert_stmt);
+    sqlite3_finalize(insert_stmt);
+    sqlite3_close(db);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "插入借阅记录失败: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    return true;
+}
+
+bool backword::return_success(std::string book_id, std::string user_id)
+{
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // 查询未归还的借阅记录
+    const char* select_sql = "SELECT recode_num FROM record WHERE book_id = ? AND user_id = ? AND return_year IS NULL AND return_month IS NULL AND return_day IS NULL ORDER BY boorow_year DESC, boorow_month DESC, boorow_day DESC LIMIT 1;";
+    sqlite3_stmt* select_stmt;
+    rc = sqlite3_prepare_v2(db, select_sql, -1, &select_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备查询语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(select_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(select_stmt, 2, user_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(select_stmt);
+    if (rc != SQLITE_ROW) {
+        // 没有未归还记录
+        sqlite3_finalize(select_stmt);
+        sqlite3_close(db);
+        return false;
+    }
+    std::string recode_num = reinterpret_cast<const char*>(sqlite3_column_text(select_stmt, 0));
+    sqlite3_finalize(select_stmt);
+    // 获取当前系统时间
+    time_t t = time(nullptr);
+    struct tm now;
+#ifdef _WIN32
+    localtime_s(&now, &t);
+#else
+    localtime_r(&t, &now);
+#endif
+    int year = now.tm_year + 1900;
+    int month = now.tm_mon + 1;
+    int day = now.tm_mday;
+    // 更新record表归还日期
+    const char* update_record_sql = "UPDATE record SET return_year = ?, return_month = ?, return_day = ? WHERE recode_num = ?;";
+    sqlite3_stmt* update_record_stmt;
+    rc = sqlite3_prepare_v2(db, update_record_sql, -1, &update_record_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备更新借阅记录语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_int(update_record_stmt, 1, year);
+    sqlite3_bind_int(update_record_stmt, 2, month);
+    sqlite3_bind_int(update_record_stmt, 3, day);
+    sqlite3_bind_text(update_record_stmt, 4, recode_num.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(update_record_stmt);
+    sqlite3_finalize(update_record_stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "更新借阅记录失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    // 更新book表in_library为1
+    const char* update_book_sql = "UPDATE book SET in_library = 1 WHERE id = ?;";
+    sqlite3_stmt* update_book_stmt;
+    rc = sqlite3_prepare_v2(db, update_book_sql, -1, &update_book_stmt, NULL);
+    if (rc != SQLITE_OK) {
+        std::cerr << "准备更新图书状态语句失败: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+    sqlite3_bind_text(update_book_stmt, 1, book_id.c_str(), -1, SQLITE_STATIC);
+    rc = sqlite3_step(update_book_stmt);
+    sqlite3_finalize(update_book_stmt);
+    sqlite3_close(db);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "更新图书状态失败: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    return true;
+}
+
+bool backword::store_feedback(std::string user_name, std::string feedback)
+{
+    sqlite3* db;
+    int rc = sqlite3_open("your_database.db", &db);
+    if (rc) {
+        std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    // 检查feedback表是否存在
+    if (!tableExists(db, "feedback")) {
+        std::cerr << "错误：数据库中不存在feedback表！" << std::endl;
         sqlite3_close(db);
         return false;
     }
     // 预处理SQL语句
-    const char* sql = "INSERT INTO feed_back (user_feedback) VALUES (?, ?);";
+    const char* sql = "INSERT INTO feedback (user_name, user_feedback) VALUES (?, ?);";
     sqlite3_stmt* stmt;
-    // 生成唯一back_num，可以用时间戳或UUID等，这里简单用当前时间戳
-    std::string back_num = std::to_string(static_cast<long long>(time(nullptr)));
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         std::cerr << "准备插入语句失败: " << sqlite3_errmsg(db) << std::endl;
         sqlite3_close(db);
         return false;
     }
-    sqlite3_bind_text(stmt, 1, back_num.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, user_name.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, feedback.c_str(), -1, SQLITE_STATIC);
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
@@ -254,40 +439,34 @@ bool store_feedback(std::string feedback)
     sqlite3_close(db);
     return true;
 }
-bool backword::store_feedback(std::string feedback)
-{
+
+std::vector<std::string> examine_feedback(){
     sqlite3* db;
+    std::vector<std::string> feedbacks;
     int rc = sqlite3_open("your_database.db", &db);
     if (rc) {
         std::cerr << "无法打开数据库: " << sqlite3_errmsg(db) << std::endl;
-        return false;
+        return feedbacks;
     }
-    // 检查feed_back表是否存在
-    if (!tableExists(db, "feed_back")) {
-        std::cerr << "错误：数据库中不存在feed_back表！" << std::endl;
+    // 检查feedback表是否存在
+    if (!tableExists(db, "feedback")) {
+        std::cerr << "错误：数据库中不存在feedback表！" << std::endl;
         sqlite3_close(db);
-        return false;
+        return feedbacks;
     }
-    // 预处理SQL语句
-    const char* sql = "INSERT INTO feed_back (back_num, back_message) VALUES (?, ?);";
-    sqlite3_stmt* stmt;
-    std::string back_num = std::to_string(static_cast<long long>(time(nullptr)));
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    const char* sql = "SELECT user_feedback FROM feedback;";
+    char* zErrMsg = 0;
+    rc = sqlite3_exec(db, sql, [](void* data, int argc, char** argv, char** azColName) -> int {
+        auto feedbacks = static_cast<std::vector<std::string>*>(data);
+        if (argc > 0 && argv[0]) {
+            feedbacks->push_back(argv[0]);
+        }
+        return 0;
+    }, &feedbacks, &zErrMsg);
     if (rc != SQLITE_OK) {
-        std::cerr << "准备插入语句失败: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_close(db);
-        return false;
+        std::cerr << "SQL错误: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
     }
-    sqlite3_bind_text(stmt, 1, back_num.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, feedback.c_str(), -1, SQLITE_STATIC);
-    rc = sqlite3_step(stmt);
-    if (rc != SQLITE_DONE) {
-        std::cerr << "插入反馈信息失败: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_finalize(stmt);
-        sqlite3_close(db);
-        return false;
-    }
-    sqlite3_finalize(stmt);
     sqlite3_close(db);
-    return true;
+    return feedbacks;
 }

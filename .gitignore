@@ -90,3 +90,6 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+/history_data.txt
+/output
+/user_data.txt
